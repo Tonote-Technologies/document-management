@@ -2,22 +2,21 @@
 
 
 $document_id = $_POST['document_id'];
-$path = 'upload/';
-$documents = DocumentImage::find_by_document_ids($document_id);
+$path = 'upload/signature_files/';
+$documents = DocumentImageDetails::find_by_document_ids($document_id);
 $documentResource = DocumentResource::find_by_document_ids($document_id);
 
 $totalPage = count($documents);
-	
-$total_item = 0;
+$added_tool = 0;
+$converted_tool = 0;
 	
 	$output = '<div>';
-	if(!empty($_SESSION["docu_edit"])){
-		$pn = 1; $qn = 1; $an = 1;  foreach($_SESSION["docu_edit"] as $keys => $values)
-		
-		{	
-			if ($values["tool_text"] == "Textarea") {
-				$output .= '<dl class=" '.$values["tool_class"].' '.$values["tool_text"].'" data-name="'.$values["tool_text"].'" id="'.$values["tool_id"].'" style="top: '.$values["tool_top_pos"].'; left:'.$values["tool_left_pos"].'">
-								<button type="button" class="btn-close deleteItem"  data-id="'.$values["tool_id"].'"></button>
+	
+	foreach($documentResource as  $savedTool){
+		if($savedTool->tool_type == 1){
+			if ($savedTool->tool_name == "Textarea") {
+				$output .= '<dl class=" '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
+								<button type="button" class="btn-close deleteItem"  data-id="'.$savedTool->tool_id.'"></button>
 								<div style="position:relative">
 									
 									<div class="element"><input aria-invalid="false" type="text"  class="textareaTool" value=""></div>
@@ -25,45 +24,36 @@ $total_item = 0;
 						    </dl>';
 			}else{
 				$output .= '
-					<dl class=" '.$values["tool_class"].' '.$values["tool_text"].'" data-name="'.$values["tool_text"].'" id="'.$values["tool_id"].'" style="top: '.$values["tool_top_pos"].'; left:'.$values["tool_left_pos"].'">
+					<dl class=" '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
 						<div>
-							<button type="button" class="btn-close deleteItem" data-id="'.$values["tool_id"].'"></button>
-							<div class="element">'.$values["tool_text"].'</div>
+							<button type="button" class="btn-close deleteItem" data-id="'.$savedTool->tool_id.'"></button>
+							<div class="element">'.$savedTool->tool_name.'</div>
 							
 						</div>
 					</dl>
-				';
-				
-				
+				';	
 			}
-			$total_item = $total_item + 1;
-			
+			$added_tool = $added_tool + 1;
+		}else{
+			$output .= '
+			<div class="tool-box main-element title" 
+				style="top: '.$savedTool->tool_pos_top.'; 
+				left: '.$savedTool->tool_pos_left.';" data-id="'.$savedTool->tool_id.'" data-name="'.$savedTool->tool_name.'" >
+				<button type="button" class="btn-close removeItem"  data-id="'.$savedTool->tool_id.'"></button>
+					<img src="'.$path.$savedTool->filename.'" class="" />
+				
+			</div>';
+			$converted_tool = $converted_tool + 1;
 		}
 		
 	}
-	else
-	{
-		$output .= '
-	    <div></div>
-	    ';
-
-		// $_SESSION["docu_edit"];
-	    // print_r($_SESSION["docu_edit"]["docuemnt_id"]);
-	}
-	
-	foreach($documentResource as  $savedTool){
-		$output .= '<img src="'.$path.$savedTool->filename.'" 
-		data-name="'.$savedTool->tool_name.'" 
-		data-id="'.$savedTool->elemId.'"
-		style="top: '.$savedTool->tool_pos_top.'; left: '.$savedTool->tool_pos_left.'; " class="tool-box main-element" />';
-	}
 	
 	foreach ($documents as $key => $value) {
-		$pageNum = $key + 1;
+		$pageNum = $key + 1; 
 		$output .= '
 			<div class="border">
 				<img src="upload/document_file/'.$value->filename.'" 
-				style="min-width: 500px ;"  class="img-fluid"> 
+				style=";"  class="img-fluid"> 
 			</div>
 			<div class="clearfix">
 				<h6 class="float-end">Page '.$pageNum.' of '.$totalPage.'</h6>
@@ -72,8 +62,9 @@ $total_item = 0;
 	}
 	
 	$data = array(
-		'session_details'	=>	$output,
-		'total_item'		=>	$total_item,
+		'session_details'		=>	$output,
+		'added_tool'			=>	$added_tool,
+		'converted_tool'		=>	$converted_tool,
 		// 'total_price'		=>	 number_format($total_price, 2),
 		
 	);	

@@ -3,7 +3,14 @@
 
 $page = 'Dashboard';
 $page_title = 'Home';
-$documents = DocumentImage::find_by_created_by(1); 
+$id = $loggedInAdmin->id ?? '';
+$status = $_GET['status'] ?? 1;
+$documents = DocumentImage::find_document(['created_by' => $id, 'status' => $status]); 
+
+$inbox = count(DocumentImage::find_document(['created_by' => $id, 'status' => 1]));
+$draft = count(DocumentImage::find_document(['created_by' => $id, 'status' => 2]));
+$sent = count(DocumentImage::find_document(['created_by' => $id, 'status' => 3]));
+$completed = count(DocumentImage::find_document(['created_by' => $id, 'status' => 4]));
 include(SHARED_PATH . '/header.php'); 
 
 ?>
@@ -41,7 +48,8 @@ include(SHARED_PATH . '/header.php');
                     </div>
                     <div class="sidebar-menu-list ps ps--active-y">
                         <div class="list-group list-group-messages">
-                            <a href="#" class="list-group-item list-group-item-action active">
+                            <a href="<?php echo url_for("dashboard/index.php?status=1") ?>"
+                                class="list-group-item list-group-item-action <?php echo $status == 1 ? 'active' : '' ?>">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="feather feather-mail font-medium-3 me-50">
@@ -51,9 +59,11 @@ include(SHARED_PATH . '/header.php');
                                     <polyline points="22,6 12,13 2,6"></polyline>
                                 </svg>
                                 <span class="align-middle">Inbox</span>
-                                <span class="badge badge-light-primary rounded-pill float-end">3</span>
+                                <span
+                                    class="badge badge-light-primary rounded-pill float-end"><?php echo $inbox; ?></span>
                             </a>
-                            <a href="#" class="list-group-item list-group-item-action">
+                            <a href="<?php echo url_for("dashboard/index.php?status=3") ?>"
+                                class="list-group-item list-group-item-action <?php echo $status == 3 ? 'active' : ''   ?>">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="feather feather-send font-medium-3 me-50">
@@ -61,17 +71,22 @@ include(SHARED_PATH . '/header.php');
                                     <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                                 </svg>
                                 <span class="align-middle">Sent</span>
+                                <span
+                                    class="badge badge-light-success rounded-pill float-end"><?php echo $sent; ?></span>
                             </a>
-                            <a href="#" class="list-group-item list-group-item-action">
+                            <a href="<?php echo url_for("dashboard/index.php?status=2") ?>"
+                                class="list-group-item list-group-item-action <?php echo $status == 2 ? 'active' : ''   ?>">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="feather feather-edit-2 font-medium-3 me-50">
                                     <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
                                 </svg>
                                 <span class="align-middle">Draft</span>
-                                <span class="badge badge-light-warning rounded-pill float-end">2</span>
+                                <span
+                                    class="badge badge-light-warning rounded-pill float-end"><?php echo $draft; ?></span>
                             </a>
-                            <a href="#" class="list-group-item list-group-item-action">
+                            <a href="<?php echo url_for("dashboard/index.php?status=4") ?>"
+                                class="list-group-item list-group-item-action <?php echo $status == 4 ? 'active' : ''   ?>">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="feather feather-star font-medium-3 me-50">
@@ -79,20 +94,13 @@ include(SHARED_PATH . '/header.php');
                                         points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
                                     </polygon>
                                 </svg>
-                                <span class="align-middle">Starred</span>
+                                <span class="align-middle">Completed</span>
+                                <span
+                                    class="badge badge-light-info rounded-pill float-end"><?php echo $completed; ?></span>
                             </a>
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="feather feather-info font-medium-3 me-50">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <line x1="12" y1="16" x2="12" y2="12"></line>
-                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                                </svg>
-                                <span class="align-middle">Spam</span>
-                                <span class="badge badge-light-danger rounded-pill float-end">5</span>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action">
+
+                            <a href="<?php echo url_for("dashboard/index.php?status=5") ?>"
+                                class="list-group-item list-group-item-action <?php echo $status == 5 ? 'active' : ''   ?>">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round" class="feather feather-trash font-medium-3 me-50">
@@ -189,6 +197,7 @@ include(SHARED_PATH . '/header.php');
                     <!-- Email actions ends -->
                     <!-- Email list starts -->
                     <div class="email-user-list ps ps--active-y">
+                        <?php if(!empty($documents)){ ?>
                         <ul class="email-media-list">
                             <?php foreach ($documents as $doc) {  ?>
                             <li class="d-flex user-mail ">
@@ -205,16 +214,18 @@ include(SHARED_PATH . '/header.php');
                                     </div>
                                 </div>
                                 <div class="mail-body">
-                                    <div class="mail-details">
+                                    <div class="mail-details" data-id="<?php echo $doc->document_id ?>">
                                         <div class="mail-items">
-                                            <h5 class="mb-25 text-dark"><b><?php echo $doc->title ?></b></h5>
-                                            <span class="text-truncate">🎯 <b>Perticipants</b>: Shafi
-                                                Akinropo </span>
+                                            <h5 class="mb-25 text-dark"><b><?php echo $doc->title ?></b>
+                                            </h5>
+                                            <span class="text-truncate">🎯 <b>Participants</b>:
+                                                <?php foreach (Participants::find_by_document_id($doc->document_id) as $k => $participant) { echo $participant->full_name() ?? "None"; } ?>
+                                            </span>
                                         </div>
                                         <div class="mail-meta-item">
                                             <div>Last Updated</div>
-                                            <span class="me-50 bullet bullet-success bullet-sm"></span>
-                                            <span class="mail-date">4:14 AM</span>
+                                            <span class="me-50 bullet bullet-warning bullet-sm"></span>
+                                            <span class="mail-date"><?php echo $doc->created_at ?></span>
                                         </div>
                                     </div>
 
@@ -223,6 +234,12 @@ include(SHARED_PATH . '/header.php');
                             <?php } ?>
 
                         </ul>
+                        <?php }else{ ?>
+                        <div class=" d-flex align-items-center justify-content-center" style="min-height: 50vh;">
+                            <div>
+                                <h5>No Items Found</h5>
+                            </div>
+                        </div>
                         <div class="no-results">
                             <h5>No Items Found</h5>
                         </div>
@@ -232,6 +249,8 @@ include(SHARED_PATH . '/header.php');
                         <div class="ps__rail-y" style="top: 0px; height: 400px; right: 0px;">
                             <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 117px;"></div>
                         </div>
+                        <?php } ?>
+
                     </div>
                     <!-- Email list ends -->
                 </div>
@@ -252,275 +271,14 @@ include(SHARED_PATH . '/header.php');
                         </div>
                         <div class="email-header-right ms-2 ps-1">
                             <ul class="list-inline m-0">
-                                <li class="list-inline-item">
-                                    <span class="action-icon favorite">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="feather feather-star font-medium-2">
-                                            <polygon
-                                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                                            </polygon>
-                                        </svg>
-                                    </span>
-                                </li>
-                                <li class="list-inline-item">
-                                    <div class="dropdown no-arrow">
-                                        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-folder font-medium-2">
-                                                <path
-                                                    d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z">
-                                                </path>
-                                            </svg>
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="folder">
-                                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="feather feather-edit-2 font-medium-3 me-50">
-                                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                    </path>
-                                                </svg>
-                                                <span>Draft</span>
-                                            </a>
-                                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="feather feather-info font-medium-3 me-50">
-                                                    <circle cx="12" cy="12" r="10"></circle>
-                                                    <line x1="12" y1="16" x2="12" y2="12"></line>
-                                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                                                </svg>
-                                                <span>Spam</span>
-                                            </a>
-                                            <a class="dropdown-item d-flex align-items-center" href="#">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="feather feather-trash font-medium-3 me-50">
-                                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                                    <path
-                                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                    </path>
-                                                </svg>
-                                                <span>Trash</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-inline-item">
-                                    <div class="dropdown no-arrow">
-                                        <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-tag font-medium-2">
-                                                <path
-                                                    d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
-                                                </path>
-                                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
-                                            </svg>
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="tag">
-                                            <a href="#" class="dropdown-item"><span
-                                                    class="me-50 bullet bullet-success bullet-sm"></span>Personal</a>
-                                            <a href="#" class="dropdown-item"><span
-                                                    class="me-50 bullet bullet-primary bullet-sm"></span>Company</a>
-                                            <a href="#" class="dropdown-item"><span
-                                                    class="me-50 bullet bullet-warning bullet-sm"></span>Important</a>
-                                            <a href="#" class="dropdown-item"><span
-                                                    class="me-50 bullet bullet-danger bullet-sm"></span>Private</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-inline-item">
-                                    <span class="action-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="feather feather-mail font-medium-2">
-                                            <path
-                                                d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
-                                            </path>
-                                            <polyline points="22,6 12,13 2,6"></polyline>
-                                        </svg>
-                                    </span>
-                                </li>
-                                <li class="list-inline-item">
-                                    <span class="action-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="feather feather-trash font-medium-2">
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path
-                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                            </path>
-                                        </svg>
-                                    </span>
-                                </li>
-                                <li class="list-inline-item email-prev">
-                                    <span class="action-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="feather feather-chevron-left font-medium-2">
-                                            <polyline points="15 18 9 12 15 6"></polyline>
-                                        </svg>
-                                    </span>
-                                </li>
-                                <li class="list-inline-item email-next">
-                                    <span class="action-icon">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="feather feather-chevron-right font-medium-2">
-                                            <polyline points="9 18 15 12 9 6"></polyline>
-                                        </svg>
-                                    </span>
-                                </li>
                             </ul>
                         </div>
                     </div>
                     <!-- Detailed Email Header ends -->
                     <!-- Detailed Email Content starts -->
-                    <div class="email-scroll-area ps ps--active-y">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="email-label">
-                                    <span class="mail-label badge rounded-pill badge-light-primary">Draft</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header email-detail-head">
-                                        <div
-                                            class="user-details d-flex justify-content-between align-items-center flex-wrap">
-                                            <!-- <div class="avatar me-75">
-                                                <img src="jpg/avatar-s-9.jpg" alt="avatar img holder" width="48"
-                                                    height="48">
-                                            </div> -->
-                                            <div class="mail-items">
-                                                <h5 class="mb-0">Contract Agreement</h5>
-                                                <div class="email-info-dropup dropdown">
-                                                    <span role="button" class="dropdown-toggle font-small-3 text-muted"
-                                                        id="card_top01" data-bs-toggle="dropdown" aria-haspopup="true"
-                                                        aria-expanded="false">
-                                                        Participants: Shafi Akinropo,
-                                                    </span>
-                                                    <div class="dropdown-menu" aria-labelledby="card_top01">
-                                                        <table class="table table-sm table-borderless">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td class="text-end">From:</td>
-                                                                    <td>carlos@gmail.com</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="text-end">To:</td>
-                                                                    <td>johndoe@ow.ly</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="text-end">Date:</td>
-                                                                    <td>14:58, 29 Aug 2020</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="mail-meta-item d-flex align-items-center">
-                                            <small class="mail-date-time text-muted">29 Aug, 2020, 14:58</small>
-                                            <div class="dropdown ms-50">
-                                                <div role="button" class="dropdown-toggle hide-arrow" id="email_more"
-                                                    data-bs-toggle="dropdown" aria-haspopup="true"
-                                                    aria-expanded="false">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="feather feather-more-vertical font-medium-2">
-                                                        <circle cx="12" cy="12" r="1"></circle>
-                                                        <circle cx="12" cy="5" r="1"></circle>
-                                                        <circle cx="12" cy="19" r="1"></circle>
-                                                    </svg>
-                                                </div>
-                                                <div class="dropdown-menu dropdown-menu-end"
-                                                    aria-labelledby="email_more">
-                                                    <div class="dropdown-item">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            class="feather feather-corner-up-left me-50">
-                                                            <polyline points="9 14 4 9 9 4"></polyline>
-                                                            <path d="M20 20v-7a4 4 0 0 0-4-4H4"></path>
-                                                        </svg>
-                                                        Reply
-                                                    </div>
-                                                    <div class="dropdown-item">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            class="feather feather-corner-up-right me-50">
-                                                            <polyline points="15 14 20 9 15 4"></polyline>
-                                                            <path d="M4 20v-7a4 4 0 0 1 4-4h12"></path>
-                                                        </svg>
-                                                        Forward
-                                                    </div>
-                                                    <div class="dropdown-item">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            class="feather feather-trash-2 me-50">
-                                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                                            <path
-                                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                            </path>
-                                                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                        </svg>
-                                                        Delete
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card-body mail-message-wrapper pt-2">
-                                        <div class="mail-message">
-                                            <!-- <p class="card-text">Hey John,</p> -->
-                                            <!-- <p class="card-text">
-                                                bah kivu decrete epanorthotic unnotched Argyroneta nonius veratrine
-                                                preimaginary saunders demidolmen
-                                                Chaldaic allusiveness lorriker unworshipping ribaldish tableman
-                                                hendiadys outwrest unendeavored
-                                                fulfillment scientifical Pianokoto Chelonia
-                                            </p> -->
-                                            <img src="<?php echo url_for("document-edit/upload/affidavit.png") ?>"
-                                                class="img-fluid" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
+                    <div class="email-scroll-area ps ps--active-y view">
 
-                        <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
-                            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
-                        </div>
-                        <div class="ps__rail-y" style="top: 0px; height: 426px; right: 0px;">
-                            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 221px;"></div>
-                        </div>
                     </div>
                     <!-- Detailed Email Content ends -->
                 </div>
@@ -570,13 +328,16 @@ include(SHARED_PATH . '/header.php');
                                                 <select class="select2 form-select w-100 select2-hidden-accessible"
                                                     id="email-to" multiple="" data-select2-id="email-to" tabindex="-1"
                                                     aria-hidden="true">
-                                                    <option data-avatar="1-small.png" value="Jane Foster">Jane Foster
+                                                    <option data-avatar="1-small.png" value="Jane Foster">Jane
+                                                        Foster
                                                     </option>
-                                                    <option data-avatar="3-small.png" value="Donna Frank">Donna Frank
+                                                    <option data-avatar="3-small.png" value="Donna Frank">Donna
+                                                        Frank
                                                     </option>
                                                     <option data-avatar="5-small.png" value="Gabrielle Robertson">
                                                         Gabrielle Robertson</option>
-                                                    <option data-avatar="7-small.png" value="Lori Spears">Lori Spears
+                                                    <option data-avatar="7-small.png" value="Lori Spears">Lori
+                                                        Spears
                                                     </option>
                                                 </select>
                                                 <span class="select2 select2-container select2-container--default"
@@ -586,13 +347,14 @@ include(SHARED_PATH . '/header.php');
                                                             role="combobox" aria-haspopup="true" aria-expanded="false"
                                                             tabindex="-1" aria-disabled="false">
                                                             <ul class="select2-selection__rendered">
-                                                                <li class="select2-search select2-search--inline"><input
-                                                                        class="select2-search__field" type="search"
+                                                                <li class="select2-search select2-search--inline">
+                                                                    <input class="select2-search__field" type="search"
                                                                         tabindex="0" autocomplete="off"
                                                                         autocorrect="off" autocapitalize="none"
                                                                         spellcheck="false" role="searchbox"
                                                                         aria-autocomplete="list" placeholder=""
-                                                                        style="width: 0.75em;"></li>
+                                                                        style="width: 0.75em;">
+                                                                </li>
                                                             </ul>
                                                         </span>
                                                     </span>
@@ -613,13 +375,16 @@ include(SHARED_PATH . '/header.php');
                                                 <select class="select2 form-select w-100 select2-hidden-accessible"
                                                     id="emailCC" multiple="" data-select2-id="emailCC" tabindex="-1"
                                                     aria-hidden="true">
-                                                    <option data-avatar="1-small.png" value="Jane Foster">Jane Foster
+                                                    <option data-avatar="1-small.png" value="Jane Foster">Jane
+                                                        Foster
                                                     </option>
-                                                    <option data-avatar="3-small.png" value="Donna Frank">Donna Frank
+                                                    <option data-avatar="3-small.png" value="Donna Frank">Donna
+                                                        Frank
                                                     </option>
                                                     <option data-avatar="5-small.png" value="Gabrielle Robertson">
                                                         Gabrielle Robertson</option>
-                                                    <option data-avatar="7-small.png" value="Lori Spears">Lori Spears
+                                                    <option data-avatar="7-small.png" value="Lori Spears">Lori
+                                                        Spears
                                                     </option>
                                                 </select>
                                                 <span class="select2 select2-container select2-container--default"
@@ -629,13 +394,14 @@ include(SHARED_PATH . '/header.php');
                                                             role="combobox" aria-haspopup="true" aria-expanded="false"
                                                             tabindex="-1" aria-disabled="false">
                                                             <ul class="select2-selection__rendered">
-                                                                <li class="select2-search select2-search--inline"><input
-                                                                        class="select2-search__field" type="search"
+                                                                <li class="select2-search select2-search--inline">
+                                                                    <input class="select2-search__field" type="search"
                                                                         tabindex="0" autocomplete="off"
                                                                         autocorrect="off" autocapitalize="none"
                                                                         spellcheck="false" role="searchbox"
                                                                         aria-autocomplete="list" placeholder=""
-                                                                        style="width: 0.75em;"></li>
+                                                                        style="width: 0.75em;">
+                                                                </li>
                                                             </ul>
                                                         </span>
                                                     </span>
@@ -661,13 +427,16 @@ include(SHARED_PATH . '/header.php');
                                                 <select class="select2 form-select w-100 select2-hidden-accessible"
                                                     id="emailBCC" multiple="" data-select2-id="emailBCC" tabindex="-1"
                                                     aria-hidden="true">
-                                                    <option data-avatar="1-small.png" value="Jane Foster">Jane Foster
+                                                    <option data-avatar="1-small.png" value="Jane Foster">Jane
+                                                        Foster
                                                     </option>
-                                                    <option data-avatar="3-small.png" value="Donna Frank">Donna Frank
+                                                    <option data-avatar="3-small.png" value="Donna Frank">Donna
+                                                        Frank
                                                     </option>
                                                     <option data-avatar="5-small.png" value="Gabrielle Robertson">
                                                         Gabrielle Robertson</option>
-                                                    <option data-avatar="7-small.png" value="Lori Spears">Lori Spears
+                                                    <option data-avatar="7-small.png" value="Lori Spears">Lori
+                                                        Spears
                                                     </option>
                                                 </select>
                                                 <span class="select2 select2-container select2-container--default"
@@ -677,13 +446,14 @@ include(SHARED_PATH . '/header.php');
                                                             role="combobox" aria-haspopup="true" aria-expanded="false"
                                                             tabindex="-1" aria-disabled="false">
                                                             <ul class="select2-selection__rendered">
-                                                                <li class="select2-search select2-search--inline"><input
-                                                                        class="select2-search__field" type="search"
+                                                                <li class="select2-search select2-search--inline">
+                                                                    <input class="select2-search__field" type="search"
                                                                         tabindex="0" autocomplete="off"
                                                                         autocorrect="off" autocapitalize="none"
                                                                         spellcheck="false" role="searchbox"
                                                                         aria-autocomplete="list" placeholder=""
-                                                                        style="width: 0.75em;"></li>
+                                                                        style="width: 0.75em;">
+                                                                </li>
                                                             </ul>
                                                         </span>
                                                     </span>
@@ -771,8 +541,10 @@ include(SHARED_PATH . '/header.php');
                                                 <button class="ql-italic" type="button">
                                                     <svg viewBox="0 0 18 18">
                                                         <line class="ql-stroke" x1="7" x2="13" y1="4" y2="4"></line>
-                                                        <line class="ql-stroke" x1="5" x2="11" y1="14" y2="14"></line>
-                                                        <line class="ql-stroke" x1="8" x2="10" y1="14" y2="4"></line>
+                                                        <line class="ql-stroke" x1="5" x2="11" y1="14" y2="14">
+                                                        </line>
+                                                        <line class="ql-stroke" x1="8" x2="10" y1="14" y2="4">
+                                                        </line>
                                                     </svg>
                                                 </button>
                                                 <button class="ql-underline" type="button">
@@ -786,7 +558,8 @@ include(SHARED_PATH . '/header.php');
                                                 </button>
                                                 <button class="ql-link" type="button">
                                                     <svg viewBox="0 0 18 18">
-                                                        <line class="ql-stroke" x1="7" x2="11" y1="7" y2="11"></line>
+                                                        <line class="ql-stroke" x1="7" x2="11" y1="7" y2="11">
+                                                        </line>
                                                         <path class="ql-even ql-stroke"
                                                             d="M8.9,4.577a3.476,3.476,0,0,1,.36,4.679A3.476,3.476,0,0,1,4.577,8.9C3.185,7.5,2.035,6.4,4.217,4.217S7.5,3.185,8.9,4.577Z">
                                                         </path>
@@ -882,3 +655,21 @@ include(SHARED_PATH . '/header.php');
 
 
 <?php include(SHARED_PATH . '/footer.php');  ?>
+
+<script>
+$(document).on("click", ".mail-details", function() {
+    let id = $(this).data('id');
+    console.log(id)
+    $.ajax({
+        url: "view.php",
+        method: "POST",
+        data: {
+            fetch: 1,
+            document_id: id,
+        },
+        success: function(data) {
+            $(".view").html(data)
+        },
+    });
+})
+</script>

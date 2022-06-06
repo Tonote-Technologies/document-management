@@ -1,4 +1,5 @@
-<?php  //require_login() ; ?>
+<?php  require_login() ; 
+?>
 <?php echo $page_title == 'Edit Document' ? '' : '<Doctype />' ?>
 
 
@@ -91,8 +92,10 @@
                 <li class="nav-item dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <div class="user-nav d-sm-flex d-none"><span class="user-name fw-bolder">Shafi
-                                Akin</span><span class="user-status">active</span></div>
+                        <div class="user-nav d-sm-flex d-none">
+                            <span$ class="user-name fw-bolder"><?php echo $loggedInAdmin->full_name(); ?></span$><span
+                                class="user-status">active</span>
+                        </div>
                         <span class="avatar">
                             <!-- <img class="round" src="jpg/avatar-s-11.jpg" alt="avatar" height="40" width="40"> -->
                             <span class="avatar-status-online"></span>
@@ -113,7 +116,9 @@
                             Pricing</a>
 
                         <a class="dropdown-item" href="#"><i class="me-50" data-feather="help-circle"></i> FAQ</a>
-                        <a class="dropdown-item" href="#"><i class="me-50" data-feather="power"></i> Logout</a>
+                        <a class="dropdown-item" href="<?php echo url_for('/logout.php') ?>"><i class="me-50"
+                                data-feather="power"></i>
+                            Logout</a>
                     </div>
                 </li>
 
@@ -128,7 +133,7 @@
     <!-- BEGIN: Content-->
     <div class="app-content content <?php echo $page == 'Dashboard' ? 'email-application' : '' ?>">
         <div class="content-overlay"></div>
-        <div class="header-navbar-shadow"></div>
+        <div class="header-navbar shadow-lg"></div>
         <div class="content-wrapper container-xxl p-0">
 
             <div class="content-body">

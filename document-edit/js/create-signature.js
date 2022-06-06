@@ -6,7 +6,7 @@ $(".signatureID").each(function () {
     $(this).text(me);
 });
 
-$(".choose").click(function () {
+$(document).on("click", ".choose", function () {
     if ($(this).is(":checked")) {
         $(".btn-choose").removeClass("disabled");
         let choiceID = $(this).data("id");
@@ -18,8 +18,8 @@ $(".choose").click(function () {
         $("#selected-initial").html(myInitial);
     }
 });
-
-$("#first-tab").click(function () {
+$(document).on("click", "#first-tab", function () {
+    // $("#first-tab").click(function () {
     $(".btn-choose").attr("id", "choose");
 });
 
@@ -29,19 +29,23 @@ $("#second-tab").click(function () {
 $("#third-tab").click(function () {
     $(".btn-choose").attr("id", "upload");
 });
-
-$(".btn-choose").click(function () {
+$(document).on("click", ".btn-choose", function () {
     let btnId = $(this).attr("id");
 
     if (btnId == "choose") {
         let selectedSignature = $("#selectedSignature").val();
-        let theSign = "#digi-sign" + selectedSignature;
+        // let theSign = "#digi-sign" + selectedSignature;
         let theIntial = "#initial-wrap" + selectedSignature;
+        let theSign = "#selected-signature";
+        // let theIntial = "#selected-initial";
         saveSignature(theSign, "sign", 1, 1);
         saveSignature(theIntial, "initial", 1, 2);
         successTime("Signature Created Successfully");
     } else if (btnId == "draw") {
-        console.log("draw");
+        // console.log("draw");
+        let theSign = $('#saveSignature');
+
+        saveSignature(theSign, "sign", 2, 1);
     } else if (btnId == "upload") {
         console.log("upload");
     }

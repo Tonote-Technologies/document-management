@@ -2,15 +2,22 @@
 
 $page = 'Prepare';
 $page_title = 'Edit Document';
-// $_SESSION['docu_edit']['document_id'] = $_GET['document_id'];
-$docu_edit = $_SESSION['docu_edit'] ?? '';
 
 include(SHARED_PATH . '/header.php');
 // include(SHARED_PATH . '/menu.php');
 // pre_r($_GET['document_id']);
+$id = $_POST['user_id'] ?? $loggedInAdmin->id;
+$user = Admin::find_by_id($id);
+$fullName = $user->full_name() ?? "Not Set";
+
+$words = explode(" ", $fullName);
+$initial = "";
+
+foreach ($words as $w) {
+  $initial .= $w[0];
+}
 ?>
-<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
+
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -161,14 +168,22 @@ include(SHARED_PATH . '/header.php');
         </div>
         <div class="col-lg-8">
             <div class="card">
-                <div class="card-body" id="mainWrapper" style="overflow-x:scroll;"></div>
+                <!-- <div class="title">
+                    <img src="upload/sign1654145135img.png" data-name="Sign" data-id="69"
+                        style="top: 341.5; left: 512.171875; "
+                        class="tool-box main-element ui-draggable ui-draggable-handle">
+                    <button type="button" class="btn-close removeItem" data-id="69"></button>
+                </div> -->
+                <div class="card-body" id="mainWrapper" style="overflow-x:scroll;">
+
+                </div>
             </div>
         </div>
         <div class="col-lg-2 d-sm-none d-lg-block">
             <div class="d-flex justify-content-center">
                 <div class="sidebar-nav card px-2 pt-2" style="width: 172px;">
                     <div style="height: 100vh">
-                        <div>Tool Management
+                        <div style="font-size:12px">Tool Management
                             <hr>
                         </div>
                         <button class="btn btn-sm btn-outline-dark" id="updateSignature">Update Signature</button>
@@ -179,8 +194,6 @@ include(SHARED_PATH . '/header.php');
                                 <div class="btn  btn-sm" id="shopping_cart">0</div>
                             </div>
 
-                            <button class="btn-sm btn-outline-dark  mt-1" style="cursor:pointer;"
-                                id="clearSession">Clear All</button>
                         </div>
                     </div>
                 </div>
@@ -212,7 +225,7 @@ include(SHARED_PATH . '/header.php');
     <div class="element">Seal <i data-feather='arrow-down-right'></i></div>
 </div>
 
-<div class="tool-box  tool-style dateTool" id="dateTool">
+<div class="tool-box dateTool" id="dateTool">
     <div class="element">Date <i data-feather='arrow-down-right'></i></div>
 </div>
 </div>
@@ -225,11 +238,13 @@ include(SHARED_PATH . '/header.php');
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel17">Create Your Signature</h4>
+                <h4 class="modal-title" id="myModalLabel17"><span id="actionWord">Create</span> Your Signature</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form class="form form-horizontal">
+                    <!-- <div id="signatureFile"></div> -->
+                    <input type="hidden" name="action" id="signatureAction" value="create">
                     <div class="row border-bottom">
                         <div class="col-6">
                             <div class="mb-1 row">
@@ -239,7 +254,7 @@ include(SHARED_PATH . '/header.php');
                                 <div class="col-sm-9 col-md-9">
                                     <div class="input-group input-group-merge">
                                         <input type="text" id="fullName" class="form-control" name="fullName"
-                                            value="Shafi Akinropo" placeholder="Full name">
+                                            value="<?php //echo $fullName?>" placeholder="Full name">
                                     </div>
                                 </div>
                             </div>
@@ -252,8 +267,8 @@ include(SHARED_PATH . '/header.php');
                                 </div>
                                 <div class="col-sm-9 col-md-9">
                                     <div class="input-group input-group-merge">
-                                        <input type="text" id="initials" class="form-control" name="initials" value="SA"
-                                            placeholder="Initial">
+                                        <input type="text" id="initials" class="form-control" name="initials"
+                                            value="<?php //echo $initial;?>" placeholder="Initial">
                                     </div>
                                 </div>
                             </div>
@@ -291,21 +306,25 @@ include(SHARED_PATH . '/header.php');
                                         </thead>
                                         <tbody>
                                             <?php 
-                                // $sn = 1; 
-                                // $fontFamily = ['Alex Brush', 'Arizonia', 'Great Vibes', 'Creattion Demo', 'Scriptina Regular','Montserrat', 'Oleo Script Swash Caps', 'The Nautigal', 'Poppins', 'Roboto'];
-                                $fontFamily = ['Arizonia', 'Montserrat',];
-                                foreach ($fontFamily as $key => $value)  {  
-                            ?>
+                                                // $sn = 1; 
+                                                // $fontFamily = ['Alex Brush', 'Arizonia', 'Great Vibes', 'Creattion Demo', 'Scriptina Regular','Montserrat', 'Oleo Script Swash Caps', 'The Nautigal', 'Poppins', 'Roboto'];
+                                                $fontFamily = ['Arizonia', 'Montserrat',];
+                                                foreach ($fontFamily as $key => $value)  { 
+                                                $key = $key + 1;
+
+                                            ?>
                                             <tr>
-                                                <!-- <td class=" p-0 " align="center"><?php //echo $sn ++; ?>.</td> -->
                                                 <td class="">
                                                     <div class="form-check p-1 d-flex align-items-center">
 
                                                         <div class="pr-2">
+                                                            <input type="hidden" name="signature_id"
+                                                                value="<?php echo $key ?>">
                                                             <input type="radio" name="sign"
                                                                 class="form-check-input choose"
                                                                 id="customCheck<?php echo $key ?>"
-                                                                data-id="<?php echo $key ?>">
+                                                                data-id="<?php echo $key ?>"
+                                                                <?php //echo $signature_id == $key ? 'checked' : '' ?>>
                                                         </div>
 
                                                         <label class="form-check-label"
@@ -316,8 +335,7 @@ include(SHARED_PATH . '/header.php');
                                                                 <!-- Signed on ToNote by: -->
                                                                 <div class="css-fv3lde">
                                                                     <span class="css-4x8v88 fullName"
-                                                                        style="font-family: <?php echo $value?>;">Shafi
-                                                                        Akinropo</span>
+                                                                        style="font-family: <?php echo $value?>;"><?php echo $fullName ?></span>
                                                                 </div>
                                                                 <!-- <span
                                                                     class="css-1j983t3 signatureID">6D80C6DF365242545678</span> -->
@@ -326,13 +344,12 @@ include(SHARED_PATH . '/header.php');
                                                     </div>
                                                 </td>
                                                 <td class="p-0">
-                                                    <label class="form-check-label" for="customCheck<?php echo $key ?>"
-                                                        id="initial-wrap<?php echo $key ?>">
+                                                    <label class="form-check-label" for="customCheck<?php echo $key ?>">
                                                         <div class="css-pl8xw2">
                                                             <!-- Signed on ToNote by: -->
-                                                            <div class="css-fv3lde">
+                                                            <div class="css-fv3lde" id="initial-wrap<?php echo $key ?>">
                                                                 <span class="css-4x8v88 initials"
-                                                                    style="font-family: <?php echo $value?>;">SA</span>
+                                                                    style="font-family: <?php echo $value?>;"><?php echo $initial;?></span>
                                                             </div>
                                                             <!-- <span
                                                                 class="css-1j983t3 signatureID">6D80C6DF365242545678</span> -->
@@ -357,15 +374,17 @@ include(SHARED_PATH . '/header.php');
                                         <div class="col-sm-3 p-0">
                                             <div class="">
                                                 <button type="button" class="btn btn-dark mb-2 saveSign"
-                                                    onclick="signatureSave()">Create signature</button>
+                                                    onclick="signatureSave()">Create
+                                                    signature</button>
                                                 <button type="button" class="btn btn-outline-dark"
-                                                    onclick="signatureClear()">Clear signature</button>
+                                                    onclick="signatureClear()">Clear
+                                                    signature</button>
                                             </div>
 
                                             <div class="mt-3">
                                                 <img id="saveSignature" alt="Saved image png"
-                                                    src="<?php echo url_for('app-assets/images/elements/empty.png') ?>"
-                                                    width="150" height="150" />
+                                                    src="<?php echo url_for('assets/images/empty.png') ?>" width="150"
+                                                    height="150" />
 
 
                                             </div>
@@ -387,7 +406,7 @@ include(SHARED_PATH . '/header.php');
             <div class="p-2 ">
                 <div class="pb-1">
                     <!-- By signing this document with my electronic signature. 
-                    I agree that the signature is as valid as my hand writen signature to the extent allowed by law -->
+                    By clicking Create,I agree that the signature is as valid as my hand writen signature to the extent allowed by law -->
 
                     By clicking Create, I agree that the signature and initials will be the electronic
                     representation of my signature and initials for all purposes when I (or my agent) use them
@@ -405,7 +424,7 @@ include(SHARED_PATH . '/header.php');
 
                         <button type="button"
                             class="btn btn-primary waves-effect waves-float waves-light btn-choose disabled"
-                            id="choose">Adopt this</button>
+                            id="choose">Create</button>
                     </div>
 
 
@@ -507,15 +526,15 @@ include(SHARED_PATH . '/header.php');
                 <h5 class="modal-title" id="exampleModalCenterTitle">Pick a resource to append</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="post" id="saveToolForms">
+            <form method="post" id="editToolForms">
                 <div class="modal-body">
 
                     <input type="hidden" id="" name="saveTool[document_id]" value="<?php echo $_GET['document_id']?> ">
-                    <input type="hidden" id="elemId" name="saveTool[elemId]">
-                    <input type="hidden" id="elemName" name="saveTool[elemName]">
-                    <input type="hidden" id="pos_top" name="saveTool[tool_pos_top]">
-                    <input type="hidden" id="pos_left" name="saveTool[tool_pos_left]">
-                    <input type="hidden" id="filename" name="saveTool[filename]">
+                    <input type="hidden" id="tool_id" name="editTool[tool_id]" placeholder="tool_id">
+                    <input type="hidden" id="tool_name" name="editTool[tool_name]" placeholder="tool_name">
+                    <input type="hidden" id="pos_top" name="editTool[tool_pos_top]">
+                    <input type="hidden" id="pos_left" name="editTool[tool_pos_left]">
+                    <input type="hidden" id="filename" name="editTool[filename]" placeholder="filename">
 
                     <div id="showElement"></div>
                 </div>
@@ -596,10 +615,11 @@ $(document).on('click', '.remove_row', function() {
 
 $(document).on("click", ".element", function(e) {
     var name = $(this).html();
-    var parentID = $(this).closest(".tool-box").prop("id");
+    var parentID = $(this).closest(".tool-box").data("id");
+    console.log(parentID);
     var parentName = $(this).closest(".tool-box").data("name");
-    var elemId = $("#elemId").val(parentID)
-    var elemName = $("#elemName").val(parentName)
+    var tool_id = $("#tool_id").val(parentID)
+    var tool_name = $("#tool_name").val(parentName)
     let category = '';
     if (name == 'Sign' || name == 'Initial') {
         name == 'Sign' ? category = 1 : category = 2;
@@ -631,9 +651,7 @@ function findElement(parentID, parentName, category) {
         },
     });
 }
-$(document).on("click", "#updateSignature", function() {
-    $("#createSignatureModal").modal('show')
-})
+
 
 $(document).on("change", '.tool_name', function() {
     let tool_n = $(this).data("file")
@@ -645,13 +663,13 @@ $(document).on("click", "#append", function(e) {
     if ($(".tool_name").is(":checked")) {
         console.log($(".tool_name").is(":checked"))
         $.ajax({
-            url: "inc/saveTool.php",
+            url: "inc/process-tool.php",
             method: "POST",
             dataType: "json",
-            data: $("#saveToolForms").serialize(),
+            data: $("#editToolForms").serialize(),
             success: function(data) {
                 if (data.success == true) {
-                    $("#selectSignatureModal").modal('hide')
+                    $("#selectSignatureModal").modal('hide');
                     load_session_data();
                 }
 

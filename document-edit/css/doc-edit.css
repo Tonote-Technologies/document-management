@@ -50,6 +50,29 @@
 .textareaTool:focus{
   border:none
 }
+/* .title{
+  position: relative;
+} */
+.title:hover .removeItem {
+   display:block  
+}
+.removeItem {
+  display: none;
+  border-radius: 50%;
+  padding: 0.5em;
+  border: 2px dotted #000;
+  background-color: #fff;
+  color: #fff !important;
+  position: absolute; 
+  top: -15;
+  right: -15;
+}
+.removeItem:hover {
+  cursor: pointer;
+  border: 2px solid #ea5455;
+  background-color: #fff;
+  color: #ffffff;
+}
 
 .deleteItem {
   border-radius: 50%;

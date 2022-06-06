@@ -6,10 +6,12 @@ $page_title = 'Document Preparation';
 
 if($_GET['type'] == 1){
     $documents = Document::find_by_document_ids($_GET['document_id']);
-    $path = "document-edit/upload/";
+    $path = "document-edit/upload/raw_files/";
+    $title = $documents[0]->title;
 }else{
     $documents = Template::find_by_document_ids($_GET['document_id']);
     $path = "templates/affidavit_template/";
+    $title = $documents[0]->title;
 }
 
 
@@ -44,6 +46,7 @@ include(SHARED_PATH . '/header.php');
 <input type="hidden" id="url_dir" value="<?php echo url_for('document-edit/edit.php?document_id=') ?>">
 <?php foreach ($documents as $doc) : ?>
 <input type="hidden" class="url" value="<?php echo url_for($path.$doc->filename); ?>">
+<input type="hidden" class="title" value="<?php echo $title; ?>">
 <?php endforeach; ?>
 
 

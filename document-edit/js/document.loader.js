@@ -53,41 +53,65 @@ function renderPDF(url, canvasContainer, options) {
 
   $(document).on("click", "#proceed_toEdit", function (e) {
     e.preventDefault()
+    var imgType = 'Tonote_doc';
+    let document_id = $("#document_id").val()
+    let status = 2;
+    let title = $(".title").val();
+    createDocument(title, document_id, status, imgType)
 
-    $(".htmlImg").each(function () {
-
-      var myID = $(this)[0];
-      // console.log(myID)
-      var imgType = 'Tonote_doc';
-      saveDocument(myID, imgType)
-    });
   })
 
-
-  function saveDocument(myID, imgType) {
-    /* here set the image extension and now image data is in var img that will send 
-    by our ajax call to our api or server site page */
-    let img = myID.toDataURL("image/png", 1.0);
-    let document_id = $("#document_id").val()
-    let url_dir = $("#url_dir").val()
-
+  function createDocument(title, document_id, status, imgType) {
+    // 
     $.ajax({
-      url: "inc/saveImageFile.php",
+      url: "inc/save-document-file.php",
       method: "POST",
       dataType: "json",
       data: {
+        document: 1,
+        title: title,
+        document_id: document_id,
+        status: status,
+        imgType: imgType,
+      },
+      success: function (data) {
+        if (data.success == true) {
+          $(".htmlImg").each(function () {
+            var myID = $(this)[0];
+            createDocumentFiles(document_id, myID, imgType)
+          });
+        }
+
+
+        // console.log(theImg);
+      },
+    });
+  }
+
+  function createDocumentFiles(document_id, myID, imgType) {
+    /* here set the image extension and now image data is in var img that will send 
+    by our ajax call to our api or server site page */
+    let url_dir = $("#url_dir").val()
+    let img = myID.toDataURL("image/png", 1.0);
+    $.ajax({
+      url: "inc/save-document-file.php",
+      method: "POST",
+      dataType: "json",
+      data: {
+        documentFiles: 1,
         document_id: document_id,
         img: img,
         imgType: imgType,
       },
       success: function (data) {
-        let theImg = data.document_id;
-        window.location.href = url_dir + theImg
+        window.location.href = url_dir + document_id
         // console.log(theImg);
-      },
+      }
     });
 
   }
+
+
 
 
 

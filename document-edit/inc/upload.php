@@ -12,7 +12,7 @@ if (!empty($_FILES['file']['name'])) {
 
   foreach ($_FILES['file']['name'] as $key => $val) {
     $filename = uniqid() . '_' . $_FILES['file']['name'][$key];
-    $pathname = "../upload/" . $filename;
+    $pathname = "../upload/raw_files/" . $filename;
     $filesize = $_FILES['file']['size'][$key];
     $filetype = $_FILES['file']['type'][$key];
     if (move_uploaded_file($_FILES['file']['tmp_name'][$key], $pathname)) {

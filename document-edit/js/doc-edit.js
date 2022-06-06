@@ -50,21 +50,16 @@ $(document).on("click", "#mainWrapper", function (e) {
     if (toolName == "Sign") {
       findSignature()
     }
-    var action = "add";
+    var action = "addTool";
     var tool_id = cId;
-    var tool_class = "tool-box tool-style";
+    var tool_class = "tool-box tool-style main-element";
     var tool_text = toolName;
     var tool_top_pos = y;
     var tool_left_pos = x;
+    var tool_type = 1;
 
-    savetoSession(
-      action,
-      tool_id,
-      tool_class,
-      tool_text,
-      tool_top_pos,
-      tool_left_pos,
-    );
+    console.log(action, tool_id, tool_type, tool_class, tool_text, tool_top_pos, tool_left_pos,);
+    savetoSession(action, tool_id, tool_type, tool_class, tool_text, tool_top_pos, tool_left_pos,);
   }
 });
 
@@ -78,31 +73,50 @@ function findSignature() {
     },
     success: function (data) {
       if (data.success == true) {
-        // Do nothing
-      } else {
         $("#createSignatureModal").modal("show");
+        // signatureFile()
+      } else {
+
       }
     },
   });
 }
 
+$(document).on("click", "#updateSignature", function () {
+  var c = $("#signatureAction").val("update")
+  $("#createSignatureModal").modal('show')
 
-function savetoSession(
-  action,
-  tool_id,
-  tool_class,
-  tool_text,
-  tool_top_pos,
-  tool_left_pos,
-) {
-  var tool_qty = 1;
+  console.log(c)
+  // $("#actionWord").html("Update")
+  // signatureFile();
+})
+
+function signatureFile() {
   $.ajax({
-    url: "session/action.php",
+    url: "inc/signature-file.php",
+    method: "POST",
+    data: {
+      fetch: 1,
+    },
+    success: function (data) {
+      $("#signatureFile").html(data)
+    },
+  });
+}
+
+
+function savetoSession(action, tool_id, tool_type, tool_class, tool_text, tool_top_pos, tool_left_pos) {
+  var document_id = $("#document_id").val();
+  var filename = $("#filename").val();
+  $.ajax({
+    url: "inc/process-tool.php",
     method: "POST",
     data: {
       action: action,
+      document_id: document_id,
+      filename: filename,
       tool_id: tool_id,
-      tool_qty: tool_qty,
+      tool_type: tool_type,
       tool_class: tool_class,
       tool_text: tool_text,
       tool_top_pos: tool_top_pos,
@@ -168,7 +182,7 @@ function load_session_data() {
     data: { document_id: document_id },
     success: function (data) {
       $("#mainWrapper").html(data.session_details);
-      $("#shopping_cart").html(data.total_item);
+      $("#shopping_cart").html(data.added_tool);
       savedragged();
       dragElement();
     },
@@ -224,17 +238,26 @@ function appendToolbox(x, y, eId) {
 $(document).on("click", ".deleteItem", function () {
   $(this).parent().parent().remove();
   var tool_id = $(this).data("id");
-  // console.log(tool_id);
+  remove(tool_id)
+});
+
+$(document).on("click", ".removeItem", function () {
+  $(this).parent().parent().remove();
+  var tool_id = $(this).data("id");
+  remove(tool_id)
+});
+
+function remove(tool_id) {
   var action = "remove";
   $.ajax({
-    url: "session/action.php",
+    url: "inc/process-tool.php",
     method: "POST",
     data: { tool_id: tool_id, action: action },
     success: function () {
       load_session_data();
     },
   });
-});
+}
 
 function removeMouseMoveListener() {
   $(document).unbind("mousemove");
