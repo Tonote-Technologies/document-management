@@ -6,17 +6,17 @@ $password = '';
 
 if (is_post_request()) {
    $args = $_POST;
-   $args['created_by'] = 1;
    $args['admin_level'] = 1;
 
-   $admin = new Admin($args);
-   $admin->save();
-   if ($admin == true) {
-      $session->message('Account created successfully!.');
+   $user = new User($args);
+   $user->save();
+   if ($user == true) {
+      $session->message('Account created successfully! Now Login.');
    }
    redirect_to(url_for('login.php'));
+// pre_r($user);
 } else {
-   $admin = new Admin;
+   $user = new User;
 }
 ?>
 

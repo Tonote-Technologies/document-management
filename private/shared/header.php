@@ -1,9 +1,10 @@
-<?php  require_login() ; 
+<?php  
+require_login() ; 
+if(empty($loggedInAdmin)){
+    redirect_to(url_for('logout.php'));
+}
 ?>
 <?php echo $page_title == 'Edit Document' ? '' : '<Doctype />' ?>
-
-
-
 <html class="loading" lang="en" data-textdirection="ltr">
 
 <head>
@@ -32,6 +33,8 @@
     <link rel="stylesheet" type="text/css" href="<?php echo url_for('assets/css/dark-layout.min.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo url_for('assets/css/bordered-layout.min.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo url_for('assets/css/semi-dark-layout.min.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo url_for('assets/css/select2.min.css') ?>">
+
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="<?php echo url_for('assets/css/horizontal-menu.min.css') ?>">
@@ -93,8 +96,8 @@
                     <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="#"
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="user-nav d-sm-flex d-none">
-                            <span$ class="user-name fw-bolder"><?php echo $loggedInAdmin->full_name(); ?></span$><span
-                                class="user-status">active</span>
+                            <span$ class="user-name fw-bolder"><?php echo $loggedInAdmin->full_name(); ?></span$>
+                            <span class="user-status">active</span>
                         </div>
                         <span class="avatar">
                             <!-- <img class="round" src="jpg/avatar-s-11.jpg" alt="avatar" height="40" width="40"> -->

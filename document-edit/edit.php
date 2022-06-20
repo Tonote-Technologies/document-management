@@ -2,19 +2,22 @@
 
 $page = 'Prepare';
 $page_title = 'Edit Document';
-
 include(SHARED_PATH . '/header.php');
-// include(SHARED_PATH . '/menu.php');
-// pre_r($_GET['document_id']);
-$id = $_POST['user_id'] ?? $loggedInAdmin->id;
-$user = Admin::find_by_id($id);
-$fullName = $user->full_name() ?? "Not Set";
+$mydocument = DocumentImage::find_by_document_id($_GET['document_id']);
+if(!empty($mydocument)){
+    $id = $_POST['user_id'] ?? $loggedInAdmin->id;
+    $user = Admin::find_by_id($id);
+    $fullName = $user->full_name() ?? "Not Set";
 
-$words = explode(" ", $fullName);
-$initial = "";
+    $words = explode(" ", $fullName);
+    $initial = "";
 
-foreach ($words as $w) {
-  $initial .= $w[0];
+    foreach ($words as $w) {
+    $initial .= $w[0];
+    }
+    
+}else{
+    redirect_to(url_for('document-edit/'));
 }
 ?>
 
@@ -31,7 +34,10 @@ foreach ($words as $w) {
 <link rel="stylesheet" type="text/css" href="css/pdf2img.css">
 
 
+
 <input type="hidden" id="document_id" value="<?php echo $_GET['document_id'] ?>">
+
+
 <style type="text/css">
 /* Sticky our navbar on window scroll */
 #viewPort {
@@ -42,15 +48,59 @@ foreach ($words as $w) {
     position: fixed;
     top: 100;
     bottom: 0;
-    /*height: 50vh;*/
-    /* min-width: 310px; */
 }
 
 .sidebar-wrap {
     position: relative;
 }
+
+input[type="file"] {
+    display: none;
+}
+
+.file-upload-wrapper {
+    border: 2px dashed #EBE9F1;
+
+}
+
+.custom-file-upload {
+    /* border: 1px dashed #EBE9F1 !important; */
+    font-size: 20px;
+    padding: 30px 12px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    height: 200px;
+    /* display: flex; */
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-file-upload:hover {
+    border: 2px dashed #000;
+    color: #000;
+    font-weight: bolder;
+}
+
+.newClass {
+    /* display: none; */
+    font-size: 30px;
+    color: #000;
+}
 </style>
-<!-- <div style="height: 10vh;"></div> -->
+<input type="hidden" id="storage">
+<input type="hidden" id="currentId">
+<input type="hidden" id="toolName">
+<input type="hidden" id="toolUser">
+<input type="hidden" id="UserEmail">
+<input type="hidden" id="top">
+<input type="hidden" id="left">
+<input type="hidden" id="selectedSignature">
+<input type="hidden" id="watch">
+<input type="hidden" class="url" value="upload/certificate.pdf">
+<input type="hidden" class="url" value="upload/EmployeeHandbook.pdf">
+
 <div class="container-fluid">
     <div class="row my-2 d-lg-none">
 
@@ -59,109 +109,31 @@ foreach ($words as $w) {
     <div class="row">
         <div class="col-lg-2 d-sm-none d-lg-block">
             <div class="d-flex justify-content-center">
-                <div class="sidebar-nav card px-2 pt-2" style="width: 172px;">
+                <div class="sidebar-nav card px-2 pt-2" style="width: 200px;">
                     <div style="height: 100vh">
                         <div>Edit Tools
                             <hr>
                         </div>
+                        <div class="form-check form-check-primary form-switch" id="list-yourself">
+                        </div>
+
+                        <hr>
                         <div class="border-bottom mb-1 pb-1">
                             <!-- <button type="button" class=""></button> -->
                             <div class="d-grid col-lg-12 col-md-12 mb-1 mb-lg-0">
                                 <button type="button"
-                                    class="btn btn-relief-primary waves-effect waves-float waves-light" id="addSigner">
+                                    class="btn btn-relief-primary waves-effect waves-float waves-light"
+                                    id="addSignerBtn">
                                     <i data-feather='plus'></i>
                                     <span> Add Signer</span>
                                 </button>
                             </div>
-
                         </div>
-                        <div class="border-bottom mb-1 pb-1">
-                            <select class="form-control select2 ">
-                                <option>Select Signer</option>
-                                <option>Shafi Akinropo</option>
-                            </select>
-                        </div>
-                        <div class="tool">
-                            <li class="btn" data-id="textTool" data-value="Textarea">
-                                Text Area <svg width="19" height="19" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                    class="ml-auto">
-                                    <g clip-path="url(#a)" fill="#003BB3">
-                                        <path
-                                            d="M19.001 4.263V3.64h-2.676v.623h1.027v10.473h-1.027v.622h2.676v-.622h-1.027V4.263h1.027ZM.115 12.826l3.133-7.073c.218-.487.616-.783 1.155-.783h.116c.539 0 .924.296 1.142.783l3.132 7.073c.065.142.103.27.103.399 0 .526-.41.95-.937.95-.462 0-.77-.27-.95-.681l-.603-1.412H2.452l-.63 1.476c-.166.385-.5.616-.91.616A.91.91 0 0 1 0 13.25c0-.141.051-.282.115-.424Zm5.559-2.49L4.429 7.371l-1.245 2.965h2.49Zm4.158 1.784v-.026c0-1.502 1.143-2.195 2.773-2.195a4.89 4.89 0 0 1 1.682.282v-.115c0-.81-.501-1.258-1.477-1.258-.539 0-.975.077-1.348.192a.825.825 0 0 1-.282.051.794.794 0 0 1-.809-.795c0-.347.218-.642.527-.758.616-.23 1.283-.36 2.195-.36 1.065 0 1.835.283 2.323.77.514.514.745 1.272.745 2.196v3.132a.937.937 0 0 1-.95.937c-.565 0-.937-.398-.937-.808v-.013c-.475.526-1.13.873-2.08.873-1.296 0-2.362-.745-2.362-2.105Zm4.48-.45v-.346a3.026 3.026 0 0 0-1.245-.257c-.835 0-1.348.334-1.348.95v.025c0 .527.437.835 1.066.835.911 0 1.527-.5 1.527-1.207Z">
-                                        </path>
-                                    </g>
-                                    <defs>
-                                        <clipPath id="a">
-                                            <path fill="#fff" d="M0 0h19v19H0z"></path>
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                            </li>
 
-                            <li class=" btn" data-id="signTool" data-value="Sign">
-                                Signature <svg width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                    class="ml-auto">
-                                    <g clip-path="url(#a)" fill="#003BB3">
-                                        <path
-                                            d="M10.002 0 9.46.541a4 4 0 0 0-.75 1.04l-.57 1.143 5.138 5.138 1.143-.572a4.001 4.001 0 0 0 1.04-.749L16 6l-6-6ZM6.663 4.079C4.68 5.334 3 5 3 5L0 16l11-3s-.333-1.68.923-3.663l-5.26-5.26ZM5.5 12.002a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3Z">
-                                        </path>
-                                    </g>
-                                    <defs>
-                                        <clipPath id="a">
-                                            <path fill="#fff" d="M0 0h16v16H0z"></path>
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                            </li>
-                            <li class=" btn" data-id="initialTool" data-value="Initial">
-                                Initial <svg width="19" height="19" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                    class="ml-auto">
-                                    <path
-                                        d="M16 10V9h-3v1h1v4.5h-1v1h3v-1h-.94V10H16Zm-5-4.5V4H6v1.5h1.5V14H6v1.5h5V14H9.5V5.5H11Z"
-                                        fill="#003BB3"></path>
-                                </svg>
-                            </li>
+                        <div class="signer-list"></div>
+                        <div class="signer-wrapper"></div>
 
 
-                            <li class=" btn" data-id="dateTool" data-value="Date"> Date
-                                Signed <svg width="21" height="21" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                    class="ml-auto">
-                                    <path
-                                        d="M6.3 15.225h8.4a2.625 2.625 0 0 0 2.625-2.625V5.25A2.625 2.625 0 0 0 14.7 2.625h-.525V2.1a.525.525 0 1 0-1.05 0v.525h-2.1V2.1a.525.525 0 1 0-1.05 0v.525h-2.1V2.1a.525.525 0 1 0-1.05 0v.525H6.3A2.625 2.625 0 0 0 3.675 5.25v7.35A2.625 2.625 0 0 0 6.3 15.225Zm1.05-2.887a.788.788 0 1 1 0-1.576.788.788 0 0 1 0 1.576Zm0-2.625a.788.788 0 1 1 0-1.575.788.788 0 0 1 0 1.575Zm3.15 2.625a.788.788 0 1 1 0-1.576.788.788 0 0 1 0 1.576Zm0-2.625a.787.787 0 1 1 0-1.575.787.787 0 0 1 0 1.575Zm3.15 2.625a.788.788 0 1 1 0-1.576.788.788 0 0 1 0 1.576Zm0-2.625a.787.787 0 1 1 0-1.575.787.787 0 0 1 0 1.575ZM4.725 5.25A1.58 1.58 0 0 1 6.3 3.675h.525V4.2a.525.525 0 1 0 1.05 0v-.525h2.1V4.2a.525.525 0 1 0 1.05 0v-.525h2.1V4.2a.525.525 0 1 0 1.05 0v-.525h.525a1.58 1.58 0 0 1 1.575 1.575v.525H4.725V5.25Z"
-                                        fill="#003BB3"></path>
-                                </svg>
-                            </li>
-
-                            <li class=" btn" data-id="sealTool" data-value="Seal">
-                                Seal <svg width="21" height="21" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                    class="ml-auto">
-                                    <g clip-path="url(#a)" fill="#003BB3">
-                                        <path
-                                            d="M17.808 6.033c-.657-.657-.524-1.413-.54-1.516 0-3.099-3.284-3.075-3.288-3.077-.493 0-.957-.192-1.305-.54a3.08 3.08 0 0 0-4.351 0c-.657.657-1.413.523-1.516.54-3.099 0-3.075 3.284-3.077 3.288 0 .493-.192.956-.54 1.305a3.08 3.08 0 0 0 0 4.35c.348.35.54.813.54 1.306.002.004-.135 2.696 2.461 3.225V21l4.307-2.871L14.806 21v-6.086c2.68-.546 2.453-3.203 2.461-3.225 0-.493.192-.957.54-1.305a3.056 3.056 0 0 0 .902-2.176c0-.821-.32-1.594-.901-2.175ZM7.423 15.02c.339.075.65.245.9.496.434.433.974.721 1.561.84v.703L7.423 18.7v-3.679Zm3.691 2.039v-.703a3.055 3.055 0 0 0 1.56-.84c.252-.251.563-.42.902-.496v3.68l-2.462-1.641Zm5.824-7.547a3.056 3.056 0 0 0-.901 2.176c-.002.004.068 2.057-1.846 2.057-.093.016-1.34-.146-2.386.9-.35.35-.813.541-1.306.541-.493 0-.956-.192-1.305-.54-1.043-1.043-2.296-.885-2.386-.901-1.912 0-1.845-2.053-1.846-2.057 0-.822-.32-1.595-.901-2.176-.72-.72-.72-1.89 0-2.61a3.056 3.056 0 0 0 .9-2.175c.002-.004-.068-2.057 1.847-2.057.092-.017 1.339.146 2.386-.901.72-.72 1.89-.72 2.61 0a3.056 3.056 0 0 0 2.176.9c.004.002 2.057-.067 2.057 1.847.016.092-.146 1.339.9 2.386.35.349.541.812.541 1.305 0 .493-.192.957-.54 1.305Z">
-                                        </path>
-                                        <path
-                                            d="M10.5 3.69a4.312 4.312 0 0 0-4.308 4.306 4.312 4.312 0 0 0 4.307 4.307 4.312 4.312 0 0 0 4.307-4.307A4.312 4.312 0 0 0 10.5 3.69Zm0 7.383a3.08 3.08 0 0 1-3.077-3.077 3.08 3.08 0 0 1 3.076-3.076 3.08 3.08 0 0 1 3.077 3.076 3.08 3.08 0 0 1-3.077 3.077Z">
-                                        </path>
-                                    </g>
-                                    <defs>
-                                        <clipPath id="a">
-                                            <path fill="#fff" d="M0 0h21v21H0z"></path>
-                                        </clipPath>
-                                    </defs>
-                                </svg>
-                            </li>
-                            <li class=" btn" data-id="stampTool" data-value="Stamp">
-                                Stamp
-                                <svg width="21" height="12" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                    class="ml-auto">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M21 0H0v12h21V0Zm-.913 1H.913v10h19.174V1Z" fill="#003BB3"></path>
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M17.348 3H3.652v6h13.696V3Zm-.913 1H4.565v4h11.87V4Z" fill="#003BB3"></path>
-                                </svg>
-                            </li>
-
-                        </div>
                     </div>
                 </div>
             </div>
@@ -195,117 +167,119 @@ foreach ($words as $w) {
                             </div>
 
                         </div>
+                        <div class="border-bottom mb-1">Signers</div>
+
+                        <div id="list-signers"></div>
+
+
+
                     </div>
+
                 </div>
             </div>
 
+            <div class="tool-box  tool-style textTool" id="textTool">
+                <input aria-invalid="false" type="text" class="textareaTool" value="">
+            </div>
+
+        </div>
+
+        <div class="tool-box  tool-style signTool" id="signTool">
+            <div class="element"> Sign <i data-feather='arrow-down-right'></i></div>
+
+        </div>
+
+        <div class="tool-box  tool-style initialTool" id="initialTool">
+            <div class="element"> Initial <i data-feather='arrow-down-right'></i></div>
+
+        </div>
+
+        <div class="tool-box  tool-style stampTool" id="stampTool">
+            <div class="element">Stamp <i data-feather='arrow-down-right'></i></div>
+        </div>
+        <div class="tool-box  tool-style sealTool" id="sealTool">
+            <div class="element">Seal <i data-feather='arrow-down-right'></i></div>
+        </div>
+
+        <div class="tool-box dateTool" id="dateTool">
+            <div class="element">Date <i data-feather='arrow-down-right'></i></div>
         </div>
     </div>
 
-    <div class="tool-box  tool-style textTool" id="textTool">
-        <input aria-invalid="false" type="text" class="textareaTool" value="">
-    </div>
 
-</div>
-
-<div class="tool-box  tool-style signTool" id="signTool">
-    <div class="element"> Sign <i data-feather='arrow-down-right'></i></div>
-
-</div>
-
-<div class="tool-box  tool-style initialTool" id="initialTool">
-    <div class="element"> Initial <i data-feather='arrow-down-right'></i></div>
-
-</div>
-
-<div class="tool-box  tool-style stampTool" id="stampTool">
-    <div class="element">Stamp <i data-feather='arrow-down-right'></i></div>
-</div>
-<div class="tool-box  tool-style sealTool" id="sealTool">
-    <div class="element">Seal <i data-feather='arrow-down-right'></i></div>
-</div>
-
-<div class="tool-box dateTool" id="dateTool">
-    <div class="element">Date <i data-feather='arrow-down-right'></i></div>
-</div>
-</div>
-
-
-
-
-
-<div class="modal fade text-start" id="createSignatureModal">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel17"><span id="actionWord">Create</span> Your Signature</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form class="form form-horizontal">
-                    <!-- <div id="signatureFile"></div> -->
-                    <input type="hidden" name="action" id="signatureAction" value="create">
-                    <div class="row border-bottom">
-                        <div class="col-6">
-                            <div class="mb-1 row">
-                                <div class="col-sm-3 col-md-3">
-                                    <label class="col-form-label" for="fullName">Full Name</label>
-                                </div>
-                                <div class="col-sm-9 col-md-9">
-                                    <div class="input-group input-group-merge">
-                                        <input type="text" id="fullName" class="form-control" name="fullName"
-                                            value="<?php //echo $fullName?>" placeholder="Full name">
+    <div class="modal fade text-start" id="createSignatureModal">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel17"><span id="actionWord">Create</span> Your Signature
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="form form-horizontal">
+                        <!-- <div id="signatureFile"></div> -->
+                        <input type="hidden" name="action" id="signatureAction" value="create">
+                        <div class="row border-bottom">
+                            <div class="col-6">
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3 col-md-3">
+                                        <label class="col-form-label" for="fullName">Full Name</label>
+                                    </div>
+                                    <div class="col-sm-9 col-md-9">
+                                        <div class="input-group input-group-merge">
+                                            <input type="text" id="fullName" class="form-control" name="fullName"
+                                                value="<?php //echo $fullName?>" placeholder="Full name">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-5">
-                            <div class="mb-1 row">
-                                <div class="col-sm-3 col-md-3">
-                                    <label class="col-form-label" for="initials">Initials</label>
-                                </div>
-                                <div class="col-sm-9 col-md-9">
-                                    <div class="input-group input-group-merge">
-                                        <input type="text" id="initials" class="form-control" name="initials"
-                                            value="<?php //echo $initial;?>" placeholder="Initial">
+                            <div class="col-5">
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3 col-md-3">
+                                        <label class="col-form-label" for="initials">Initials</label>
+                                    </div>
+                                    <div class="col-sm-9 col-md-9">
+                                        <div class="input-group input-group-merge">
+                                            <input type="text" id="initials" class="form-control" name="initials"
+                                                value="<?php //echo $initial;?>" placeholder="Initial">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
-                    </div>
+                        <div class="row p-0">
+                            <div class="">
+                                <ul class="nav nav-tabs border-bottom pt-2" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="first-tab" data-bs-toggle="tab" href="#first"
+                                            aria-controls="first" role="tab" aria-selected="true">CHOOSE</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="second-tab" data-bs-toggle="tab" href="#second"
+                                            aria-controls="second" role="tab" aria-selected="false">DRAW</a>
+                                    </li>
 
-                    <div class="row p-0">
-                        <div class="">
-                            <ul class="nav nav-tabs border-bottom pt-2" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="first-tab" data-bs-toggle="tab" href="#first"
-                                        aria-controls="first" role="tab" aria-selected="true">CHOOSE</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="second-tab" data-bs-toggle="tab" href="#second"
-                                        aria-controls="second" role="tab" aria-selected="false">DRAW</a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a class="nav-link" id="third-tab" data-bs-toggle="tab" href="#third"
-                                        aria-controls="third" role="tab" aria-selected="false">UPLOAD</a>
-                                </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="third-tab" data-bs-toggle="tab" href="#third"
+                                            aria-controls="third" role="tab" aria-selected="false">UPLOAD</a>
+                                    </li>
 
 
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="first" aria-labelledby="first-tab" role="tabpanel">
-                                    <table class="table table-striped table-hover table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Signature</th>
-                                                <th>Initial</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php 
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="first" aria-labelledby="first-tab" role="tabpanel">
+                                        <table class="table table-striped table-hover table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Signature</th>
+                                                    <th>Initial</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php 
                                                 // $sn = 1; 
                                                 // $fontFamily = ['Alex Brush', 'Arizonia', 'Great Vibes', 'Creattion Demo', 'Scriptina Regular','Montserrat', 'Oleo Script Swash Caps', 'The Nautigal', 'Poppins', 'Roboto'];
                                                 $fontFamily = ['Arizonia', 'Montserrat',];
@@ -313,370 +287,685 @@ foreach ($words as $w) {
                                                 $key = $key + 1;
 
                                             ?>
-                                            <tr>
-                                                <td class="">
-                                                    <div class="form-check p-1 d-flex align-items-center">
+                                                <tr>
+                                                    <td class="">
+                                                        <div class="form-check p-1 d-flex align-items-center">
 
-                                                        <div class="pr-2">
-                                                            <input type="hidden" name="signature_id"
-                                                                value="<?php echo $key ?>">
-                                                            <input type="radio" name="sign"
-                                                                class="form-check-input choose"
-                                                                id="customCheck<?php echo $key ?>"
-                                                                data-id="<?php echo $key ?>"
-                                                                <?php //echo $signature_id == $key ? 'checked' : '' ?>>
+                                                            <div class="pr-2">
+                                                                <input type="hidden" name="signature_id"
+                                                                    value="<?php echo $key ?>">
+                                                                <input type="radio" name="sign"
+                                                                    class="form-check-input choose"
+                                                                    id="customCheck<?php echo $key ?>"
+                                                                    data-id="<?php echo $key ?>"
+                                                                    <?php //echo $signature_id == $key ? 'checked' : '' ?>>
+                                                            </div>
+
+                                                            <label class="form-check-label"
+                                                                for="customCheck<?php echo $key ?>">
+                                                                <div class="css-pl8xw2">
+                                                                    <div class="css-fv3lde">
+                                                                        <span class="css-4x8v88 fullName"
+                                                                            id="signature-wrap<?php echo $key ?>"
+                                                                            style="font-family: <?php echo $value?>;"><?php echo $fullName ?></span>
+                                                                    </div>
+                                                                </div>
+                                                            </label>
                                                         </div>
-
+                                                    </td>
+                                                    <td class="p-0">
                                                         <label class="form-check-label"
-                                                            for="customCheck<?php echo $key ?>"
-                                                            id="signature-wrap<?php echo $key ?>">
-                                                            <!-- <canvas> -->
-                                                            <div class="css-pl8xw2" id="digi-sign<?php echo $key ?>">
+                                                            for="customCheck<?php echo $key ?>">
+                                                            <div class="css-pl8xw2">
                                                                 <!-- Signed on ToNote by: -->
                                                                 <div class="css-fv3lde">
-                                                                    <span class="css-4x8v88 fullName"
-                                                                        style="font-family: <?php echo $value?>;"><?php echo $fullName ?></span>
+                                                                    <span class="css-4x8v88 initials"
+                                                                        id="initial-wrap<?php echo $key ?>"
+                                                                        style="font-family: <?php echo $value?>;"><?php echo $initial;?></span>
                                                                 </div>
                                                                 <!-- <span
-                                                                    class="css-1j983t3 signatureID">6D80C6DF365242545678</span> -->
+                                                                class="css-1j983t3 signatureID">6D80C6DF365242545678</span> -->
                                                             </div>
                                                         </label>
-                                                    </div>
-                                                </td>
-                                                <td class="p-0">
-                                                    <label class="form-check-label" for="customCheck<?php echo $key ?>">
-                                                        <div class="css-pl8xw2">
-                                                            <!-- Signed on ToNote by: -->
-                                                            <div class="css-fv3lde" id="initial-wrap<?php echo $key ?>">
-                                                                <span class="css-4x8v88 initials"
-                                                                    style="font-family: <?php echo $value?>;"><?php echo $initial;?></span>
-                                                            </div>
-                                                            <!-- <span
-                                                                class="css-1j983t3 signatureID">6D80C6DF365242545678</span> -->
-                                                        </div>
-                                                    </label>
-                                                </td>
-                                            </tr>
-                                            <?php } ?>
+                                                    </td>
+                                                </tr>
+                                                <?php } ?>
 
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="tab-pane" id="second" aria-labelledby="second-tab" role="tabpanel">
-                                    <div class="row">
-                                        <div class="col-sm-9 border-right p-0">
-                                            <div class="text-center">Draw your signature in the tool-box </div>
-                                            <div id="canvas" class="d-flex justify-content-center">
-                                                <canvas class="roundCorners" id="newSignature"
-                                                    style="position: relative; margin: 0; padding: 0; border: 1px solid #CCC; width: 474px; height: 313px;"></canvas>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tab-pane" id="second" aria-labelledby="second-tab" role="tabpanel">
+                                        <div class="row">
+                                            <div class="col-lg-8 border-right">
+                                                <div class="text-center">Draw your signature in the tool box </div>
+                                                <div id="canvas" class="d-flex justify-content-center">
+                                                    <canvas class="roundCorners" id="newSignature"
+                                                        style="position: relative; margin: 0; padding: 0; border: 1px solid #CCC; width: 474px; height: 313px;"></canvas>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-sm-3 p-0">
-                                            <div class="">
-                                                <button type="button" class="btn btn-dark mb-2 saveSign"
-                                                    onclick="signatureSave()">Create
-                                                    signature</button>
-                                                <button type="button" class="btn btn-outline-dark"
-                                                    onclick="signatureClear()">Clear
-                                                    signature</button>
+                                            <div class="col-lg-4 pt-3">
+                                                <div class="btn-group" role="group"
+                                                    aria-label="Basic radio toggle button group">
+                                                    <input type="radio" class="btn-check" name="btnradio" id="btnradio1"
+                                                        autocomplete="off" checked="">
+                                                    <label class="btn btn-outline-primary waves-effect saveSign"
+                                                        for="btnradio1" onclick="signatureSave()">Generate</label>
+                                                    <input type="radio" class="btn-check" name="btnradio" id="btnradio2"
+                                                        autocomplete="off">
+                                                    <label class="btn btn-outline-primary waves-effect" for="btnradio2"
+                                                        onclick="signatureClear()">Clear</label>
+                                                </div>
+                                                <div class="mt-1">
+                                                    <img id="saveSignature" alt="Saved image png"
+                                                        src="<?php echo url_for('assets/images/empty.png') ?>"
+                                                        width="150" height="150" />
+                                                </div>
                                             </div>
-
-                                            <div class="mt-3">
-                                                <img id="saveSignature" alt="Saved image png"
-                                                    src="<?php echo url_for('assets/images/empty.png') ?>" width="150"
-                                                    height="150" />
-
-
-                                            </div>
-
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="tab-pane" id="third" aria-labelledby="third-tab" role="tabpanel">
-                                    Upload goes here
+                                    <div class="tab-pane" id="third" aria-labelledby="third-tab" role="tabpanel">
+                                        <form action="#" class="dropzone dropzone-area dz-clickable ">
+                                            <div class="row d-flex justify-content-center">
+                                                <div class="col-lg-12 col-md-12 mb-1 mb-sm-0">
+                                                    <div class="file-upload-wrapper">
+                                                        <form>
+                                                            <input type="text" id="uploadSignature">
+                                                            <label class="custom-file-upload">
+                                                                <div>
+                                                                    <img id="image-preview"
+                                                                        src="<?php echo url_for('assets/images/download.png') ?>"
+                                                                        alt="" width="100">
+                                                                </div>
+                                                                <div>
+                                                                    <input type="file" id="file-input" />
+                                                                    <span id="file-input-text">Click here to Upload your
+                                                                        signature</span>
+                                                                </div>
+                                                            </label>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
+
+                        </div>
+                    </form>
+
+                </div>
+                <div class="p-2 ">
+                    <div class="pb-1">
+                        <!-- By signing this document with my electronic signature. -->
+                        By clicking Create,I agree that the signature and initials is as valid as my hand writen
+                        signature to the extent allowed by law
+
+                        <!-- By clicking Create, I agree that the signature and initials will be the electronic
+                        representation of my signature and initials for all purposes when I (or my representative) uses
+                        them
+                        on document through this platform, including legally binding contracts - just the same as a
+                        pen-and-paper signature or initial. -->
+                    </div>
+                    <section class="d-flex justify-content-between">
+                        <table>
+                            <tr>
+                                <td><span id="selected-signature"></span></td>
+                                <td><span id="selected-initial"></span></td>
+                            </tr>
+                        </table>
+                        <div>
+
+                            <button type="button"
+                                class="btn btn-primary waves-effect waves-float waves-light btn-choose disabled"
+                                id="choose">Create</button>
                         </div>
 
-                    </div>
-                </form>
 
-            </div>
-            <div class="p-2 ">
-                <div class="pb-1">
-                    <!-- By signing this document with my electronic signature. 
-                    By clicking Create,I agree that the signature is as valid as my hand writen signature to the extent allowed by law -->
-
-                    By clicking Create, I agree that the signature and initials will be the electronic
-                    representation of my signature and initials for all purposes when I (or my agent) use them
-                    on document through this platform, including legally binding contracts - just the same as a
-                    pen-and-paper signature or initial.
+                    </section>
                 </div>
-                <section class="d-flex justify-content-between">
-                    <table>
-                        <tr>
-                            <td id="selected-signature"></td>
-                            <td id="selected-initial"></td>
-                        </tr>
-                    </table>
-                    <div>
-
-                        <button type="button"
-                            class="btn btn-primary waves-effect waves-float waves-light btn-choose disabled"
-                            id="choose">Create</button>
-                    </div>
-
-
-                </section>
             </div>
         </div>
     </div>
-</div>
-<input type="hidden" id="storage">
-<input type="hidden" id="currentId">
-<input type="hidden" id="toolName">
-
-<input type="hidden" id="top">
-<input type="hidden" id="left">
-
-<input type="hidden" id="selectedSignature">
-<input type="hidden" id="watch">
 
 
+    <div class="modal fade show" id="addSignerModal" style="">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Add Signer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 
-<input type="hidden" class="url" value="upload/certificate.pdf">
-<input type="hidden" class="url" value="upload/EmployeeHandbook.pdf">
+                </div>
+                <form action="#" id="addSignerForm" method="post">
+                    <div id="addSignerErrorMsg" class="text-center text-danger"></div>
+                    <div class="modal-body">
+                        <table class="">
+                            <tbody>
 
+                                <tr class="mtable">
+                                    <td colspan="2">
 
-<div class="modal fade show" id="addSignerModal" style="">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Add Signer</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="#" id="addParticipants" method="post">
-                <div class="modal-body">
-                    <table class="">
-                        <tbody>
+                                        <table class="table table-bordered" id="expense-item-table">
+                                            <th>SN</th>
+                                            <th>Full Name <sup style="color:red">*<sup></th>
+                                            <th>Email <sup style="color:red">*<sup></th>
+                                            <th>Phone</th>
+                                            <th rowspan="1"></th>
 
-                            <tr class="mtable">
-                                <td colspan="2">
-
-                                    <table class="table table-bordered" id="expense-item-table">
-                                        <th>SN</th>
-                                        <th>Full Name <sup style="color:red">*<sup></th>
-                                        <th>Email <sup style="color:red">*<sup></th>
-                                        <th>Phone</th>
-                                        <th rowspan="1"></th>
-
-                                        <tr class="mtable">
-                                            <td><span id="sr_no">1</span></td>
-                                            <td><input type="text" name="full_name[]" id="full_name1" data-srno="1"
-                                                    placeholder="Full name"
-                                                    class="form-control form-control-sm number_only full_name" required>
-                                            </td>
-                                            <td><input type="email" name="email[]" id="email1" data-srno="1"
-                                                    placeholder="Email"
-                                                    class="form-control form-control-sm number_only email" required>
-                                            </td>
-                                            <td><input type="text" name="phone[]" id="phone1" data-srno="1"
-                                                    placeholder="Phone Number"
-                                                    class="form-control form-control-sm number_only phone"></td>
-
-                                            <td><button type="button" name="add_row" id="add_row"
-                                                    class="btn btn-success btn-sm">+</button></td>
-                                        </tr>
-
-                                        <table class="">
-                                            <tr>
-                                                <td colspan="4" align="left">
-                                                    <input type="hidden" name="total_item" class="form-control "
-                                                        id="total_item" value="1">
-
+                                            <tr class="mtable">
+                                                <td><span id="sr_no">1</span></td>
+                                                <td><input type="text" name="full_name[]" id="full_name1" data-srno="1"
+                                                        placeholder="Full name"
+                                                        class="form-control form-control-sm number_only full_name"
+                                                        required>
                                                 </td>
+                                                <td><input type="email" name="email[]" id="email1" data-srno="1"
+                                                        placeholder="Email"
+                                                        class="form-control form-control-sm number_only email" required>
+                                                </td>
+                                                <td><input type="text" name="phone[]" id="phone1" data-srno="1"
+                                                        placeholder="Phone Number"
+                                                        class="form-control form-control-sm number_only phone"></td>
+
+                                                <td><button type="button" name="add_row" id="add_row"
+                                                        class="btn btn-outline-success btn-sm">+</button></td>
                                             </tr>
+
+                                            <table class="">
+                                                <tr>
+                                                    <td colspan="4" align="left">
+                                                        <input type="hidden" name="total_item" class="form-control "
+                                                            id="total_item" value="1">
+
+                                                    </td>
+                                                </tr>
+                                            </table>
+
                                         </table>
 
-                                    </table>
+                                    </td>
 
-                                </td>
+                                </tr>
 
-                            </tr>
-
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <!-- <button type="button" class="btn btn-primary waves-effect waves-float waves-light" data-bs-dismiss="modal">Accept</button> -->
-                    <button type="submit" class="btn btn-primary waves-effect waves-float waves-light">Add
-                        Signer</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal fade show" id="selectSignatureModal" style="">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">Pick a resource to append</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-primary waves-effect waves-float waves-light" data-bs-dismiss="modal">Accept</button> -->
+                        <button type="submit" class="btn btn-primary waves-effect waves-float waves-light"
+                            id="addSigner">Add
+                            Signer</button>
+                    </div>
+                </form>
             </div>
-            <form method="post" id="editToolForms">
-                <div class="modal-body">
-
-                    <input type="hidden" id="" name="saveTool[document_id]" value="<?php echo $_GET['document_id']?> ">
-                    <input type="hidden" id="tool_id" name="editTool[tool_id]" placeholder="tool_id">
-                    <input type="hidden" id="tool_name" name="editTool[tool_name]" placeholder="tool_name">
-                    <input type="hidden" id="pos_top" name="editTool[tool_pos_top]">
-                    <input type="hidden" id="pos_left" name="editTool[tool_pos_left]">
-                    <input type="hidden" id="filename" name="editTool[filename]" placeholder="filename">
-
-                    <div id="showElement"></div>
-                </div>
-                <div class="modal-footer">
-                    <!-- <button type="button" class="btn btn-primary waves-effect waves-float waves-light" data-bs-dismiss="modal">Accept</button> -->
-                    <button type="submit" class="btn btn-primary waves-effect waves-float waves-light"
-                        id="append">Append</button>
-                </div>
-            </form>
         </div>
     </div>
-</div>
 
 
-<?php   include(SHARED_PATH . '/footer.php'); ?>
+    <div class="modal fade show" id="selectSignatureModal" style="">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Pick a resource to append</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" id="editToolForms">
+                    <div class="modal-body">
 
-<script src=" js/draw-signature.js"></script>
-<script type="text/javascript" src="js/html2canvas.js">
-</script>
-<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
-<script src="js/doc-edit.js"></script>
-<script src="js/create-signature.js"></script>
-<script type="text/javascript" src="js/scrolltoolbar.js"></script>
+                        <input type="hidden" id="" name="saveTool[document_id]"
+                            value="<?php echo $_GET['document_id']?> ">
+                        <input type="hidden" id="tool_id" name="editTool[tool_id]" placeholder="tool_id">
+                        <input type="hidden" id="tool_name" name="editTool[tool_name]" placeholder="tool_name">
+                        <input type="hidden" id="pos_top" name="editTool[tool_pos_top]">
+                        <input type="hidden" id="pos_left" name="editTool[tool_pos_left]">
+                        <input type="hidden" id="filename" name="editTool[filename]" placeholder="filename">
+                        <input type="hidden" id="file" name="editTool[file]" placeholder="filename">
 
-<script type="text/javascript">
-$(document).on('click', '#addSigner', function() {
-    $("#addSignerModal").modal("show");
-})
-
-$(document).on("keyup", "#fullName", function() {
-    let inputField = $(this).val();
-    $(".fullName").html(inputField)
-})
-$(document).on("keyup", "#initials", function() {
-    let inputField = $(this).val();
-    $(".initials").html(inputField)
-})
-var count = 1;
-$(document).on('click', '#add_row', function() {
-    count = count + 1;
-    $('#total_item').val(count);
-
-    var html_code = '';
-
-    html_code += '<tr id="row_id_' + count + '">';
-    html_code += '<td><span id="sr_no">' + count + '</span></td>';
-    html_code += '<td><input type="text" name="full_name[]" id="full_name' + count +
-        '" data-srno="' + count +
-        '"  placeholder="Full name" class="form-control form-control-sm number_only full_name" required></td>';
-
-    html_code += '<td><input type="text" name="email[]" id="email' + count + '" data-srno="' +
-        count +
-        '"  placeholder="Email" class="form-control form-control-sm number_only email" required></td>';
-
-    html_code += '<td><input type="text" name="phone[]" id="phone' + count + '" data-srno="' +
-        count +
-        '"  placeholder="Phone Number" class="form-control form-control-sm number_only phone"></td>';
-
-    html_code += '<td><button type="button" name="remove_row" id="' + count +
-        '" class="btn btn-danger btn-sm remove_row">X</button></td></tr>';
-
-    $('#expense-item-table').append(html_code);
-
-});
-
-$(document).on('click', '.remove_row', function() {
-
-    var row_id = $(this).attr("id");
-    var total_item_amount = $('#amount' + row_id).val();
-    var final_amount = $('#final_total_amt').text();
-    var result_amount = parseFloat(final_amount) - parseFloat(total_item_amount);
-    $('#final_total_amt').text(result_amount);
-    $('#row_id_' + row_id).remove();
-    count--;
-    $('#total_item').val(count);
-
-});
-
-$(document).on("click", ".element", function(e) {
-    var name = $(this).html();
-    var parentID = $(this).closest(".tool-box").data("id");
-    console.log(parentID);
-    var parentName = $(this).closest(".tool-box").data("name");
-    var tool_id = $("#tool_id").val(parentID)
-    var tool_name = $("#tool_name").val(parentName)
-    let category = '';
-    if (name == 'Sign' || name == 'Initial') {
-        name == 'Sign' ? category = 1 : category = 2;
-        findElement(parentID, parentName, category)
-    } else {
-        // alert(name)
-    }
-});
+                        <div id="showElement"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <!-- <button type="button" class="btn btn-primary waves-effect waves-float waves-light" data-bs-dismiss="modal">Accept</button> -->
+                        <button type="submit" class="btn btn-primary waves-effect waves-float waves-light"
+                            id="append">Append</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
-function findElement(parentID, parentName, category) {
-    $.ajax({
-        url: "inc/find-element.php",
-        method: "POST",
-        dataType: "json",
-        data: {
-            findElement: 1,
-            tool_id: parentID,
-            name: parentName,
-            category: category,
-        },
-        success: function(data) {
-            $("#selectSignatureModal").modal("show");
-            $("#showElement").html(data.details)
-            $("#pos_left").val(data.pos_left);
-            $("#pos_top").val(data.pos_top);
-            // $("#filename").val(data.filename);
+    <div class="modal fade show" id="editSignerModal" style="">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Edit Signers</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" id="editSignerForm">
+                    <div id="editSignerErrorMsg" class="text-center text-danger"></div>
+                    <div class="modal-body">
+                        <table class="table table-bordered" id="signer-table">
+                            <thead>
+                                <tr>
+                                    <th>SN</th>
+                                    <th>Full Name <sup style="color:red">*<sup></sup></sup></th>
+                                    <th>Email <sup style="color:red">*<sup></sup></sup></th>
+                                    <th>Phone</th>
+                                    <th rowspan="1"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="showSigners">
 
-        },
-    });
-}
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary waves-effect waves-float waves-light"
+                            id="editSigner">Edit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
-$(document).on("change", '.tool_name', function() {
-    let tool_n = $(this).data("file")
-    $("#filename").val(tool_n);
-})
+    <?php   include(SHARED_PATH . '/footer.php'); ?>
 
-$(document).on("click", "#append", function(e) {
-    e.preventDefault();
-    if ($(".tool_name").is(":checked")) {
-        console.log($(".tool_name").is(":checked"))
+    <script src=" js/draw-signature.js"></script>
+    <script type="text/javascript" src="js/html2canvas.js">
+    </script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <script src="js/doc-edit.js"></script>
+    <script src="js/create-signature.js"></script>
+    <script type="text/javascript" src="js/scrolltoolbar.js"></script>
+
+
+
+    <script type="text/javascript">
+    var document_id = $("#document_id").val();
+    $(document).on('click', '#addSignerBtn', function() {
+        $("#addSignerModal").modal("show");
+    })
+    $(document).on('click', '#editSignerBtn', function() {
+        $("#editSignerModal").modal("show");
         $.ajax({
-            url: "inc/process-tool.php",
+            url: "inc/signer-script.php",
+            method: "POST",
+            // dataType: "json",
+            data: {
+                signer_form: 1,
+                document_id: document_id,
+            },
+            success: function(data) {
+                $("#showSigners").html(data);
+
+            },
+        });
+
+    })
+
+
+    $(document).on("keyup", "#fullName", function() {
+        let inputField = $(this).val();
+        $(".fullName").html(inputField)
+    })
+    $(document).on("keyup", "#initials", function() {
+        let inputField = $(this).val();
+        $(".initials").html(inputField)
+    })
+    var count = 1;
+    $(document).on('click', '#add_row', function() {
+        count = count + 1;
+        $('#total_item').val(count);
+
+        var html_code = '';
+
+        html_code += '<tr id="row_id_' + count + '">';
+        html_code += '<td><span id="sr_no">' + count + '</span></td>';
+        html_code += '<td><input type="text" name="full_name[]" id="full_name' + count +
+            '" data-srno="' + count +
+            '"  placeholder="Full name" class="form-control form-control-sm number_only full_name" required></td>';
+
+        html_code += '<td><input type="text" name="email[]" id="email' + count + '" data-srno="' +
+            count +
+            '"  placeholder="Email" class="form-control form-control-sm number_only email" required></td>';
+
+        html_code += '<td><input type="text" name="phone[]" id="phone' + count + '" data-srno="' +
+            count +
+            '"  placeholder="Phone Number" class="form-control form-control-sm number_only phone"></td>';
+
+        html_code += '<td><button type="button" name="remove_row" id="' + count +
+            '" class="btn btn-outline-danger btn-sm remove_row">X</button></td></tr>';
+
+        $('#expense-item-table').append(html_code);
+
+    });
+
+    $(document).on('click', '.remove_row', function() {
+        var row_id = $(this).attr("id");
+        var total_item_amount = $('#amount' + row_id).val();
+        var final_amount = $('#final_total_amt').text();
+        var result_amount = parseFloat(final_amount) - parseFloat(total_item_amount);
+        $('#final_total_amt').text(result_amount);
+        $('#row_id_' + row_id).remove();
+        count--;
+        $('#total_item').val(count);
+
+    });
+
+    $(document).on("click", ".element", function(e) {
+        let name = $(this).html();
+        let parentID = $(this).closest(".tool-box").data("id");
+        let toolUser = $(this).closest(".tool-box").data('user');
+        let parentName = $(this).closest(".tool-box").data("name");
+        let tool_id = $("#tool_id").val(parentID)
+        let tool_name = $("#tool_name").val(parentName)
+        let category = '';
+        if (name == 'Sign' || name == 'Initial') {
+            name == 'Sign' ? category = 1 : category = 2;
+            findElement(parentID, parentName, category, toolUser)
+        } else {
+            // alert(name)
+        }
+    });
+
+
+    function findElement(parentID, parentName, category, toolUser) {
+        $.ajax({
+            url: "inc/find-element.php",
             method: "POST",
             dataType: "json",
-            data: $("#editToolForms").serialize(),
+            data: {
+                findElement: 1,
+                tool_id: parentID,
+                toolUser: toolUser,
+                name: parentName,
+                category: category,
+            },
             success: function(data) {
                 if (data.success == true) {
-                    $("#selectSignatureModal").modal('hide');
-                    load_session_data();
+                    $("#selectSignatureModal").modal("show");
+                    $("#showElement").html(data.details)
+                    $("#pos_left").val(data.pos_left);
+                    $("#pos_top").val(data.pos_top);
+                } else {
+                    if (data.msg == 'Create Signature') {
+                        $("#createSignatureModal").modal("show");
+                    } else {
+                        errorAlert(data.msg);
+                    }
+
+                }
+                // $("#filename").val(data.filename);
+
+            },
+        });
+    }
+
+
+    $(document).on("change", '.tool_name', function() {
+        let tool_n = $(this).data("filename")
+        $("#filename").val(tool_n);
+        $("#file").val($(this).data("file"));
+    })
+    list_yourself();
+
+    function list_yourself() {
+
+        $.ajax({
+            url: "inc/signer-script.php",
+            method: "POST",
+            data: {
+                list_yourself: 1,
+                document_id: document_id,
+            },
+            success: function(data) {
+                $("#list-yourself").html(data);
+            },
+        });
+    }
+    $(document).on("click", "#append", function(e) {
+        e.preventDefault();
+        if ($(".tool_name").is(":checked")) {
+            // console.log($(".tool_name").is(":checked"))
+            $.ajax({
+                url: "inc/process-tool.php",
+                method: "POST",
+                dataType: "json",
+                data: $("#editToolForms").serialize(),
+                success: function(data) {
+                    if (data.success == true) {
+                        $("#selectSignatureModal").modal('hide');
+                        load_session_data();
+                    }
+
+                },
+            });
+        } else {
+            errorTime("Please select a resource to append")
+        }
+    })
+
+    $(document).on("click", "#addSigner", function(e) {
+        e.preventDefault();
+        checkRecord()
+    })
+    $(document).on("click", "#editSigner", function(e) {
+        e.preventDefault();
+        editSigners();
+    })
+
+    function checkRecord() {
+        var formData = $('#addSignerForm').serializeArray();
+        formData.push({
+            name: 'check_record',
+            value: 1,
+        });
+
+        formData.push({
+            name: 'document_id',
+            value: $("#document_id").val(),
+        });
+        $.ajax({
+            url: "inc/signer-script.php",
+            method: "POST",
+            dataType: "json",
+            data: formData,
+            success: function(data) {
+                if (data.success == true) {
+                    createSigners()
+                } else {
+                    $("#addSignerErrorMsg").html(data.msg)
+                }
+            },
+        });
+    }
+    const user_id = 0;
+    const email = '';
+
+    function createSigners() {
+        var formData = $('#addSignerForm').serializeArray();
+
+        formData.push({
+            name: 'save',
+            value: 1,
+        });
+        formData.push({
+            name: 'document_id',
+            value: document_id,
+        });
+        $.ajax({
+            url: "inc/signer-script.php",
+            method: "POST",
+            dataType: "json",
+            data: formData,
+            success: function(data) {
+                if (data.success == true) {
+                    $("#addSignerModal").modal('hide');
+                    successAlert(data.msg);
+                    signer_dropdown(document_id)
+                    fetch_signer_list(document_id)
+                    $('#addSignerForm').trigger("reset");
+                } else {
+                    $("#addSignerErrorMsg").html(data.msg)
                 }
 
             },
         });
-    } else {
-        errorTime("Please select a resource to append")
     }
-})
-</script>
+
+    function editSigners() {
+        var formData = $('#editSignerForm').serializeArray();
+
+        formData.push({
+            name: 'edit',
+            value: 1,
+        });
+        formData.push({
+            name: 'document_id',
+            value: document_id,
+        });
+        $.ajax({
+            url: "inc/signer-script.php",
+            method: "POST",
+            dataType: "json",
+            data: formData,
+            success: function(data) {
+                if (data.success == true) {
+                    $("#editSignerModal").modal('hide');
+                    successAlert(data.msg);
+                    signer_dropdown(document_id)
+                } else {
+                    $("#editSignerErrorMsg").html(data.msg)
+                }
+
+            },
+        });
+    }
+
+    signer_dropdown(document_id)
+
+    function signer_dropdown(document_id) {
+        $.ajax({
+            url: "inc/signer-script.php",
+            method: "POST",
+            data: {
+                fetch_list: 1,
+                document_id: document_id,
+            },
+            success: function(data) {
+                $(".signer-list").html(data)
+            },
+        });
+    }
+
+    fetch_signer_list(document_id)
+
+    function fetch_signer_list(document_id) {
+        $.ajax({
+            url: "inc/signer-script.php",
+            method: "POST",
+            data: {
+                list_signer: 1,
+                document_id: document_id,
+            },
+            success: function(data) {
+                $("#list-signers").html(data)
+            },
+        });
+    }
+
+
+
+    $(document).on("change", "#selectSigner", function(params) {
+        let user_id = $(this).find(":selected").val();
+        let email = $(this).find(":selected").data('email');
+        fetch_signers_tool(user_id, email);
+    })
+
+
+    fetch_signers_tool(user_id, email);
+
+    function fetch_signers_tool(user_id, email) {
+        $.ajax({
+            url: "inc/signer-script.php",
+            method: "POST",
+            data: {
+                fetch: 1,
+                user_id: user_id,
+                email: email,
+            },
+            success: function(data) {
+                $(".signer-wrapper").html(data)
+            },
+        });
+    }
+    $(document).on("click", "#addMe", function(params) {
+
+        // let signer_id = $(this).attr('id');
+        let signer_id = $(this).data('id');
+        if ($(this).is(':checked')) {
+            let action = 1;
+            addMe(action, document_id, signer_id)
+        } else {
+            let title = 'Warning';
+            let msg = 'Are you sure you want to remove this signer ?';
+            let subMsg = 'This will remove all tools added in the signer' +
+                "'" + 's name';
+            let actionCall = 'Yes Remove';
+            confirmAlert(title, msg, subMsg, actionCall, signer_id);
+        }
+    })
+
+    $(document).on('click', '.actionCall', function() {
+        let action = 0;
+        let signer_id = $("#action_id").val()
+        console.log(action, document_id, signer_id);
+        addMe(action, document_id, signer_id);
+        $("#editSignerModal").modal("hide");
+    })
+    $(document).on('click', '.cancel', function() {
+        $("#addMe").prop("checked", true);
+    })
+
+    $(document).on('click', '.removeSigner', function() {
+        // let signer_id = $(this).data('id');
+        let title = 'Warning';
+        let msg = 'Are you sure you want to remove this signer ?';
+        let subMsg = 'This will remove all tools added in the signer' +
+            "'" + 's name';
+        let actionCall = 'Yes Remove';
+        let signer_id = $(this).data('id');
+        confirmAlert(title, msg, subMsg, actionCall, signer_id);
+    })
+
+    function addMe(action, document_id, signer_id) {
+        $.ajax({
+            url: "inc/add-me.php",
+            method: "POST",
+            dataType: "json",
+            data: {
+                addMe: 1,
+                action: action,
+                signer_id: signer_id,
+                document_id: document_id,
+            },
+            success: function(data) {
+                if (data.success == true) {
+                    successAlert(data.msg);
+                    signer_dropdown(document_id)
+                    load_session_data()
+                    fetch_signers_tool(user_id, email);
+                    fetch_signer_list(document_id)
+                    list_yourself()
+                } else {
+                    errorAlert(data.msg);
+                }
+            },
+        });
+    }
+    </script>

@@ -5,6 +5,7 @@ if(isset($_POST['action'])){
         $args = [
             'document_id' => $_POST['document_id'], 
             'tool_id' => $_POST['tool_id'],
+            'toolUser' => $_POST['toolUser'],
             'tool_class' => $_POST['tool_class'],
             'tool_type' => $_POST['tool_type'],
             'tool_name' => $_POST['tool_text'], 
@@ -37,6 +38,7 @@ if(isset($_POST['editTool'])){
     $args['tool_type'] = 2;
     $args['updated_at'] = date('Y-m-d H:i:s');
     $find->merge_attributes($args);
+    // pre_r($find);
     $result = $find->save();
     if($result == true){
         exit(json_encode(['success' => true]));

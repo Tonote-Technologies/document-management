@@ -1,7 +1,6 @@
 <?php require_once('../../private/initialize.php');
 
-
-$document_id = $_POST['document_id'];
+$document_id = $_GET['document_id'];
 $path = 'upload/signature_files/';
 $documents = DocumentImageDetails::find_by_document_ids($document_id);
 $documentResource = DocumentResource::find_by_document_ids($document_id);
@@ -9,28 +8,30 @@ $documentResource = DocumentResource::find_by_document_ids($document_id);
 $totalPage = count($documents);
 $added_tool = 0;
 $converted_tool = 0;
-	
 	$output = '<div>';
-	
 	foreach($documentResource as  $savedTool){
+		$signers = Signers::find_by_id($savedTool->toolUser);
+		$signerName = $signers->full_name() ?? "Not Set";
 		if($savedTool->tool_type == 1){
 			if ($savedTool->tool_name == "Textarea") {
-				$output .= '<dl class=" '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
+				$output .= '<dl class=" '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
 								<button type="button" class="btn-close deleteItem"  data-id="'.$savedTool->tool_id.'"></button>
-								<div style="position:relative">
-									
+								<div style="position:relative">			
 									<div class="element"><input aria-invalid="false" type="text"  class="textareaTool" value=""></div>
 								</div>
-						    </dl>';
+						    </dl>
+							';
 			}else{
 				$output .= '
-					<dl class=" '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
+					<dl class=" '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
 						<div>
 							<button type="button" class="btn-close deleteItem" data-id="'.$savedTool->tool_id.'"></button>
 							<div class="element">'.$savedTool->tool_name.'</div>
 							
 						</div>
+						<div class="name-style">'.$signerName.'</div>
 					</dl>
+				
 				';	
 			}
 			$added_tool = $added_tool + 1;
@@ -38,11 +39,14 @@ $converted_tool = 0;
 			$output .= '
 			<div class="tool-box main-element title" 
 				style="top: '.$savedTool->tool_pos_top.'; 
-				left: '.$savedTool->tool_pos_left.';" data-id="'.$savedTool->tool_id.'" data-name="'.$savedTool->tool_name.'" >
+				left: '.$savedTool->tool_pos_left.';" data-id="'.$savedTool->tool_id.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" >
 				<button type="button" class="btn-close removeItem"  data-id="'.$savedTool->tool_id.'"></button>
-					<img src="'.$path.$savedTool->filename.'" class="" />
+					
+					<img src="'.$savedTool->file.'" class="img-fluid" />
+					
 				
-			</div>';
+			</div>
+			';
 			$converted_tool = $converted_tool + 1;
 		}
 		

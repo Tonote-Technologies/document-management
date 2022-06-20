@@ -12,7 +12,7 @@ if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '192.16
     define("DB_SERVER", "localhost");
     define("DB_USER", "root");
     define("DB_PASS", "");
-    define("DB_NAME", "tonote_document_management");
+    define("DB_NAME", "tonotedb");
 }else{
     define("DB_SERVER", "localhost");
     define("DB_USER", "tonote_user");

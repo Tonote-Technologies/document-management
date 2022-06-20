@@ -32,7 +32,7 @@ if (is_post_request()) {
       
       // test if admin found and password is correct
       if ($admin != false && $admin->verify_password($password)) {
-        // Logged out Customer and riders before login in Admin
+        // Logged out Customer and riders before login in admin
         $session->logout(true); //for admin logout
         $session->logout('', true); //for Riders logout
 
@@ -40,8 +40,9 @@ if (is_post_request()) {
         $session->login($admin);
         
         //for logging actions in the log file
-        log_action('Admin Login', "{$admin->full_name()} Logged in.", "login");
+        log_action('admin Login', "{$admin->full_name()} Logged in.", "login");
         redirect_to(url_for('dashboard/'));
+        // pre_r($admin);
 
       } else {
         // email not found or password does not match
@@ -103,6 +104,7 @@ if (is_post_request()) {
                         <?php if ($errors) { ?>
                         <?php echo display_errors($errors); ?>
                         <?php } ?>
+                        <div><?php echo display_session_message(); ?></div>
                         <form method="post" id='login_form'>
 
                             <input class="form-control" type="email" name="login[email]" placeholder="Email" required

@@ -2,7 +2,7 @@
 
 $document_id = $_POST['document_id'];
 $path = 'upload/';
-$documents = DocumentImage::find_by_document_ids($document_id);
+$documents = DocumentImage::find_by_document_id($document_id);
 $documentResource = DocumentResource::find_by_document_ids($document_id);
 $totalPage = count($documents);
 	

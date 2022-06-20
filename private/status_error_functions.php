@@ -49,6 +49,6 @@ function display_session_message()
     $msg = $session->message();
     if (isset($msg) && $msg != '') {
         $session->clear_message();
-        return '<div class="alert alert-success alert-dismissable text-center"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>' . h($msg) . '</strong></div>';
+        return '<div class="alert alert-success  text-center"><strong>' . h($msg) . '</strong></div>';
     }
 }

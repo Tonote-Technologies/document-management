@@ -1,18 +1,25 @@
 $(document).on("click", ".tool li", function (e) {
   var toolId = $(this).data("id");
   var toolName = $(this).data("value");
-  // $('.'+toolId).css('display', 'block');
+  var toolUser = $(this).data("user");
+  var UserEmail = $(this).data("email");
   $("#storage").val(toolId);
   $("#toolName").val(toolName);
-  // addMouseMoveListener(toolId)
+  $("#toolUser").val(toolUser);
+  $("#UserEmail").val(UserEmail);
 
-  var current_click = $("#currentId").val();
-  if (current_click != "") {
-    removeMouseMoveListener();
-    addMouseMoveListener(toolId);
+  if (toolUser == 0) {
+    errorAlert("Please select a signer");
   } else {
-    addMouseMoveListener(toolId);
+    var current_click = $("#currentId").val();
+    if (current_click != "") {
+      removeMouseMoveListener();
+      addMouseMoveListener(toolId);
+    } else {
+      addMouseMoveListener(toolId);
+    }
   }
+
 });
 $(document).on("click", "#clearSession", function (e) {
   clearCart()
@@ -39,12 +46,14 @@ $(document).on("click", "#mainWrapper", function (e) {
     var cId = $("#currentId").val();
     $("#" + cId).css("display", "none");
     let toolName = $("#toolName").val();
+    let toolUser = $("#toolUser").val();
+    let UserEmail = $("#UserEmail").val();
     var posX = $(this).offset().left;
     var posY = $(this).offset().top;
     let x = e.pageX - posX;
     let y = e.pageY - posY;
 
-    appendToolbox(x, y, eId);
+    // appendToolbox(x, y, eId);
     removeMouseMoveListener();
     storage.val("");
     if (toolName == "Sign") {
@@ -58,18 +67,21 @@ $(document).on("click", "#mainWrapper", function (e) {
     var tool_left_pos = x;
     var tool_type = 1;
 
-    console.log(action, tool_id, tool_type, tool_class, tool_text, tool_top_pos, tool_left_pos,);
-    savetoSession(action, tool_id, tool_type, tool_class, tool_text, tool_top_pos, tool_left_pos,);
+
+    savetoSession(action, tool_id, toolUser, UserEmail, tool_type, tool_class, tool_text, tool_top_pos, tool_left_pos,);
   }
 });
 
 function findSignature() {
+  let signer_id = $("#toolUser").val();
+  // successAlert(signer_id);
   $.ajax({
     url: "inc/find-element.php", //path to send this image data to the server site api or file where we will get this data and convert it into a file by base64
     method: "POST",
     dataType: "json",
     data: {
       findSignature: 1,
+      signer_id: signer_id,
     },
     success: function (data) {
       if (data.success == true) {
@@ -82,14 +94,7 @@ function findSignature() {
   });
 }
 
-$(document).on("click", "#updateSignature", function () {
-  var c = $("#signatureAction").val("update")
-  $("#createSignatureModal").modal('show')
 
-  console.log(c)
-  // $("#actionWord").html("Update")
-  // signatureFile();
-})
 
 function signatureFile() {
   $.ajax({
@@ -105,9 +110,10 @@ function signatureFile() {
 }
 
 
-function savetoSession(action, tool_id, tool_type, tool_class, tool_text, tool_top_pos, tool_left_pos) {
+function savetoSession(action, tool_id, toolUser, UserEmail, tool_type, tool_class, tool_text, tool_top_pos, tool_left_pos) {
   var document_id = $("#document_id").val();
   var filename = $("#filename").val();
+  console.log(toolUser);
   $.ajax({
     url: "inc/process-tool.php",
     method: "POST",
@@ -116,6 +122,8 @@ function savetoSession(action, tool_id, tool_type, tool_class, tool_text, tool_t
       document_id: document_id,
       filename: filename,
       tool_id: tool_id,
+      toolUser: toolUser,
+      UserEmail: UserEmail,
       tool_type: tool_type,
       tool_class: tool_class,
       tool_text: tool_text,
@@ -129,20 +137,14 @@ function savetoSession(action, tool_id, tool_type, tool_class, tool_text, tool_t
   });
 }
 
-function editSession(
-  edit,
-  tool_id,
-  tool_class,
-  tool_text,
-  tool_top_pos,
-  tool_left_pos,
-) {
+function editSession(edit, tool_id, toolUser, tool_class, tool_text, tool_top_pos, tool_left_pos) {
   var tool_qty = 1;
   $.ajax({
     url: "session/action.php",
     method: "POST",
     data: {
       tool_id: tool_id,
+      toolUser: toolUser,
       tool_qty: tool_qty,
       tool_class: tool_class,
       tool_text: tool_text,
@@ -169,71 +171,19 @@ function clearCart() {
   });
 }
 
+
+async function load_session_data() {
+  let document_id = $("#document_id").val();
+  let response = await fetch('session/fetch_session.php?document_id=' + document_id);
+  let data = await response.json();
+  $("#mainWrapper").html(data.session_details);
+  $("#shopping_cart").html(data.added_tool);
+  savedragged();
+  dragElement();
+}
 load_session_data()
-function load_session_data() {
-  // fetch_record()
-  var document_id = $("#document_id").val();
 
-  console.log(document_id);
-  $.ajax({
-    url: "session/fetch_session.php",
-    method: "POST",
-    dataType: "json",
-    data: { document_id: document_id },
-    success: function (data) {
-      $("#mainWrapper").html(data.session_details);
-      $("#shopping_cart").html(data.added_tool);
-      savedragged();
-      dragElement();
-    },
-  });
-}
-// fetch_record()
-// function fetch_record() {
-//   var document_id = $("#document_id").val();
 
-//   console.log(document_id);
-//   $.ajax({
-//     url: "session/fetch_record.php",
-//     method: "POST",
-//     dataType: "json",
-//     data: { document_id: document_id },
-//     success: function (data) {
-//       $("#mainWrapper").html(data.session_details);
-//       $("#shopping_cart").html(data.total_item);
-//       // load_session_data();
-//     },
-//   });
-// }
-
-// Add a circle to the document and return its handle
-function appendToolbox(x, y, eId) {
-  let toolName = $("#toolName").val();
-  let newDiv = document.createElement("dl");
-  // var cId = $("#currentId").val();
-  // console.log(toolName)
-  if (toolName == 'Textarea') {
-    // var div = '<input aria-invalid="false" type="text"  class="textareaTool" value="">';
-
-    var div = '<div class=" " id="textTool1"><button type="button" class="btn-close deleteItem" data-id="1"></button><div>';
-    div += '<input aria-invalid="false" type="text"  class="textareaTool" value=""></div></div>';
-    // console.log("Text")
-  } else {
-    var div = '<div><button type="button" class="btn-close deleteItem"></button>';
-    div += "<div>" + toolName + '<i data-feather="arrow-down-right"></i></div>';
-    div += "</div>";
-    console.log("others")
-  }
-
-  $(newDiv).html(div);
-  // $(newDiv).attr('id', 'draggable');
-  let adjX = x + 10; //click happens in center
-  let adjY = y;
-  $(newDiv).css("left", adjX);
-  $(newDiv).css("top", adjY);
-  $("#mainWrapper").append(newDiv);
-  return newDiv;
-}
 
 $(document).on("click", ".deleteItem", function () {
   $(this).parent().parent().remove();
@@ -276,14 +226,7 @@ function savedragged() {
       stop: function (e, ui) {
         let tool_top_pos = ui.position.top;
         let tool_left_pos = ui.position.left;
-        editSession(
-          edit,
-          tool_id,
-          tool_class,
-          tool_text,
-          tool_top_pos,
-          tool_left_pos,
-        );
+        editSession(edit, tool_id, tool_class, tool_text, tool_top_pos, tool_left_pos);
       },
     });
   });
@@ -311,12 +254,7 @@ function dragElement() {
 }
 
 
-function editElement(
-  edit,
-  tool_id,
-  tool_top_pos,
-  tool_left_pos,
-) {
+function editElement(edit, tool_id, tool_top_pos, tool_left_pos) {
   $.ajax({
     url: "session/edit_element.php",
     method: "POST",
@@ -332,9 +270,3 @@ function editElement(
     },
   });
 }
-
-
-
-
-
-

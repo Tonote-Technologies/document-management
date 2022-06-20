@@ -1,12 +1,14 @@
 <?php class DocumentResource extends DatabaseObject
 {
     protected static $table_name = "documentResource";
-    protected static $db_columns = ['id', 'document_id', 'filename', 'tool_id', 'tool_type','tool_name','tool_class', 'tool_pos_top', 'tool_pos_left', 'created_at', 'updated_at', 'created_by', 'deleted'];
+    protected static $db_columns = ['id', 'document_id', 'filename', 'file', 'tool_id', 'toolUser','tool_type','tool_name','tool_class', 'tool_pos_top', 'tool_pos_left', 'created_at', 'updated_at', 'created_by', 'deleted'];
 
     public $id;
     public $document_id;
     public $filename;
+    public $file;
     public $tool_id;
+    public $toolUser;
     public $tool_type;
     public $tool_name;
     public $tool_class;
@@ -31,7 +33,9 @@
     {
         $this->document_id = $args['document_id'] ?? '';
         $this->filename = $args['filename'] ?? '';
+        $this->file = $args['file'] ?? '';
         $this->tool_id = $args['tool_id'] ?? '';
+        $this->toolUser = $args['toolUser'] ?? '';
         $this->tool_type = $args['tool_type'] ?? '';
         $this->tool_name = $args['tool_name'] ?? '';
         $this->tool_class      = $args['tool_class'] ?? '';
@@ -100,19 +104,43 @@
         }
     }
 
-    static public function removeTool($id) {
-    $sql = "DELETE FROM " . static::$table_name . " ";
-    $sql .= "WHERE id='" . self::$database->escape_string($id) . "' ";
-    $sql .= "LIMIT 1";
-    $result = self::$database->query($sql);
-    return $result;
+    static public function find_by_user_tool($document_id, $toolUser){
+        $sql = "SELECT * FROM " . static::$table_name . " ";
+        $sql .= "WHERE document_id ='" . self::$database->escape_string($document_id) . "'";
+        $sql .= " AND toolUser ='" . self::$database->escape_string($toolUser) . "'";
+        // $sql .= " AND (deleted IS NULL OR deleted = 0 OR deleted = '') ";
+        $sql .= " ORDER BY id DESC ";
+        // echo $sql;
+        $obj_array = static::find_by_sql($sql);
+        if (!empty($obj_array)) {
+            return $obj_array;
+        } else {
+            return false;
+        }
+    }
 
-    // After deleting, the instance of the object will still
-    // exist, even though the database record does not.
-    // This can be useful, as in:
-    //   echo $user->first_name . " was deleted.";
-    // but, for example, we can't call $user->update() after
-    // calling $user->delete().
-  }
+    static public function removeTool($id) {
+        $sql = "DELETE FROM " . static::$table_name . " ";
+        $sql .= "WHERE id='" . self::$database->escape_string($id) . "' ";
+        $sql .= "LIMIT 1";
+        $result = self::$database->query($sql);
+        return $result;
+
+        // After deleting, the instance of the object will still
+        // exist, even though the database record does not.
+        // This can be useful, as in:
+        //   echo $user->first_name . " was deleted.";
+        // but, for example, we can't call $user->update() after
+        // calling $user->delete().
+    }
+
+    static public function removeSignerTool($document_id, $toolUser) {
+        $sql = "DELETE FROM " . static::$table_name . " ";
+        $sql .= "WHERE document_id='" . self::$database->escape_string($document_id) . "' ";
+        $sql .= " AND toolUser='" . self::$database->escape_string($toolUser) . "' ";
+        // $sql .= "LIMIT 1";
+        $result = self::$database->query($sql);
+        return $result;
+    }
     
 }

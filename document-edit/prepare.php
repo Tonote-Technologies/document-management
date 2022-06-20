@@ -5,10 +5,18 @@ $page_title = 'Document Preparation';
 // $previous_page = $_SERVER['HTTP_REFERER'];
 
 if($_GET['type'] == 1){
+    $record = Document::find_by_document_id($_GET['document_id']);
+    $record->created_by != $loggedInAdmin->id ? redirect_to('../logout.php') : ''; 
+    
     $documents = Document::find_by_document_ids($_GET['document_id']);
     $path = "document-edit/upload/raw_files/";
     $title = $documents[0]->title;
+
+    
 }else{
+    $record = Template::find_by_document_id($_GET['document_id']);
+    $record->created_by != $loggedInAdmin->id ? redirect_to('../logout.php') : ''; 
+    
     $documents = Template::find_by_document_ids($_GET['document_id']);
     $path = "templates/affidavit_template/";
     $title = $documents[0]->title;

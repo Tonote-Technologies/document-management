@@ -20,7 +20,7 @@ class AccessControl extends DatabaseObject
 		$this->admin_id 		= $args['admin_id'] ?? '';
 		$this->support 	        = $args['support'] ?? '';
 		$this->created_at 		= $args['created_at'] ?? date('Y-m-d H:i:s');
-        $this->deleted          = $args['deleted'] ?? '';
+    $this->deleted          = $args['deleted'] ?? '';
     }
 
     

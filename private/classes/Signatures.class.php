@@ -14,7 +14,6 @@
     public $counts;
 
    
-
     public function __construct($args = [])
     {
         $this->user_id      = $args['user_id'] ?? '';

@@ -1,11 +1,13 @@
 <?php class SignatureDetail extends DatabaseObject
 {
     protected static $table_name = "signatureDetails";
-    protected static $db_columns = ['id', 'user_id', 'filename', 'type', 'category','signature_id','created_at', 'updated_at', 'created_by', 'deleted'];
+    protected static $db_columns = ['id', 'user_id', 'user_email', 'filename','file', 'type', 'category','signature_id','created_at', 'updated_at', 'created_by', 'deleted'];
     
     public $id;
     public $user_id;
+    public $user_email;
     public $filename;
+    public $file;
     public $type;
     public $category;
     public $signature_id;
@@ -30,7 +32,9 @@
     public function __construct($args = [])
     {
         $this->user_id      = $args['user_id'] ?? '';
+        $this->user_email   = $args['user_email'] ?? '';
         $this->filename     = $args['filename'] ?? '';
+        $this->file         = $args['file'] ?? '';
         $this->type         = $args['type'] ?? '';
         $this->category     = $args['category'] ?? '';
         $this->signature_id     = $args['signature_id'] ?? '';
@@ -48,7 +52,20 @@
         $sql .= " ORDER BY id ASC ";
         return static::find_by_sql($sql);
     }
-
+    public static function find_by_email($options=[])
+    {
+        $user_email = $options['user_email'] ?? false;
+        $category = $options['category'] ?? false;
+        $sql = "SELECT * FROM " . static::$table_name . " ";
+        $sql .= "WHERE user_email ='" . self::$database->escape_string($user_email) . "'";
+        if(isset($category)){
+            $sql .= " AND category ='" . self::$database->escape_string($category) . "'";
+        } 
+        $sql .= " AND (deleted IS NULL OR deleted = 0 OR deleted = '') ";
+        $sql .= " ORDER BY id ASC ";
+        return static::find_by_sql($sql);
+    }
+// find_by_email
     public static function find_by_element($options=[])
     {
         $user_id = $options['user_id'] ?? false;
@@ -104,16 +121,20 @@
      public static function createSignature($options=[]){
                 
         $user_id     = $options['user_id'] ?? false;
+        $user_email     = $options['user_email'] ?? false;
         $set_default = $options['set_default'] ?? false;
         $filename    = $options['filename'] ?? false; 
+        $file        = $options['file'] ?? false; 
         $type        =  $options['type'] ?? false;
         $category    =  $options['category'] ?? false;
 
         $args2 = [
-            'user_id' => $user_id,
-            'filename' => $filename,
-            'type' => $type,
-            'category' => $category,
+            'user_id'    => $user_id,
+            'user_email'    => $user_email,
+            'filename'   => $filename,
+            'file'       => $file,
+            'type'       => $type,
+            'category'   => $category,
             'created_at' => date('Y-m-d H:i:s'),
             'created_by' => $user_id ?? 0,
         ];

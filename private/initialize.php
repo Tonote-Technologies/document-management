@@ -20,7 +20,7 @@
   // * Can set a hardcoded value:
 
   if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '192.168.64.2') {
-       define("WWW_ROOT", '/document-management-v2');
+       define("WWW_ROOT", '/document-management');
   }else{
        define("WWW_ROOT", '/');
   }

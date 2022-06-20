@@ -60,10 +60,10 @@ class Document extends DatabaseObject
         $sql .= " AND (deleted IS NULL OR deleted = 0 OR deleted = '') ";
         $sql .= " ORDER BY id DESC ";
         $obj_array = static::find_by_sql($sql);
-        if (!empty($obj_array)) {
-            return $obj_array;
+        if(!empty($obj_array)) {
+        return array_shift($obj_array);
         } else {
-            return false;
+        return false;
         }
     }
 }

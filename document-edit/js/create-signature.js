@@ -12,14 +12,13 @@ $(document).on("click", ".choose", function () {
         let choiceID = $(this).data("id");
         $("#selectedSignature").val(choiceID);
 
-        let mySignature = $("#signature-wrap" + choiceID).clone();
-        let myInitial = $("#initial-wrap" + choiceID).clone();
+        let mySignature = $("#signature-wrap" + choiceID).clone().addClass('newClass');
+        let myInitial = $("#initial-wrap" + choiceID).clone().addClass('newClass');
         $("#selected-signature").html(mySignature);
         $("#selected-initial").html(myInitial);
     }
 });
 $(document).on("click", "#first-tab", function () {
-    // $("#first-tab").click(function () {
     $(".btn-choose").attr("id", "choose");
 });
 
@@ -34,20 +33,20 @@ $(document).on("click", ".btn-choose", function () {
 
     if (btnId == "choose") {
         let selectedSignature = $("#selectedSignature").val();
-        // let theSign = "#digi-sign" + selectedSignature;
-        let theIntial = "#initial-wrap" + selectedSignature;
+
         let theSign = "#selected-signature";
-        // let theIntial = "#selected-initial";
+        let theIntial = "#selected-initial";
+
         saveSignature(theSign, "sign", 1, 1);
         saveSignature(theIntial, "initial", 1, 2);
-        successTime("Signature Created Successfully");
-    } else if (btnId == "draw") {
-        // console.log("draw");
-        let theSign = $('#saveSignature');
 
+    } else if (btnId == "draw") {
+        let theSign = $('#saveSignature');
         saveSignature(theSign, "sign", 2, 1);
+
     } else if (btnId == "upload") {
-        console.log("upload");
+        let img = $("#uploadSignature").val();
+        uploadSignature(img, "sign", 3, 1);
     }
 });
 
@@ -55,9 +54,28 @@ $(".saveSign").click(function () {
     $("#draw").removeClass("disabled");
 });
 
+function uploadSignature(img, imgType, etype, category) {
+    $.ajax({
+        url: "inc/save-signature.php", //path to send this image data to the server site api or file where we will get this data and convert it into a file by base64
+        method: "POST",
+        dataType: "json",
+        data: {
+            action: 'create',
+            img: img,
+            imgType: imgType,
+            etype: etype,
+            category: category,
+        },
+        success: function (data) {
+            successAlert(data.msg);
+        },
+    });
+
+}
+
 function saveSignature(myID, imgType, etype, category) {
+    console.log(myID);
     html2canvas($(myID), {
-        //give the div id whose image you want in my case this is #cont
         onrendered: function (canvas) {
             var img = canvas.toDataURL("image/png", 1.0); //here set the image extension and now image data is in var img that will send by our ajax call to our api or server site page
             $.ajax({
@@ -72,10 +90,46 @@ function saveSignature(myID, imgType, etype, category) {
                     category: category,
                 },
                 success: function (data) {
-                    let theImg = "upload/" + data.signImg;
-                    console.log(theImg);
+                    successAlert("Signature Created Successfully");
                 },
             });
         },
     });
 }
+
+$(document).on("click", "#updateSignature", function () {
+    $("#signatureAction").val("create")
+    $("#createSignatureModal").modal('show')
+})
+
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            let size = input.files[0].size;
+            let newSize = convertSize(size);
+            let data = e.target.result;
+            $('#image-preview').attr('src', data);
+            $("#uploadSignature").val(data);
+            $('#file-input-text').text(newSize)
+            $('#image-preview').hide();
+            $('#image-preview').fadeIn(650);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function convertSize(size) {
+    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (size == 0) return '0 Byte';
+    var i = parseInt(Math.floor(Math.log(size) / Math.log(1024)));
+    return Math.round(size / Math.pow(1024, i), 2) + ' ' + sizes[i];
+}
+
+$("#file-input").change(function () {
+    readURL(this);
+    $(".btn-choose").removeClass("disabled");
+});
+
+
