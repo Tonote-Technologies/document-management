@@ -85,7 +85,7 @@ input[type="file"] {
 
 .newClass {
     /* display: none; */
-    font-size: 30px;
+    font-size: 25px;
     color: #000;
 }
 </style>
@@ -170,6 +170,8 @@ input[type="file"] {
                         <div class="border-bottom mb-1">Signers</div>
 
                         <div id="list-signers"></div>
+                        <hr>
+
 
 
 
@@ -178,8 +180,8 @@ input[type="file"] {
                 </div>
             </div>
 
-            <div class="tool-box  tool-style textTool" id="textTool">
-                <input aria-invalid="false" type="text" class="textareaTool" value="">
+            <div class="tool-box  textTool" id="textTool">
+                <input aria-invalid="false" type="text" class="v-textareaTool" value="">
             </div>
 
         </div>
@@ -356,6 +358,7 @@ input[type="file"] {
                                                         onclick="signatureClear()">Clear</label>
                                                 </div>
                                                 <div class="mt-1">
+                                                    <input type="hidden" id="drawnSignature">
                                                     <img id="saveSignature" alt="Saved image png"
                                                         src="<?php echo url_for('assets/images/empty.png') ?>"
                                                         width="150" height="150" />
@@ -370,7 +373,7 @@ input[type="file"] {
                                                 <div class="col-lg-12 col-md-12 mb-1 mb-sm-0">
                                                     <div class="file-upload-wrapper">
                                                         <form>
-                                                            <input type="text" id="uploadSignature">
+                                                            <input type="hidden" id="uploadSignature">
                                                             <label class="custom-file-upload">
                                                                 <div>
                                                                     <img id="image-preview"
@@ -409,12 +412,14 @@ input[type="file"] {
                         pen-and-paper signature or initial. -->
                     </div>
                     <section class="d-flex justify-content-between">
-                        <table>
-                            <tr>
-                                <td><span id="selected-signature"></span></td>
-                                <td><span id="selected-initial"></span></td>
-                            </tr>
-                        </table>
+                        <div class="table-responsive text-center">
+                            <table class="table " id="cloneWrap">
+                                <tr class="p-0 m-0">
+                                    <td class="p-2 m-0"><span id="selected-signature"></span></td>
+                                    <td class="p-1 m-0"><span id="selected-initial"></span></td>
+                                </tr>
+                            </table>
+                        </div>
                         <div>
 
                             <button type="button"
@@ -657,6 +662,7 @@ input[type="file"] {
 
     });
 
+    // Click to select siganture or initial
     $(document).on("click", ".element", function(e) {
         let name = $(this).html();
         let parentID = $(this).closest(".tool-box").data("id");
@@ -673,7 +679,7 @@ input[type="file"] {
         }
     });
 
-
+    // Find sinature or
     function findElement(parentID, parentName, category, toolUser) {
         $.ajax({
             url: "inc/find-element.php",

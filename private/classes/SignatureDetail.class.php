@@ -63,6 +63,7 @@
         } 
         $sql .= " AND (deleted IS NULL OR deleted = 0 OR deleted = '') ";
         $sql .= " ORDER BY id ASC ";
+        // echo $sql;
         return static::find_by_sql($sql);
     }
 // find_by_email
@@ -95,6 +96,25 @@
         } else {
             return false;
         }
+    }
+
+     public static function find_by_element_record($options=[])
+    {
+        $user_email = $options['user_email'] ?? false;
+        $category = $options['category'] ?? false;
+        $type = $options['type'] ?? false;
+        $sql = "SELECT * FROM " . static::$table_name . " ";
+        $sql .= "WHERE user_email ='" . self::$database->escape_string($user_email) . "'";
+        if(isset($category)){
+            $sql .= " AND category ='" . self::$database->escape_string($category) . "'";
+        } 
+        if(isset($type)){
+            $sql .= " AND type='" . self::$database->escape_string($type) . "'";
+        } 
+        $sql .= " AND (deleted IS NULL OR deleted = 0 OR deleted = '') ";
+        $sql .= " ORDER BY id ASC ";
+        // echo $sql;
+        return static::find_by_sql($sql);
     }
 
     public static function find_by_category($options=[])

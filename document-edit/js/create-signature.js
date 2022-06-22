@@ -20,13 +20,17 @@ $(document).on("click", ".choose", function () {
 });
 $(document).on("click", "#first-tab", function () {
     $(".btn-choose").attr("id", "choose");
+    $("#cloneWrap").removeClass("d-none");
+
 });
 
 $("#second-tab").click(function () {
     $(".btn-choose").attr("id", "draw").addClass("disabled");
+    $("#cloneWrap").addClass("d-none");
 });
 $("#third-tab").click(function () {
     $(".btn-choose").attr("id", "upload");
+    $("#cloneWrap").addClass("d-none");
 });
 $(document).on("click", ".btn-choose", function () {
     let btnId = $(this).attr("id");
@@ -41,8 +45,8 @@ $(document).on("click", ".btn-choose", function () {
         saveSignature(theIntial, "initial", 1, 2);
 
     } else if (btnId == "draw") {
-        let theSign = $('#saveSignature');
-        saveSignature(theSign, "sign", 2, 1);
+        let theSign = $('#drawnSignature').val();
+        uploadSignature(theSign, "sign", 2, 1);
 
     } else if (btnId == "upload") {
         let img = $("#uploadSignature").val();
@@ -77,7 +81,8 @@ function saveSignature(myID, imgType, etype, category) {
     console.log(myID);
     html2canvas($(myID), {
         onrendered: function (canvas) {
-            var img = canvas.toDataURL("image/png", 1.0); //here set the image extension and now image data is in var img that will send by our ajax call to our api or server site page
+            let img = canvas.toDataURL("image/png", 1.0); //here set the image extension and now image data is in var img that will send by our ajax call to our api or server site page
+            // alert(img)
             $.ajax({
                 url: "inc/save-signature.php", //path to send this image data to the server site api or file where we will get this data and convert it into a file by base64
                 method: "POST",
@@ -90,7 +95,7 @@ function saveSignature(myID, imgType, etype, category) {
                     category: category,
                 },
                 success: function (data) {
-                    successAlert("Signature Created Successfully");
+                    successAlert(data.msg);
                 },
             });
         },
@@ -99,6 +104,8 @@ function saveSignature(myID, imgType, etype, category) {
 
 $(document).on("click", "#updateSignature", function () {
     $("#signatureAction").val("create")
+    $("#actionWord").text("Update")
+
     $("#createSignatureModal").modal('show')
 })
 

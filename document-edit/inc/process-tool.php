@@ -14,8 +14,20 @@ if(isset($_POST['action'])){
         ];
         $addResource = New DocumentResource($args);
         $result = $addResource->save();
+        // $result = true;
         if($result == true){
-         exit(json_encode(['success' => true]));
+            
+            if($_POST['tool_text'] == "Textarea"){
+                $data = [
+                    'tool_id' => $_POST['tool_id'],
+                    'text_value' => $_POST['text_value'],
+                    'created_by' => $loggedInAdmin->id,
+                ];
+                $textArea = New TextAreaDetails($data);
+                // pre_r($textArea);
+                $result = $textArea->save();
+            }
+            exit(json_encode(['success' => true]));
         }
     }
 
@@ -24,6 +36,9 @@ if(isset($_POST['action'])){
        if(!empty($element)){
            $result = DocumentResource::removeTool($element->id);
            if($result == true){
+               if($_POST['tool_text'] == "Textarea"){
+                   TextAreaDetails::removeTool($_POST["tool_id"]);
+               }
                exit(json_encode(['success' => true]));
            } 
        }
@@ -38,7 +53,6 @@ if(isset($_POST['editTool'])){
     $args['tool_type'] = 2;
     $args['updated_at'] = date('Y-m-d H:i:s');
     $find->merge_attributes($args);
-    // pre_r($find);
     $result = $find->save();
     if($result == true){
         exit(json_encode(['success' => true]));

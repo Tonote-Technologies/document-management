@@ -12,18 +12,41 @@ $converted_tool = 0;
 	foreach($documentResource as  $savedTool){
 		$signers = Signers::find_by_id($savedTool->toolUser);
 		$signerName = $signers->full_name() ?? "Not Set";
+		$signers_email = $signers->email;
+		$signature = '';
+		if($savedTool->tool_name == "Sign" || $savedTool->tool_name == "Initial"){
+
+		
+			if($signers_email == $loggedInAdmin->email){
+				$tools = SignatureDetail::find_by_email(['user_email' => $signers_email, 'category' => 1 ]);
+				// pre_r($tools);
+				if(!empty($tools)){
+					$signature = 'bg-fill';
+				}else{
+					$signature = '';
+				}
+			}
+		}
 		if($savedTool->tool_type == 1){
 			if ($savedTool->tool_name == "Textarea") {
-				$output .= '<dl class=" '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
-								<button type="button" class="btn-close deleteItem"  data-id="'.$savedTool->tool_id.'"></button>
-								<div style="position:relative">			
-									<div class="element"><input aria-invalid="false" type="text"  class="textareaTool" value=""></div>
-								</div>
+				$text_value = TextAreaDetails::find_by_tool_id($savedTool->tool_id)->text_value;
+				if($text_value == ''){
+					$visible = 'border-primary';
+				}else{
+					$visible = '';
+				}
+				$output .= '<dl class=" '.$signature.' '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
+											
+									<div class="text-wrapper">
+									<button type="button" class="btn-close removeItem"  data-id="'.$savedTool->tool_id.'" style="right:-110"></button>
+										<input aria-invalid="false" type="text"  class="textareaTool '.$visible.'" value="'.$text_value.'">
+									</div>
+								
 						    </dl>
 							';
 			}else{
 				$output .= '
-					<dl class=" '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
+					<dl class=" '.$signature .' '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
 						<div>
 							<button type="button" class="btn-close deleteItem" data-id="'.$savedTool->tool_id.'"></button>
 							<div class="element">'.$savedTool->tool_name.'</div>
@@ -38,7 +61,8 @@ $converted_tool = 0;
 		}else{
 			$output .= '
 			<div class="tool-box main-element title" 
-				style="top: '.$savedTool->tool_pos_top.'; 
+				
+				style="width: '.$savedTool->tool_width.'px; height: '.$savedTool->tool_height.'px; top: '.$savedTool->tool_pos_top.'; 
 				left: '.$savedTool->tool_pos_left.';" data-id="'.$savedTool->tool_id.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" >
 				<button type="button" class="btn-close removeItem"  data-id="'.$savedTool->tool_id.'"></button>
 					
@@ -74,7 +98,3 @@ $converted_tool = 0;
 	);	
 
 	echo json_encode($data);
-
-	// print_r($data);
-
-?>

@@ -8,7 +8,7 @@ function signatureCapture() {
 
 	canvas.width = 474;
 	canvas.height = 314;
-	
+
 	context.fillStyle = "#fff";
 	context.strokeStyle = "#000";
 	context.lineWidth = 2;
@@ -19,14 +19,14 @@ function signatureCapture() {
 	context.fillStyle = "#3a87ad";
 	context.strokeStyle = "#003bb3"; // ToNote Blue
 	context.lineWidth = 2;
-	context.moveTo(20,220);
-	context.lineTo(454,220);
+	context.moveTo(20, 220);
+	context.lineTo(454, 220);
 	// context.stroke();
 
 	context.fillStyle = "#fff";
 	context.strokeStyle = "#000";
-	
-	
+
+
 	var disableSave = true;
 	var pixels = [];
 	var cpixels = [];
@@ -63,8 +63,8 @@ function signatureCapture() {
 			}
 
 			return {
-				x : x,
-				y : y
+				x: x,
+				y: y
 			};
 		};
 
@@ -95,8 +95,8 @@ function signatureCapture() {
 
 			var xy = get_board_coords(e);
 			var xyAdd = {
-				x : (xyLast.x + xy.x) / 2,
-				y : (xyLast.y + xy.y) / 2
+				x: (xyLast.x + xy.x) / 2,
+				y: (xyLast.y + xy.y) / 2
 			};
 
 			if (calculate) {
@@ -137,6 +137,9 @@ function signatureSave() {
 	// save canvas image as data url (png format by default)
 	var dataURL = canvas.toDataURL("image/png");
 	document.getElementById("saveSignature").src = dataURL;
+	$("#drawnSignature").val(dataURL);
+	signatureClear()
+
 };
 
 function signatureClear() {
@@ -157,12 +160,12 @@ function signatureSend() {
 	var replyemail = document.getElementById('replyemail').value;
 
 	var form = document.createElement("form");
-	form.setAttribute("action","upload_file.php");
-	form.setAttribute("enctype","multipart/form-data");
-	form.setAttribute("method","POST");
-	form.setAttribute("target","_self");
+	form.setAttribute("action", "upload_file.php");
+	form.setAttribute("enctype", "multipart/form-data");
+	form.setAttribute("method", "POST");
+	form.setAttribute("target", "_self");
 	// form.action = location.href.replace(/^http:/, 'https:');
-	form.innerHTML = '<input type="text" name="image" value="'+dataURL+'"/>'+'<input type="email" name="email" value="'+sendemail+'"/>'+'<input type="email" name="replyemail" value="'+replyemail+'"/>';
+	form.innerHTML = '<input type="text" name="image" value="' + dataURL + '"/>' + '<input type="email" name="email" value="' + sendemail + '"/>' + '<input type="email" name="replyemail" value="' + replyemail + '"/>';
 	form.submit();
 
 

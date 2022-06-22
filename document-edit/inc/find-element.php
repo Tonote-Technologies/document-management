@@ -1,16 +1,33 @@
 <?php  require_once('../../private/initialize.php');
-
-       if(isset($_POST['findSignature'])){
+        
+        if(isset($_POST['findUser'])){ 
             $signer_id = $_POST['signer_id'] ?? 0;
             $signers_email = Signers::find_by_id($signer_id)->email;
-            $tools = SignatureDetail::find_by_email(['user_email' => $signers_email, 'category' => 1 ]);
-            if(empty($tools)){
+            // $tools = SignatureDetail::find_by_email(['user_email' => $signers_email, 'category' => 1 ]);
+            if($signers_email == $loggedInAdmin->email){
                 exit(json_encode(['success' => true]));
             }else{
                 exit(json_encode(['success' => false])); 
             }
+            
+       }
+       
+       if(isset($_POST['hasSignature'])){
+            $signer_id = $_POST['signer_id'] ?? 0;
+            $signers_email = Signers::find_by_id($signer_id)->email;
+            $tools = SignatureDetail::find_by_email(['user_email' => $signers_email, 'category' => 1 ]);
+            if(!empty($tools)){
+                exit(json_encode(['success' => true, 'msg' => 'You have a signature, click on the tool to append']));
+            }else{
+                exit(json_encode(['success' => false, 'msg' => 'No signature'])); 
+            }
        }
 
+       
+
+
+    //    Check if signer is the loggedIn User
+       
 
        if(isset($_POST['findElement'])){
             $toolUser = $_POST['toolUser'] ?? 0;
@@ -44,7 +61,7 @@
                                 $output .= '<td>
                                                 <label class="form-check-label" for="tool_name'.$tool->id.'" id="signature-img'.$tool->id.'">
                                                    
-                                                    <img class="img-fluid" width="150" src="'.$tool->file.'">
+                                                    <img class="img-fluid" height="30" src="'.$tool->file.'">
                                                     
                                                 </label>
                                             </td>';
