@@ -71,14 +71,14 @@
     /* border:1px dashed #01040a83; */
     border: none;
     /* border-bottom: 2px dashed whitesmoke; */
-    background: rgba(255, 255, 255, 0.442);
+    /* background: rgba(255, 255, 255, 0.442); */
 }
 
 
 .text-wrapper{
-  padding: 8px 10px 8px 10px;
+  padding: 10px;
   background: transparent;
-  width: 220px;
+  min-width: 220px;
 }
 
 .text-wrapper:hover{
@@ -91,12 +91,32 @@
 .textareaTool:focus{
   border:1px solid #CCC;
 }
-
-.title:hover .removeItem, .title:hover .ui-icon {
+.title:hover{
+  border: 1px solid #000;
+  border-radius: 0;
+}
+.title:hover .removeItem, .title:hover .ui-icon, .title:hover .ui-resizable-handle {
    display:block !important;
+   
 }
 .ui-icon{
   display: none !important;
+}
+.ui-resizable-helper {
+    border: 1px dotted #000;
+}
+
+.ui-resizable-handle {
+    display: none !important;
+    background-color: rgba(0, 0, 0, .75);
+    width: 12px;
+    height: 12px;
+    
+}
+
+.ui-resizable-se {
+    bottom: -5px;
+    right: -5px;
 }
 
 .removeItem {

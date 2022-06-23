@@ -12,12 +12,17 @@ if(isset($_POST['tool_top_pos'])){
 }
 
 if(isset($_POST['edit_text'])){
+     $tool_id = $_POST['tool_id'];
      $textArea = TextAreaDetails::find_by_tool_id($tool_id);
      $data = [
           'text_value' => $_POST['text_value'],
      ];
      $textArea->merge_attributes($data);
+     // pre_r($textArea);
      $result = $textArea->save();
+     if($result == true){
+          exit(json_encode(['success' => true]));
+     }
 }
 
 if(isset($_POST['resize'])){

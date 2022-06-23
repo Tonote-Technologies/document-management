@@ -88,6 +88,146 @@ input[type="file"] {
     font-size: 25px;
     color: #000;
 }
+
+.nav-tabs .nav-link.active {
+    color: #FFF;
+    background-color: #003bb3;
+    border-radius: 2px;
+    /* border-bottom: 2px solid #003bb3 !important; */
+}
+
+/* #nwgrip,
+#negrip,
+#swgrip,
+#segrip,
+#ngrip,
+#egrip,
+#sgrip,
+#wgrip {
+    width: 10px;
+    height: 10px;
+    background-color: #ffffff;
+    border: 3px solid #000000;
+} */
+
+/* .ui-resizable-handle {
+    position: absolute;
+    font-size: 0.1px;
+    display: block;
+}
+
+.ui-resizable-disabled .ui-resizable-handle,
+.ui-resizable-autohide .ui-resizable-handle {
+    display: none;
+}
+
+.ui-resizable-n {
+    cursor: n-resize;
+    height: 7px;
+    width: 100%;
+    top: 0px;
+    left: 0;
+    background: url(http://www.dakardesign.com/resize-handle.gif) top center no-repeat;
+    border-top: 1px solid #000;
+}
+
+.ui-resizable-s {
+    cursor: s-resize;
+    height: 7px;
+    width: 100%;
+    bottom: 0px;
+    left: 0;
+    background: url(http://www.dakardesign.com/resize-handle.gif) bottom center no-repeat;
+    border-bottom: 1px solid #000;
+}
+
+.ui-resizable-e {
+    cursor: e-resize;
+    width: 7px;
+    right: 0px;
+    top: 0;
+    height: 100%;
+    background: url(http://www.dakardesign.com/resize-handle.gif) right center no-repeat;
+    border-right: 1px solid #000;
+}
+
+.ui-resizable-w {
+    cursor: w-resize;
+    width: 7px;
+    left: 0px;
+    top: 0;
+    height: 100%;
+    background: url(http://www.dakardesign.com/resize-handle.gif) left center no-repeat;
+    border-left: 1px solid #000;
+}
+
+.ui-resizable-se {
+    cursor: se-resize;
+    width: 7px;
+    height: 7px;
+    right: 0px;
+    bottom: 0px;
+    background: url(http://www.dakardesign.com/resize-handle.gif) bottom right no-repeat;
+    border: 1px solid #000;
+}
+
+.ui-resizable-sw {
+    cursor: sw-resize;
+    width: 9px;
+    height: 9px;
+    left: 0px;
+    bottom: 0px;
+    background: url(http://www.dakardesign.com/resize-handle.gif) bottom left no-repeat;
+    border-top: 1px solid #000;
+}
+
+.ui-resizable-nw {
+    cursor: nw-resize;
+    width: 9px;
+    height: 9px;
+    left: 0px;
+    top: 0px;
+    background: url(http://www.dakardesign.com/resize-handle.gif) top left no-repeat;
+    border-top: 1px solid #000;
+}
+
+.ui-resizable-ne {
+    cursor: ne-resize;
+    width: 9px;
+    height: 9px;
+    right: 0px;
+    top: 0px;
+    background: url(http://www.dakardesign.com/resize-handle.gif) top right no-repeat;
+    border-top: 1px solid #000;
+}
+
+#resizable {
+    top: 150px;
+    left: 150px;
+    width: 150px;
+    height: 150px;
+    padding: 0.5em;
+}
+
+#resizable h3 {
+    text-align: center;
+    margin: 0;
+} */
+
+
+
+.button,
+.rectangle {
+    background:
+        url(http://pic.52mxp.com/site/tool/line-h.png) top repeat-x,
+        url(http://pic.52mxp.com/site/tool/line-h.png) bottom repeat-x,
+        url(http://pic.52mxp.com/site/tool/line-v.png) left repeat-y,
+        url(http://pic.52mxp.com/site/tool/line-v.png) right repeat-y;
+}
+
+.button {
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5) !important;
+}
 </style>
 <input type="hidden" id="storage">
 <input type="hidden" id="currentId">
@@ -102,8 +242,17 @@ input[type="file"] {
 <input type="hidden" class="url" value="upload/EmployeeHandbook.pdf">
 
 <div class="container-fluid">
-    <div class="row my-2 d-lg-none">
+    <div class="container">
+        <div class="row my-2 ">
+            <div class="col-lg-12">
+                <!-- <button class="btn btn-primary float-end" id="finish">Finish</button> -->
 
+                <div class="btn-group float-end">
+                    <button class="btn btn-outline-primary">Request a Notary</button>
+                    <button class="btn btn-primary" id="finish">Share document</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row">
@@ -210,7 +359,7 @@ input[type="file"] {
 
 
     <div class="modal fade text-start" id="createSignatureModal">
-        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg ">
+        <div class="modal-dialog modal-xl ">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel17"><span id="actionWord">Create</span> Your Signature
@@ -221,58 +370,63 @@ input[type="file"] {
                     <form class="form form-horizontal">
                         <!-- <div id="signatureFile"></div> -->
                         <input type="hidden" name="action" id="signatureAction" value="create">
-                        <div class="row border-bottom">
-                            <div class="col-6">
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3 col-md-3">
-                                        <label class="col-form-label" for="fullName">Full Name</label>
-                                    </div>
-                                    <div class="col-sm-9 col-md-9">
-                                        <div class="input-group input-group-merge">
-                                            <input type="text" id="fullName" class="form-control" name="fullName"
-                                                value="<?php //echo $fullName?>" placeholder="Full name">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="col-5">
-                                <div class="mb-1 row">
-                                    <div class="col-sm-3 col-md-3">
-                                        <label class="col-form-label" for="initials">Initials</label>
-                                    </div>
-                                    <div class="col-sm-9 col-md-9">
-                                        <div class="input-group input-group-merge">
-                                            <input type="text" id="initials" class="form-control" name="initials"
-                                                value="<?php //echo $initial;?>" placeholder="Initial">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                        </div>
-
-                        <div class="row p-0">
-                            <div class="">
-                                <ul class="nav nav-tabs border-bottom pt-2" role="tablist">
+                        <div>
+                            <div class="nav-vertical">
+                                <ul class="nav nav-tabs nav-left flex-column" role="tablist" style="height: 140px;">
                                     <li class="nav-item">
-                                        <a class="nav-link active" id="first-tab" data-bs-toggle="tab" href="#first"
-                                            aria-controls="first" role="tab" aria-selected="true">CHOOSE</a>
+                                        <a class="nav-link active" id="first-tab" data-bs-toggle="tab"
+                                            aria-controls="first" href="#first" role="tab"
+                                            aria-selected="true">Select</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" id="second-tab" data-bs-toggle="tab" href="#second"
-                                            aria-controls="second" role="tab" aria-selected="false">DRAW</a>
+                                        <a class="nav-link" id="second-tab" data-bs-toggle="tab" aria-controls="second"
+                                            href="#second" role="tab" aria-selected="false">Draw</a>
                                     </li>
-
                                     <li class="nav-item">
-                                        <a class="nav-link" id="third-tab" data-bs-toggle="tab" href="#third"
-                                            aria-controls="third" role="tab" aria-selected="false">UPLOAD</a>
+                                        <a class="nav-link" id="third-tab" data-bs-toggle="tab" aria-controls="third"
+                                            href="#third" role="tab" aria-selected="false">Upload
+                                        </a>
                                     </li>
-
-
                                 </ul>
                                 <div class="tab-content">
-                                    <div class="tab-pane active" id="first" aria-labelledby="first-tab" role="tabpanel">
+                                    <div class="tab-pane border-left active" id="first" role="tabpanel"
+                                        aria-labelledby="first-tab">
+
+                                        <div class="row  mb-1">
+                                            <div class="col-6">
+                                                <div class="mb-1 row">
+                                                    <div class="col-sm-3 col-md-3">
+                                                        <label class="col-form-label" for="fullName">Full
+                                                            Name</label>
+                                                    </div>
+                                                    <div class="col-sm-9 col-md-9">
+                                                        <div class="input-group input-group-merge">
+                                                            <input type="text" id="fullName" class="form-control"
+                                                                name="fullName" value="<?php //echo $fullName?>"
+                                                                placeholder="Full name">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-5">
+                                                <div class="mb-1 row">
+                                                    <div class="col-sm-3 col-md-3">
+                                                        <label class="col-form-label" for="initials">Initials</label>
+                                                    </div>
+                                                    <div class="col-sm-9 col-md-9">
+                                                        <div class="input-group input-group-merge">
+                                                            <input type="text" id="initials" class="form-control"
+                                                                name="initials" value="<?php //echo $initial;?>"
+                                                                placeholder="Initial">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
                                         <table class="table table-striped table-hover table-bordered">
                                             <thead>
                                                 <tr>
@@ -282,13 +436,13 @@ input[type="file"] {
                                             </thead>
                                             <tbody>
                                                 <?php 
-                                                // $sn = 1; 
-                                                // $fontFamily = ['Alex Brush', 'Arizonia', 'Great Vibes', 'Creattion Demo', 'Scriptina Regular','Montserrat', 'Oleo Script Swash Caps', 'The Nautigal', 'Poppins', 'Roboto'];
-                                                $fontFamily = ['Arizonia', 'Montserrat',];
-                                                foreach ($fontFamily as $key => $value)  { 
-                                                $key = $key + 1;
+                        // $sn = 1; 
+                        // $fontFamily = ['Alex Brush', 'Arizonia', 'Great Vibes', 'Creattion Demo', 'Scriptina Regular','Montserrat', 'Oleo Script Swash Caps', 'The Nautigal', 'Poppins', 'Roboto'];
+                        $fontFamily = ['Arizonia', 'Montserrat',];
+                        foreach ($fontFamily as $key => $value)  { 
+                        $key = $key + 1;
 
-                                            ?>
+                    ?>
                                                 <tr>
                                                     <td class="">
                                                         <div class="form-check p-1 d-flex align-items-center">
@@ -326,7 +480,7 @@ input[type="file"] {
                                                                         style="font-family: <?php echo $value?>;"><?php echo $initial;?></span>
                                                                 </div>
                                                                 <!-- <span
-                                                                class="css-1j983t3 signatureID">6D80C6DF365242545678</span> -->
+                                        class="css-1j983t3 signatureID">6D80C6DF365242545678</span> -->
                                                             </div>
                                                         </label>
                                                     </td>
@@ -335,8 +489,19 @@ input[type="file"] {
 
                                             </tbody>
                                         </table>
+
+                                        <div class="table-responsive text-center">
+                                            <table class="table " id="cloneWrap">
+                                                <tr class="p-0 m-0">
+                                                    <td class="p-2 m-0"><span id="selected-signature"></span></td>
+                                                    <td class="p-1 m-0"><span id="selected-initial"></span></td>
+                                                </tr>
+                                            </table>
+                                        </div>
                                     </div>
-                                    <div class="tab-pane" id="second" aria-labelledby="second-tab" role="tabpanel">
+                                    <div class="tab-pane border-left" id="second" role="tabpanel"
+                                        aria-labelledby="second-tab">
+                                        <p>
                                         <div class="row">
                                             <div class="col-lg-8 border-right">
                                                 <div class="text-center">Draw your signature in the tool box </div>
@@ -365,9 +530,11 @@ input[type="file"] {
                                                 </div>
                                             </div>
                                         </div>
+                                        </p>
                                     </div>
-
-                                    <div class="tab-pane" id="third" aria-labelledby="third-tab" role="tabpanel">
+                                    <div class="tab-pane border-left" id="third" role="tabpanel"
+                                        aria-labelledby="third-tab">
+                                        <p>
                                         <form action="#" class="dropzone dropzone-area dz-clickable ">
                                             <div class="row d-flex justify-content-center">
                                                 <div class="col-lg-12 col-md-12 mb-1 mb-sm-0">
@@ -382,7 +549,8 @@ input[type="file"] {
                                                                 </div>
                                                                 <div>
                                                                     <input type="file" id="file-input" />
-                                                                    <span id="file-input-text">Click here to Upload your
+                                                                    <span id="file-input-text">Click here to Upload
+                                                                        your
                                                                         signature</span>
                                                                 </div>
                                                             </label>
@@ -391,10 +559,10 @@ input[type="file"] {
                                                 </div>
                                             </div>
                                         </form>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </form>
 
@@ -412,13 +580,7 @@ input[type="file"] {
                         pen-and-paper signature or initial. -->
                     </div>
                     <section class="d-flex justify-content-between">
-                        <div class="table-responsive text-center">
-                            <table class="table " id="cloneWrap">
-                                <tr class="p-0 m-0">
-                                    <td class="p-2 m-0"><span id="selected-signature"></span></td>
-                                    <td class="p-1 m-0"><span id="selected-initial"></span></td>
-                                </tr>
-                            </table>
+                        <div class="table-responsive ">
                         </div>
                         <div>
 
@@ -527,6 +689,8 @@ input[type="file"] {
                         <input type="hidden" id="pos_left" name="editTool[tool_pos_left]">
                         <input type="hidden" id="filename" name="editTool[filename]" placeholder="filename">
                         <input type="hidden" id="file" name="editTool[file]" placeholder="filename">
+                        <input type="text" name="editTool[tool_class]" value="resize tool-box main-element">
+
 
                         <div id="showElement"></div>
                     </div>
@@ -577,6 +741,42 @@ input[type="file"] {
         </div>
     </div>
 
+    <div class="modal fade show" id="finishModal" style="">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Notice</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="text-center py-1">
+                        <p>The following people will be inivited to sign this document</p>
+                        <div class="table-responsive text-center mb-1 p-1">
+                            <table class="table table-bordered table-sm" style="font-size: 12px;">
+                                <thead>
+                                    <tr class="bg-secondary text-white">
+                                        <td>Name</td>
+                                        <td>Email</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Frances Udeme</td>
+                                        <td>udeme@gmail.com</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline-primary">Send now</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <?php   include(SHARED_PATH . '/footer.php'); ?>
 
@@ -587,8 +787,6 @@ input[type="file"] {
     <script src="js/doc-edit.js"></script>
     <script src="js/create-signature.js"></script>
     <script type="text/javascript" src="js/scrolltoolbar.js"></script>
-
-
 
     <script type="text/javascript">
     var document_id = $("#document_id").val();
@@ -974,4 +1172,7 @@ input[type="file"] {
             },
         });
     }
+    $(document).on('click', '#finish', function() {
+        $("#finishModal").modal("show");
+    })
     </script>

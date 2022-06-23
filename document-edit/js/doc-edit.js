@@ -68,7 +68,7 @@ $(document).on("click", "#mainWrapper", function (e) {
       checkSignatureOwnership()
       var tool_class = "tool-box tool-style main-element";
     } else if (toolName == "Textarea") {
-      var tool_class = " main-element";
+      var tool_class = "tool-box main-element";
     } else {
       var tool_class = "tool-box main-element";
     }
@@ -206,6 +206,7 @@ async function load_session_data() {
   $("#mainWrapper").html(data.session_details);
   $("#shopping_cart").html(data.added_tool);
   dragElement();
+  resizeElement();
 
 }
 load_session_data()
@@ -259,21 +260,34 @@ function dragElement() {
         let tool_left_pos = ui.position.left;
         editElement(edit, tool_id, tool_text, tool_top_pos, tool_left_pos,);
       },
-    }).resizable({
+    })
+  });
+}
+
+
+
+function resizeElement() {
+  $(".resize").each(function () {
+    var $elem = $(this);
+    var tool_id = $(this).data("id");
+    $elem.resizable({
       stop: function (e, ui) {
         let tool_width = ui.size.width;
         let tool_height = ui.size.height;
         updateSize(tool_id, tool_width, tool_height);
-        console.log(tool_id, tool_width, tool_height);
-      }
+      },
+      option: true,
+      handles: "se, sw, nw"
     });
   });
+
 }
 
 $(document).on('input', '.textareaTool', function () {
   let text_value = $(this).val();
-  let tool_id = $(this).closest(".tool-box").data("id");
-
+  let tool_id = $(this).data('id');
+  // let tool_id = $(this).closest(".Textarea").data("id");s
+  // console.log(id);
   $.ajax({
     url: "session/edit_element.php",
     method: "POST",

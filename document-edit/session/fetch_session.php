@@ -35,11 +35,24 @@ $converted_tool = 0;
 				}else{
 					$visible = '';
 				}
-				$output .= '<dl class=" '.$signature.' '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
+				// $output .= '<dl id="'.$savedTool->tool_id.'" class=" '.$signature.' '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
+											
+				// 					<div class="text-wrapper">
+				// 					<button type="button" class="btn-close removeItem"  data-id="'.$savedTool->tool_id.'" style="right:-110"></button>
+										
+				// 						<textarea class="textareaTool '.$visible.'" value="'.$text_value.'" data-id="'.$savedTool->tool_id.'">'.$text_value.'</textarea>
+				// 					</div>
+								
+				// 		    </dl>';
+
+				$output .= '
+							
+							<dl class=" '.$signature.' '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
 											
 									<div class="text-wrapper">
 									<button type="button" class="btn-close removeItem"  data-id="'.$savedTool->tool_id.'" style="right:-110"></button>
 										<input aria-invalid="false" type="text"  class="textareaTool '.$visible.'" value="'.$text_value.'">
+										
 									</div>
 								
 						    </dl>
@@ -60,7 +73,7 @@ $converted_tool = 0;
 			$added_tool = $added_tool + 1;
 		}else{
 			$output .= '
-			<div class="tool-box main-element title" 
+			<div class=" '.$savedTool->tool_class.' title" 
 				
 				style="width: '.$savedTool->tool_width.'px; height: '.$savedTool->tool_height.'px; top: '.$savedTool->tool_pos_top.'; 
 				left: '.$savedTool->tool_pos_left.';" data-id="'.$savedTool->tool_id.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" >
