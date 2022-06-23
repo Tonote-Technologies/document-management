@@ -1,3 +1,58 @@
+#viewPort {
+    position: relative;
+}
+
+.sidebar-nav.sticky {
+    position: fixed;
+    top: 100;
+    bottom: 0;
+}
+
+.sidebar-wrap {
+    position: relative;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.file-upload-wrapper {
+    border: 2px dashed #EBE9F1;
+
+}
+
+.custom-file-upload {
+    font-size: 20px;
+    padding: 30px 12px;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+    height: 200px;
+    /* display: flex; */
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-file-upload:hover {
+    border: 2px dashed #000;
+    color: #000;
+    font-weight: bolder;
+}
+
+.newClass {
+    /* display: none; */
+    font-size: 25px;
+    color: #000;
+}
+
+.nav-tabs .nav-link.active {
+    color: #FFF;
+    background-color: #003bb3;
+    border-radius: 2px;
+    /* border-bottom: 2px solid #003bb3 !important; */
+}
+
 .signTool,
 .initialTool,
 .stampTool,
@@ -5,17 +60,6 @@
 .sealTool, .textTool {
   display: none;
 }
-
-/* .textareaTool{
-    font-family: 'Poppins, Mono&quot, Monaco, monospace'; 
-    letter-spacing: 0.14px; 
-    text-align: left; 
-    font-size: 11.52px !important; 
-    width: 200px; 
-    border-radius: 1.45rem;
-    border: transparent;
-    
-} */
 
 
 .element {
@@ -68,10 +112,7 @@
     font-size: 16px !important; 
     width: 200px; 
     border-radius: 1;
-    /* border:1px dashed #01040a83; */
     border: none;
-    /* border-bottom: 2px dashed whitesmoke; */
-    /* background: rgba(255, 255, 255, 0.442); */
 }
 
 

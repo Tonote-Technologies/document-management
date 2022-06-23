@@ -31,27 +31,24 @@ $converted_tool = 0;
 			if ($savedTool->tool_name == "Textarea") {
 				$text_value = TextAreaDetails::find_by_tool_id($savedTool->tool_id)->text_value;
 				if($text_value == ''){
-					$visible = 'border-primary';
+					$visible = 'border-light';
 				}else{
 					$visible = '';
 				}
-				// $output .= '<dl id="'.$savedTool->tool_id.'" class=" '.$signature.' '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
-											
+				// $output .= '<dl id="'.$savedTool->tool_id.'" class=" '.$signature.' '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">	
 				// 					<div class="text-wrapper">
 				// 					<button type="button" class="btn-close removeItem"  data-id="'.$savedTool->tool_id.'" style="right:-110"></button>
-										
 				// 						<textarea class="textareaTool '.$visible.'" value="'.$text_value.'" data-id="'.$savedTool->tool_id.'">'.$text_value.'</textarea>
 				// 					</div>
-								
 				// 		    </dl>';
 
 				$output .= '
 							
-							<dl class=" '.$signature.' '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
+							<dl id="'.$savedTool->tool_id.'" class=" '.$signature.' '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
 											
 									<div class="text-wrapper">
 									<button type="button" class="btn-close removeItem"  data-id="'.$savedTool->tool_id.'" style="right:-110"></button>
-										<input aria-invalid="false" type="text"  class="textareaTool '.$visible.'" value="'.$text_value.'">
+										<input aria-invalid="false" type="text"  class="textareaTool '.$visible.'" value="'.$text_value.'" data-id="'.$savedTool->tool_id.'">
 										
 									</div>
 								

@@ -36,199 +36,6 @@ if(!empty($mydocument)){
 
 
 <input type="hidden" id="document_id" value="<?php echo $_GET['document_id'] ?>">
-
-
-<style type="text/css">
-/* Sticky our navbar on window scroll */
-#viewPort {
-    position: relative;
-}
-
-.sidebar-nav.sticky {
-    position: fixed;
-    top: 100;
-    bottom: 0;
-}
-
-.sidebar-wrap {
-    position: relative;
-}
-
-input[type="file"] {
-    display: none;
-}
-
-.file-upload-wrapper {
-    border: 2px dashed #EBE9F1;
-
-}
-
-.custom-file-upload {
-    /* border: 1px dashed #EBE9F1 !important; */
-    font-size: 20px;
-    padding: 30px 12px;
-    cursor: pointer;
-    width: 100%;
-    text-align: center;
-    height: 200px;
-    /* display: flex; */
-    display: inline-block;
-    align-items: center;
-    justify-content: center;
-}
-
-.custom-file-upload:hover {
-    border: 2px dashed #000;
-    color: #000;
-    font-weight: bolder;
-}
-
-.newClass {
-    /* display: none; */
-    font-size: 25px;
-    color: #000;
-}
-
-.nav-tabs .nav-link.active {
-    color: #FFF;
-    background-color: #003bb3;
-    border-radius: 2px;
-    /* border-bottom: 2px solid #003bb3 !important; */
-}
-
-/* #nwgrip,
-#negrip,
-#swgrip,
-#segrip,
-#ngrip,
-#egrip,
-#sgrip,
-#wgrip {
-    width: 10px;
-    height: 10px;
-    background-color: #ffffff;
-    border: 3px solid #000000;
-} */
-
-/* .ui-resizable-handle {
-    position: absolute;
-    font-size: 0.1px;
-    display: block;
-}
-
-.ui-resizable-disabled .ui-resizable-handle,
-.ui-resizable-autohide .ui-resizable-handle {
-    display: none;
-}
-
-.ui-resizable-n {
-    cursor: n-resize;
-    height: 7px;
-    width: 100%;
-    top: 0px;
-    left: 0;
-    background: url(http://www.dakardesign.com/resize-handle.gif) top center no-repeat;
-    border-top: 1px solid #000;
-}
-
-.ui-resizable-s {
-    cursor: s-resize;
-    height: 7px;
-    width: 100%;
-    bottom: 0px;
-    left: 0;
-    background: url(http://www.dakardesign.com/resize-handle.gif) bottom center no-repeat;
-    border-bottom: 1px solid #000;
-}
-
-.ui-resizable-e {
-    cursor: e-resize;
-    width: 7px;
-    right: 0px;
-    top: 0;
-    height: 100%;
-    background: url(http://www.dakardesign.com/resize-handle.gif) right center no-repeat;
-    border-right: 1px solid #000;
-}
-
-.ui-resizable-w {
-    cursor: w-resize;
-    width: 7px;
-    left: 0px;
-    top: 0;
-    height: 100%;
-    background: url(http://www.dakardesign.com/resize-handle.gif) left center no-repeat;
-    border-left: 1px solid #000;
-}
-
-.ui-resizable-se {
-    cursor: se-resize;
-    width: 7px;
-    height: 7px;
-    right: 0px;
-    bottom: 0px;
-    background: url(http://www.dakardesign.com/resize-handle.gif) bottom right no-repeat;
-    border: 1px solid #000;
-}
-
-.ui-resizable-sw {
-    cursor: sw-resize;
-    width: 9px;
-    height: 9px;
-    left: 0px;
-    bottom: 0px;
-    background: url(http://www.dakardesign.com/resize-handle.gif) bottom left no-repeat;
-    border-top: 1px solid #000;
-}
-
-.ui-resizable-nw {
-    cursor: nw-resize;
-    width: 9px;
-    height: 9px;
-    left: 0px;
-    top: 0px;
-    background: url(http://www.dakardesign.com/resize-handle.gif) top left no-repeat;
-    border-top: 1px solid #000;
-}
-
-.ui-resizable-ne {
-    cursor: ne-resize;
-    width: 9px;
-    height: 9px;
-    right: 0px;
-    top: 0px;
-    background: url(http://www.dakardesign.com/resize-handle.gif) top right no-repeat;
-    border-top: 1px solid #000;
-}
-
-#resizable {
-    top: 150px;
-    left: 150px;
-    width: 150px;
-    height: 150px;
-    padding: 0.5em;
-}
-
-#resizable h3 {
-    text-align: center;
-    margin: 0;
-} */
-
-
-
-.button,
-.rectangle {
-    background:
-        url(http://pic.52mxp.com/site/tool/line-h.png) top repeat-x,
-        url(http://pic.52mxp.com/site/tool/line-h.png) bottom repeat-x,
-        url(http://pic.52mxp.com/site/tool/line-v.png) left repeat-y,
-        url(http://pic.52mxp.com/site/tool/line-v.png) right repeat-y;
-}
-
-.button {
-    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5) !important;
-}
-</style>
 <input type="hidden" id="storage">
 <input type="hidden" id="currentId">
 <input type="hidden" id="toolName">
@@ -245,8 +52,6 @@ input[type="file"] {
     <div class="container">
         <div class="row my-2 ">
             <div class="col-lg-12">
-                <!-- <button class="btn btn-primary float-end" id="finish">Finish</button> -->
-
                 <div class="btn-group float-end">
                     <button class="btn btn-outline-primary">Request a Notary</button>
                     <button class="btn btn-primary" id="finish">Share document</button>
@@ -268,7 +73,6 @@ input[type="file"] {
 
                         <hr>
                         <div class="border-bottom mb-1 pb-1">
-                            <!-- <button type="button" class=""></button> -->
                             <div class="d-grid col-lg-12 col-md-12 mb-1 mb-lg-0">
                                 <button type="button"
                                     class="btn btn-relief-primary waves-effect waves-float waves-light"
@@ -281,23 +85,13 @@ input[type="file"] {
 
                         <div class="signer-list"></div>
                         <div class="signer-wrapper"></div>
-
-
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-lg-8">
             <div class="card">
-                <!-- <div class="title">
-                    <img src="upload/sign1654145135img.png" data-name="Sign" data-id="69"
-                        style="top: 341.5; left: 512.171875; "
-                        class="tool-box main-element ui-draggable ui-draggable-handle">
-                    <button type="button" class="btn-close removeItem" data-id="69"></button>
-                </div> -->
-                <div class="card-body" id="mainWrapper" style="overflow-x:scroll;">
-
-                </div>
+                <div class="card-body" id="mainWrapper" style="overflow-x:scroll;"> </div>
             </div>
         </div>
         <div class="col-lg-2 d-sm-none d-lg-block">
@@ -314,18 +108,12 @@ input[type="file"] {
                                 <div class="btn  btn-sm">Added Tool</div>
                                 <div class="btn  btn-sm" id="shopping_cart">0</div>
                             </div>
-
                         </div>
                         <div class="border-bottom mb-1">Signers</div>
 
                         <div id="list-signers"></div>
                         <hr>
-
-
-
-
                     </div>
-
                 </div>
             </div>
 

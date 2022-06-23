@@ -14,9 +14,7 @@ if(isset($_POST['action'])){
         ];
         $addResource = New DocumentResource($args);
         $result = $addResource->save();
-        // $result = true;
         if($result == true){
-            
             if($_POST['tool_text'] == "Textarea"){
                 $data = [
                     'tool_id' => $_POST['tool_id'],
@@ -24,7 +22,6 @@ if(isset($_POST['action'])){
                     'created_by' => $loggedInAdmin->id,
                 ];
                 $textArea = New TextAreaDetails($data);
-                // pre_r($textArea);
                 $result = $textArea->save();
             }
             exit(json_encode(['success' => true]));
