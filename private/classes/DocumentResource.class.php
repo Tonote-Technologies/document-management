@@ -29,7 +29,6 @@
         2 => 'Element',
     ];
 
-  
 
     public function __construct($args = [])
     {

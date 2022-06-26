@@ -190,6 +190,17 @@ if($user_id == 0){
     }
 }
 ?>
+
+<?php if(isset($_POST['all_signers'])){ ?>
+<?php foreach(Signers::find_by_document_id($_POST['document_id']) as $value){ ?>
+<tr>
+    <td><?php echo $value->full_name() ?></td>
+    <td><?php echo $value->email ?></td>
+</tr>
+<?php } ?>
+<?php }?>
+
+
 <?php 
 if(isset($_POST['save'])){ 
     

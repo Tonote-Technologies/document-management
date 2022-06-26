@@ -53,7 +53,8 @@ if(!empty($mydocument)){
         <div class="row my-2 ">
             <div class="col-lg-12">
                 <div class="btn-group float-end">
-                    <button class="btn btn-outline-primary">Request a Notary</button>
+                    <a href="<?php echo url_for('request-notary/') ?>" class="btn btn-outline-primary">Request a
+                        Notary</a>
                     <button class="btn btn-primary" id="finish">Share document</button>
                 </div>
             </div>
@@ -483,7 +484,6 @@ if(!empty($mydocument)){
                         <div id="showElement"></div>
                     </div>
                     <div class="modal-footer">
-                        <!-- <button type="button" class="btn btn-primary waves-effect waves-float waves-light" data-bs-dismiss="modal">Accept</button> -->
                         <button type="submit" class="btn btn-primary waves-effect waves-float waves-light"
                             id="append">Append</button>
                     </div>
@@ -513,10 +513,7 @@ if(!empty($mydocument)){
                                     <th rowspan="1"></th>
                                 </tr>
                             </thead>
-                            <tbody id="showSigners">
-
-
-                            </tbody>
+                            <tbody id="showSigners"></tbody>
                         </table>
 
                     </div>
@@ -538,9 +535,9 @@ if(!empty($mydocument)){
                 </div>
 
                 <div class="modal-body">
-                    <div class="text-center py-1">
-                        <p>The following people will be inivited to sign this document</p>
-                        <div class="table-responsive text-center mb-1 p-1">
+                    <div class="text-center">
+                        <p>The following people will be invited to sign this document</p>
+                        <div class="table-responsive text-center p-1">
                             <table class="table table-bordered table-sm" style="font-size: 12px;">
                                 <thead>
                                     <tr class="bg-secondary text-white">
@@ -548,16 +545,11 @@ if(!empty($mydocument)){
                                         <td>Email</td>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Frances Udeme</td>
-                                        <td>udeme@gmail.com</td>
-                                    </tr>
-                                </tbody>
+                                <tbody id="all_signers"></tbody>
                             </table>
                         </div>
                         <div>
-                            <button class="btn btn-outline-primary">Send now</button>
+                            <button class="btn btn-outline-primary" id="sendNow">Send now</button>
                         </div>
                     </div>
                 </div>
@@ -581,6 +573,7 @@ if(!empty($mydocument)){
     $(document).on('click', '#addSignerBtn', function() {
         $("#addSignerModal").modal("show");
     })
+
     $(document).on('click', '#editSignerBtn', function() {
         $("#editSignerModal").modal("show");
         $.ajax({
@@ -617,15 +610,18 @@ if(!empty($mydocument)){
 
         html_code += '<tr id="row_id_' + count + '">';
         html_code += '<td><span id="sr_no">' + count + '</span></td>';
-        html_code += '<td><input type="text" name="full_name[]" id="full_name' + count +
+        html_code += '<td><input type="text" name="full_name[]" id="full_name' +
+            count +
             '" data-srno="' + count +
             '"  placeholder="Full name" class="form-control form-control-sm number_only full_name" required></td>';
 
-        html_code += '<td><input type="text" name="email[]" id="email' + count + '" data-srno="' +
+        html_code += '<td><input type="text" name="email[]" id="email' + count +
+            '" data-srno="' +
             count +
             '"  placeholder="Email" class="form-control form-control-sm number_only email" required></td>';
 
-        html_code += '<td><input type="text" name="phone[]" id="phone' + count + '" data-srno="' +
+        html_code += '<td><input type="text" name="phone[]" id="phone' + count +
+            '" data-srno="' +
             count +
             '"  placeholder="Phone Number" class="form-control form-control-sm number_only phone"></td>';
 
@@ -640,7 +636,8 @@ if(!empty($mydocument)){
         var row_id = $(this).attr("id");
         var total_item_amount = $('#amount' + row_id).val();
         var final_amount = $('#final_total_amt').text();
-        var result_amount = parseFloat(final_amount) - parseFloat(total_item_amount);
+        var result_amount = parseFloat(final_amount) - parseFloat(
+            total_item_amount);
         $('#final_total_amt').text(result_amount);
         $('#row_id_' + row_id).remove();
         count--;
@@ -692,7 +689,6 @@ if(!empty($mydocument)){
                     }
 
                 }
-                // $("#filename").val(data.filename);
 
             },
         });
@@ -962,5 +958,26 @@ if(!empty($mydocument)){
     }
     $(document).on('click', '#finish', function() {
         $("#finishModal").modal("show");
+        $.ajax({
+            url: "inc/signer-script.php",
+            method: "POST",
+            // dataType: "json",
+            data: {
+                all_signers: 1,
+                document_id: document_id,
+            },
+            success: function(data) {
+                $("#all_signers").html(data);
+
+            },
+        });
+    })
+    $(document).on('click', "#sendNow", function() {
+        $("#finishModal").modal("hide");
+        successAlert("Email Sent Successfully");
+        setTimeout(function() {
+            window.location.href = '../dashboard/';
+        }, 2000);
+
     })
     </script>

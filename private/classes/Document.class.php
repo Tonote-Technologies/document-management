@@ -20,8 +20,22 @@ class Document extends DatabaseObject
     const DOCUMENT_STATUS = [
         1 => 'New',
         2 => 'Editing',
-        3 => 'completed',
-        4 => 'Sent',
+        3 => 'Shared',
+        4 => 'Completed',
+    ];
+
+    const REQUEST_STATUS = [
+        1 => 'Scheduled',
+        2 => 'Approved',
+        3 => 'Notarised',
+        4 => 'Cancelled',
+    ];
+
+    const TRANSACTION_STATUS = [
+        1 => 'Unpaid',
+        2 => 'Paid',
+        3 => 'Failed',
+        4 => 'Reoccuring',
     ];
 
     const REQUEST_TYPE = [

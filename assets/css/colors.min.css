@@ -430,8 +430,10 @@ input:focus ~ .bg-light {
   color: #003bb3;
 }
 .btn-outline-primary:hover:not(.disabled):not(:disabled) {
-  background-color: rgba(115, 103, 240, 0.04);
-  color: #003bb3;
+  /* background-color: rgba(115, 103, 240, 0.04); */
+  background-color: #003bb3;
+  /* color: #003bb3; */
+  color: #FFF;
 }
 .btn-outline-primary.show.dropdown-toggle,
 .btn-outline-primary:not(:disabled):not(.disabled).active,

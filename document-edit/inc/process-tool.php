@@ -19,6 +19,7 @@ if(isset($_POST['action'])){
                 $data = [
                     'tool_id' => $_POST['tool_id'],
                     'text_value' => $_POST['text_value'],
+                    'tool_user' => $_POST['toolUser'],
                     'created_by' => $loggedInAdmin->id,
                 ];
                 $textArea = New TextAreaDetails($data);

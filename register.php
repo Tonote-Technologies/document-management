@@ -8,15 +8,15 @@ if (is_post_request()) {
    $args = $_POST;
    $args['admin_level'] = 1;
 
-   $user = new User($args);
-   $user->save();
-   if ($user == true) {
+   $admin = new Admin($args);
+   $admin->save();
+   if ($admin == true) {
       $session->message('Account created successfully! Now Login.');
    }
    redirect_to(url_for('login.php'));
-// pre_r($user);
+// pre_r($admin);
 } else {
-   $user = new User;
+   $admin = new Admin;
 }
 ?>
 
