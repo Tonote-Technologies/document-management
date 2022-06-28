@@ -53,7 +53,7 @@ include(SHARED_PATH . '/header.php');
 <input type="hidden" id="document_id" value="<?php echo uniqid() ?>">
 <input type="hidden" id="url_dir" value="<?php echo url_for('document-edit/edit.php?document_id=') ?>">
 <?php foreach ($documents as $doc) : ?>
-<input type="hidden" class="url" value="<?php echo url_for($path.$doc->filename); ?>">
+<input type="text" class="url" value="<?php echo url_for($path.$doc->filename); ?>">
 <input type="hidden" class="title" value="<?php echo $title; ?>">
 <?php endforeach; ?>
 
@@ -63,7 +63,7 @@ include(SHARED_PATH . '/header.php');
 
 
 
-<div class="wrap">
+<div class="wrap d-none">
     <div class="bg-white inner-wrapper d-flex justify-content-center align-items-center" style="height: 118px;">
 
         <div class="messages" style="font-size: 20px; font-weight:bolder"></div>

@@ -52,7 +52,7 @@ if(!empty($mydocument)){
     <div class="container">
         <div class="row my-2 ">
             <div class="col-lg-12">
-                <div class="btn-group float-end">
+                <div class=" float-end">
                     <a href="<?php echo url_for('request-notary/') ?>" class="btn btn-outline-primary">Request a
                         Notary</a>
                     <button class="btn btn-primary" id="finish">Share document</button>
@@ -478,7 +478,7 @@ if(!empty($mydocument)){
                         <input type="hidden" id="pos_left" name="editTool[tool_pos_left]">
                         <input type="hidden" id="filename" name="editTool[filename]" placeholder="filename">
                         <input type="hidden" id="file" name="editTool[file]" placeholder="filename">
-                        <input type="text" name="editTool[tool_class]" value="resize tool-box main-element">
+                        <input type="hidden" name="editTool[tool_class]" value="resize tool-box main-element">
 
 
                         <div id="showElement"></div>

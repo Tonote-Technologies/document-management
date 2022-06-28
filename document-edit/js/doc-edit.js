@@ -276,8 +276,8 @@ function resizeElement() {
         let tool_height = ui.size.height;
         updateSize(tool_id, tool_width, tool_height);
       },
-      option: true,
-      handles: "se, sw, nw"
+      // option: true,
+      // handles: "se, sw, nw"
     });
   });
 

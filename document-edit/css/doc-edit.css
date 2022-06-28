@@ -104,6 +104,7 @@
 .ui-icon{
   display: none !important;
 }
+/* 
 .ui-resizable-helper {
     border: 1px dotted #000;
 }
@@ -119,7 +120,7 @@
 .ui-resizable-se {
     bottom: -5px;
     right: -5px;
-}
+} */
 .resize button {
   display: none;
   border-radius: 50%;
