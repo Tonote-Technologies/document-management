@@ -58,7 +58,7 @@ $converted_tool = 0;
 											<span>Processing...</span>
 										</div>
 										<input type="file" id="imgupload" style="display:none" accept="image/*" data-id="'.$savedTool->tool_id.'" data-user="'.$savedTool->toolUser.'" / > 
-										<img src="'.$photo.'" class="img-fluid " alt="" id="OpenImgUpload">
+										<img src="'.$photo.'"  data-id="'.$savedTool->tool_id.'"  width: '.$savedTool->tool_width.'px; height: '.$savedTool->tool_height.'px;  class="imageObject img-fluid " alt="" id="OpenImgUpload">
 									</div>
 								
 							</dl>
@@ -79,11 +79,11 @@ $converted_tool = 0;
 		$added_tool = $added_tool + 1;
 		}else{
 			$output .= '
-			<div class=" '.$savedTool->tool_class.' title" style="width: '.$savedTool->tool_width.'px; height: '.$savedTool->tool_height.'px; top: '.$savedTool->tool_pos_top.'; 
+			<div class="imageObject '.$savedTool->tool_class.' title" style="width: '.$savedTool->tool_width.'px; height: '.$savedTool->tool_height.'px; top: '.$savedTool->tool_pos_top.'; 
 							left: '.$savedTool->tool_pos_left.';" data-id="'.$savedTool->tool_id.'" data-user="'.$savedTool->toolUser.'"
 				data-name="'.$savedTool->tool_name.'">
 				<button type="button" class="btn-close removeItem" data-id="'.$savedTool->tool_id.'"></button>
-				<img src="'.$savedTool->file.'" class="img-fluid" />
+				<img src="'.$savedTool->file.'"  data-id="'.$savedTool->tool_id.'"  class=" img-fluid" />
 			</div>
 			';
 			$converted_tool = $converted_tool + 1;
@@ -94,7 +94,7 @@ foreach ($documents as $key => $value) {
 $pageNum = $key + 1;
 $output .= '
 <div class="border">
-    <img src="upload/document_file/'.$value->filename.'" class="img-fluid">
+    <img src="upload/document_file/'.$value->filename.'" class=" img-fluid">
 </div>
 <div class="clearfix">
     <h6 class="float-end">Page '.$pageNum.' of '.$totalPage.'</h6>

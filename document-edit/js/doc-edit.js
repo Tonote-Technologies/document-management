@@ -208,7 +208,7 @@ async function load_session_data() {
   $("#mainWrapper").html(data.session_details);
   $("#shopping_cart").html(data.added_tool);
   dragElement();
-  resizeElement();
+  // resizeElement();
 
 }
 load_session_data()
@@ -280,7 +280,7 @@ function dragElement() {
 
 
 function resizeElement() {
-  $(".img-fluid").each(function () {
+  $(".imageObject").each(function () {
     var $elem = $(this);
     var tool_id = $(this).data("id");
     $elem.resizable({
@@ -288,7 +288,7 @@ function resizeElement() {
         let tool_width = ui.size.width;
         let tool_height = ui.size.height;
         console.log(tool_id, tool_width, tool_height);
-        // updateSize(tool_id, tool_width, tool_height);
+        updateSize(tool_id, tool_width, tool_height);
       },
       // option: true,
       handles: "se, sw, nw"

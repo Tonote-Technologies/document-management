@@ -34,6 +34,9 @@ if(isset($_POST['resize'])){
      ];
      $element->merge_attributes($args);
      $result = $element->save();
+     if($result == true){
+          exit(json_encode(['success' => true, 'tool_width' => $_POST['tool_width'], 'tool_height' => $_POST['tool_height'] ]));
+     }
      // pre_r($element);
 }
 
