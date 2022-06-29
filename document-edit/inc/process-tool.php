@@ -2,9 +2,10 @@
 
 if(isset($_POST['action'])){
     if($_POST["action"] == "addTool"){
+        $tool_id = $_POST['tool_id'].'-'.uniqid();
         $args = [
             'document_id' => $_POST['document_id'], 
-            'tool_id' => $_POST['tool_id'].'-'.uniqid(),
+            'tool_id' => $tool_id,
             'toolUser' => $_POST['toolUser'],
             'tool_class' => $_POST['tool_class'],
             'tool_type' => $_POST['tool_type'],
@@ -17,7 +18,7 @@ if(isset($_POST['action'])){
         if($result == true){
             if($_POST['tool_text'] == "Textarea"){
                 $data = [
-                    'tool_id' => $_POST['tool_id'],
+                    'tool_id' => $tool_id,
                     'text_value' => $_POST['text_value'],
                     'tool_user' => $_POST['toolUser'],
                     'created_by' => $loggedInAdmin->id,
