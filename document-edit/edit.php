@@ -144,11 +144,16 @@ if(!empty($mydocument)){
         <div class="tool-box dateTool" id="dateTool">
             <div class="element">Date <i data-feather='arrow-down-right'></i></div>
         </div>
+        <div class="tool-box photoTool" id="photoTool">
+            <div class="element border" style="width: 200px; height:200px">
+                <img src="<?php echo url_for('document-edit/upload/noimage.jpg') ?>" class="img-fluid" alt="">
+            </div>
+        </div>
     </div>
 
 
     <div class="modal fade text-start" id="createSignatureModal">
-        <div class="modal-dialog modal-xl ">
+        <div class="modal-dialog modal-lg ">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel17"><span id="actionWord">Create</span> Your Signature
@@ -162,8 +167,8 @@ if(!empty($mydocument)){
 
 
                         <div>
-                            <div class="nav-vertical">
-                                <ul class="nav nav-tabs nav-left flex-column" role="tablist" style="height: 140px;">
+                            <div class="">
+                                <ul class="nav nav-tabs" role="tablist">
                                     <li class="nav-item">
                                         <a class="nav-link active" id="first-tab" data-bs-toggle="tab"
                                             aria-controls="first" href="#first" role="tab"
@@ -216,24 +221,19 @@ if(!empty($mydocument)){
                                             </div>
 
                                         </div>
-                                        <table class="table table-striped table-hover table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>Signature</th>
-                                                    <th>Initial</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
+                                        <div class="container p-2">
+                                            <div class="row ">
                                                 <?php 
-                        // $sn = 1; 
-                        // $fontFamily = ['Alex Brush', 'Arizonia', 'Great Vibes', 'Creattion Demo', 'Scriptina Regular','Montserrat', 'Oleo Script Swash Caps', 'The Nautigal', 'Poppins', 'Roboto'];
-                        $fontFamily = ['Arizonia', 'Montserrat',];
-                        foreach ($fontFamily as $key => $value)  { 
-                        $key = $key + 1;
+                                                // $sn = 1; 
+                                                // $fontFamily = ['Alex Brush', 'Arizonia', 'Great Vibes', 'Creattion Demo', 'Scriptina Regular','Montserrat', 'Oleo Script Swash Caps', 'The Nautigal', 'Poppins', 'Roboto'];
+                                                $fontFamily = ['Arizonia', 'Montserrat',];
+                                                foreach ($fontFamily as $key => $value)  { 
+                                                $key = $key + 1;
 
-                    ?>
-                                                <tr>
-                                                    <td class="">
+                                            ?>
+                                                <div class="border row mb-2 d-flex align-items-center"
+                                                    style="border-radius: 1.49rem;">
+                                                    <div class="col-6">
                                                         <div class="form-check p-1 d-flex align-items-center">
 
                                                             <div class="pr-2">
@@ -243,7 +243,7 @@ if(!empty($mydocument)){
                                                                     class="form-check-input choose"
                                                                     id="customCheck<?php echo $key ?>"
                                                                     data-id="<?php echo $key ?>"
-                                                                    <?php //echo $signature_id == $key ? 'checked' : '' ?>>
+                                                                    <?php //echo $signature_id==$key ? 'checked' : '' ?>>
                                                             </div>
 
                                                             <label class="form-check-label"
@@ -252,13 +252,15 @@ if(!empty($mydocument)){
                                                                     <div class="css-fv3lde">
                                                                         <span class="css-4x8v88 fullName"
                                                                             id="signature-wrap<?php echo $key ?>"
-                                                                            style="font-family: <?php echo $value?>;"><?php echo $fullName ?></span>
+                                                                            style="font-family: <?php echo $value?>;">
+                                                                            <?php echo $fullName ?>
+                                                                        </span>
                                                                     </div>
                                                                 </div>
                                                             </label>
                                                         </div>
-                                                    </td>
-                                                    <td class="p-0">
+                                                    </div>
+                                                    <div class="col-6">
                                                         <label class="form-check-label"
                                                             for="customCheck<?php echo $key ?>">
                                                             <div class="css-pl8xw2">
@@ -266,24 +268,25 @@ if(!empty($mydocument)){
                                                                 <div class="css-fv3lde">
                                                                     <span class="css-4x8v88 initials"
                                                                         id="initial-wrap<?php echo $key ?>"
-                                                                        style="font-family: <?php echo $value?>;"><?php echo $initial;?></span>
+                                                                        style="font-family: <?php echo $value?>;">
+                                                                        <?php echo $initial;?>
+                                                                    </span>
                                                                 </div>
                                                                 <!-- <span
-                                        class="css-1j983t3 signatureID">6D80C6DF365242545678</span> -->
+                                                    class="css-1j983t3 signatureID">6D80C6DF365242545678</span> -->
                                                             </div>
                                                         </label>
-                                                    </td>
-                                                </tr>
-                                                <?php } ?>
+                                                    </div>
+                                                </div>
+                                                <?php }?>
+                                            </div>
+                                        </div>
 
-                                            </tbody>
-                                        </table>
-
-                                        <div class="table-responsive text-center">
-                                            <table class="table " id="cloneWrap">
-                                                <tr class="p-0 m-0">
-                                                    <td class="p-2 m-0"><span id="selected-signature"></span></td>
-                                                    <td class="p-1 m-0"><span id="selected-initial"></span></td>
+                                        <div class=" text-center">
+                                            <table class=" " id="cloneWrap">
+                                                <tr class="">
+                                                    <td class=""><span id="selected-signature"></span></td>
+                                                    <td class=""><span id="selected-initial"></span></td>
                                                 </tr>
                                             </table>
                                         </div>

@@ -83,7 +83,8 @@ if(empty($loggedInAdmin)){
                     <li class="nav-item d-none d-lg-block">
                         <a class="nav-link" href="<?php echo url_for('dashboard/') ?>" data-bs-toggle="tooltip"
                             data-bs-placement="bottom" title="Documents">
-                            <i class="ficon" data-feather="mail"></i>
+                            <!-- <i class="ficon" data-feather="mail"></i> -->
+                            <i class="ficon" style="font-size: 22px;" data-feather='home'></i>
                         </a>
                     </li>
 

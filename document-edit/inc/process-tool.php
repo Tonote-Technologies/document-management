@@ -4,7 +4,7 @@ if(isset($_POST['action'])){
     if($_POST["action"] == "addTool"){
         $args = [
             'document_id' => $_POST['document_id'], 
-            'tool_id' => $_POST['tool_id'],
+            'tool_id' => $_POST['tool_id'].'-'.uniqid(),
             'toolUser' => $_POST['toolUser'],
             'tool_class' => $_POST['tool_class'],
             'tool_type' => $_POST['tool_type'],
@@ -55,6 +55,26 @@ if(isset($_POST['editTool'])){
     if($result == true){
         exit(json_encode(['success' => true]));
     }
+}
+
+if(isset($_POST['uploadPhoto'])){
+    $tool_id = $_POST['tool_id'];
+    $find = DocumentResource::find_by_tool_id($tool_id);
+    $args = [
+        // 'tool_type' => 2,
+        'resizable' => 1,
+        'file' => $_POST['file'],
+        'updated_at' => date('Y-m-d H:i:s'),
+    ];
+    $find->merge_attributes($args);
+    $result = $find->save();
+    if($result == true){
+        exit(json_encode(['success' => true]));
+    }else{
+        exit(json_encode(['success' => false]));
+    }
+
+    // pre_r($find);
 }
 
 

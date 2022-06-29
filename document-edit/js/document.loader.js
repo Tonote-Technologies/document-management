@@ -81,9 +81,6 @@ function renderPDF(url, canvasContainer, options) {
             createDocumentFiles(document_id, myID, imgType)
           });
         }
-
-
-        // console.log(theImg);
       },
     });
   }
@@ -110,9 +107,4 @@ function renderPDF(url, canvasContainer, options) {
     });
 
   }
-
-
-
-
-
 }   

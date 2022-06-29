@@ -101,6 +101,17 @@ if($user_id == 0){
             </path>
         </svg>
     </li>
+    <li class=" btn <?php echo $class?>" data-id="photoTool" data-user="<?php echo $user_id?>"
+        data-email="<?php echo $email?>" data-value="Photo">
+        Photo
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 24 24" class="ml-auto tool-svg"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="feather feather-user">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+    </li>
 
 </div>
 

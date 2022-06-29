@@ -69,6 +69,8 @@ $(document).on("click", "#mainWrapper", function (e) {
       var tool_class = "tool-box tool-style main-element";
     } else if (toolName == "Textarea") {
       var tool_class = "tool-box main-element";
+    } else if (toolName == "Photo") {
+      var tool_class = "main-element photo-style";
     } else {
       var tool_class = "tool-box main-element";
     }
@@ -213,15 +215,21 @@ load_session_data()
 
 $(document).on("click", ".deleteItem", function () {
   $(this).parent().parent().remove();
-  var tool_id = $(this).data("id");
+  let tool_id = $(this).data("id");
   remove(tool_id)
 });
 
 $(document).on("click", ".removeItem", function () {
   $(this).parent().parent().remove();
-  var tool_id = $(this).data("id");
-  var tool_text = $(this).closest('.tool-box').data("name");
-  // console.log(tool_text)
+  let tool_id = $(this).data("id");
+  let tool_text = $(this).closest('.tool-box').data("name");
+  remove(tool_id, tool_text)
+});
+
+$(document).on("click", ".removePhoto", function () {
+  $(this).parent().parent().remove();
+  let tool_id = $(this).data("id");
+  let tool_text = $(this).closest('.tool-box').data("name");
   remove(tool_id, tool_text)
 });
 
@@ -262,22 +270,28 @@ function dragElement() {
       },
     })
   });
+
+  // $(".element").each(function () {
+  //   var $elem = $(this);
+  //   $elem.resizable();
+  // });
 }
 
 
 
 function resizeElement() {
-  $(".resize").each(function () {
+  $(".img-fluid").each(function () {
     var $elem = $(this);
     var tool_id = $(this).data("id");
     $elem.resizable({
       stop: function (e, ui) {
         let tool_width = ui.size.width;
         let tool_height = ui.size.height;
-        updateSize(tool_id, tool_width, tool_height);
+        console.log(tool_id, tool_width, tool_height);
+        // updateSize(tool_id, tool_width, tool_height);
       },
       // option: true,
-      // handles: "se, sw, nw"
+      handles: "se, sw, nw"
     });
   });
 
@@ -286,8 +300,6 @@ function resizeElement() {
 $(document).on('input', '.textareaTool', function () {
   let text_value = $(this).val();
   let tool_id = $(this).data('id');
-  // let tool_id = $(this).closest(".Textarea").data("id");s
-  // console.log(id);
   $.ajax({
     url: "session/edit_element.php",
     method: "POST",
@@ -298,7 +310,6 @@ $(document).on('input', '.textareaTool', function () {
     },
     success: function (data) {
       // load_session_data();
-      // move(tool_id)
     },
   });
 
@@ -338,3 +349,45 @@ function updateSize(tool_id, tool_width, tool_height) {
     },
   });
 }
+
+$(document).on("click", "#OpenImgUpload", function () {
+  // $(".photo-layer").css("display", "flex");
+  $('#imgupload').trigger('click');
+})
+$(document).on("change", "#imgupload", function () {
+  $(".photo-layer").css("display", "none");
+  var file = $(this)[0].files[0];
+  var tool_id = $(this).data('id');
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = function () {
+    var dataFile = reader.result;
+    uploadPhoto(dataFile, tool_id)
+  };
+
+})
+
+function uploadPhoto(dataFile, tool_id) {
+  $.ajax({
+    url: 'inc/process-tool.php',
+    type: 'post',
+    data: {
+      uploadPhoto: 1,
+      file: dataFile,
+      tool_id: tool_id,
+    },
+    dataType: 'json',
+    success: function (data) {
+      if (data.success == true) {
+        load_session_data()
+      } else {
+        errorAlert(data.msg)
+      }
+    }
+  });
+}
+
+
+
+
+

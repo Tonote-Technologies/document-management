@@ -1,7 +1,7 @@
 <?php class DocumentResource extends DatabaseObject
 {
     protected static $table_name = "documentResource";
-    protected static $db_columns = ['id', 'document_id', 'filename', 'file', 'tool_id', 'toolUser','tool_type','tool_name','tool_class', 'tool_pos_top', 'tool_pos_left', 'tool_width', 'tool_height', 'created_at', 'updated_at', 'created_by', 'deleted'];
+    protected static $db_columns = ['id', 'document_id', 'filename', 'file', 'tool_id', 'toolUser','tool_type','tool_name','tool_class', 'tool_pos_top', 'tool_pos_left', 'tool_width', 'tool_height', 'resizable', 'created_at', 'updated_at', 'created_by', 'deleted'];
 
     public $id;
     public $document_id;
@@ -16,6 +16,7 @@
     public $tool_pos_left;
     public $tool_width;
     public $tool_height;
+    public $resizable;
     public $created_at;
     public $updated_at;
     public $created_by;
@@ -44,6 +45,7 @@
         $this->tool_pos_left    = $args['tool_pos_left'] ?? '';
         $this->tool_width       = $args['tool_width'] ?? '';
         $this->tool_height      = $args['tool_height'] ?? '';
+        $this->resizable        = $args['resizable'] ?? '';
         $this->created_by       = $args['created_by'] ?? '';
         $this->updated_at       = $args['updated_at'] ?? '';
         $this->created_at       = $args['created_at'] ?? date('Y-m-d H:i:s');
