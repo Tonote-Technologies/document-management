@@ -23,37 +23,6 @@
   max-width: 120px;
 }
 
-.photo-style, .Photo{
-  /* border: 1px solid #000 !important; */
-  position: absolute;
-  z-index: 100;
-  cursor: pointer;
- 
-}
-
-.photo-style div{
-    border-radius: 1px;
-    width: 200px;
-    height: 200px;
-}
-.photo-style button{
-  display: none;
-  border-radius: 50%;
-  padding: 0.5em;
-  border: 2px solid #003bb3;
-  background-color: #fff;
-  color: #fff !important;
-  position: absolute; 
-  top: -15;
-  right: -15;
-}
-.photo-style:hover{
-  border: 1px dotted #ccc;
-}
-
-.photo-style:hover button{
-   display:block  
-}
 
 
 .bg-fill{
@@ -102,7 +71,7 @@
 .text-wrapper{
   padding: 10px;
   background: transparent;
-  min-width: 120px;
+  min-width: 150px;
 }
 
 .text-wrapper:hover{
@@ -115,31 +84,29 @@
 .textareaTool:focus{
   border:1px solid #CCC;
 }
-.title:hover{
-  /* border: 1px solid #000; */
-  border-radius: 0;
-}
-.title:hover .removeItem, .title:hover .ui-icon, .title:hover .ui-resizable-handle {
+
+.title:hover .removeItem, .title:hover .ui-icon, 
+.title:hover .ui-resizable-handle {
    display:block !important;
    
 }
-.ui-icon{
+.title.ui-icon{
   display: none !important;
 }
 
-.ui-resizable-helper {
+.title.ui-resizable-helper {
     border: 1px dotted #000;
 }
 
-.ui-resizable-handle {
-    display: none !important;
+.title.ui-resizable-handle {
+    /* display: none !important; */
     background-color: rgba(0, 0, 0, .75);
     width: 15px;
     height: 15px;
     
 }
 
-.ui-resizable-se {
+.title.ui-resizable-se {
     bottom: -5px;
     right: -5px;
 } 
@@ -163,7 +130,7 @@
   color: #fff !important;
   position: absolute; 
   top: -15;
-  right: -15;
+  right: -15 !important;
 }
 .removeItem:hover {
   cursor: pointer;
@@ -372,4 +339,105 @@ input[type="file"] {
   color: #000;
   /* width: 100%; */
   /* height: auto; */
+}
+
+.image-area {
+  position: absolute;
+  width: 200px;
+  background: transparent;
+  z-index: 100;
+  /* border: 1px solid #ccc; */
+  /* padding: 10px; */
+}
+.image-area img{
+  max-width: 100%;
+  height: auto;
+}
+.remove-image {
+display: none !important;
+position: absolute;
+top: -10px;
+right: -10px;
+border-radius: 10em;
+padding: 2px 6px 3px;
+text-decoration: none;
+font: 700 21px/20px sans-serif;
+background: #555;
+border: 3px solid #fff;
+color: #FFF;
+box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 2px 4px rgba(0,0,0,0.3);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  -webkit-transition: background 0.5s;
+  transition: background 0.5s;
+}
+.remove-image:hover {
+ background: #E54E4E;
+  padding: 3px 7px 5px;
+  top: -11px;
+right: -11px;
+}
+.remove-image:active {
+ background: #E54E4E;
+  top: -10px;
+right: -11px;
+}
+
+.image-area:hover .remove-image, 
+.image-area:hover .ui-icon,
+.image-area:hover .ui-resizable-handle {
+   display:block !important;
+ 
+}
+/* .image-area.ui-icon{
+  display: none !important;
+} */
+
+.image-area .ui-resizable-helper {
+    /* border: 1px dotted #000; */
+    border: 1px solid #003bb3 !important;
+}
+
+.image-area .ui-resizable-handle {
+    display: none !important;
+    background-color: rgba(0, 0, 0, .75);
+    width: 15px;
+    height: 15px;
+    
+}
+
+.image-area .ui-resizable-se {
+    bottom: -5px;
+    right: -5px;
+} 
+
+
+.photo-style, .Photo{
+  position: absolute;
+  z-index: 100;
+  cursor: pointer;
+ 
+} 
+
+.photo-style div{
+    border-radius: 1px;
+    width: 200px;
+    height: 200px;
+}
+.photo-style button{
+  display: none;
+  border-radius: 50%;
+  padding: 0.5em;
+  border: 2px solid #003bb3;
+  background-color: #fff;
+  color: #fff !important;
+  position: absolute; 
+  top: -15;
+  right: -15;
+}
+.photo-style:hover{
+  border: 3px dashed #003bb3 !important;
+}
+
+.photo-style:hover button{
+   display:block  
 }

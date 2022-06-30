@@ -208,7 +208,7 @@ async function load_session_data() {
   $("#mainWrapper").html(data.session_details);
   $("#shopping_cart").html(data.added_tool);
   dragElement();
-  // resizeElement();
+  resizeElement();
 
 }
 load_session_data()
@@ -280,18 +280,19 @@ function dragElement() {
 
 
 function resizeElement() {
-  $(".imageObject").each(function () {
+  $(".resize").each(function () {
     var $elem = $(this);
     var tool_id = $(this).data("id");
     $elem.resizable({
+      option: true,
+      handles: "se, sw, nw",
       stop: function (e, ui) {
         let tool_width = ui.size.width;
         let tool_height = ui.size.height;
         console.log(tool_id, tool_width, tool_height);
         updateSize(tool_id, tool_width, tool_height);
       },
-      // option: true,
-      handles: "se, sw, nw"
+
     });
   });
 
@@ -350,12 +351,13 @@ function updateSize(tool_id, tool_width, tool_height) {
   });
 }
 
-$(document).on("click", "#OpenImgUpload", function () {
-  // $(".photo-layer").css("display", "flex");
+$(document).on("click", "#imagePreview", function () {
+  $(".photo-layer").css("display", "flex");
   $('#imgupload').trigger('click');
 })
 $(document).on("change", "#imgupload", function () {
-  $(".photo-layer").css("display", "none");
+  readURL(this);
+
   var file = $(this)[0].files[0];
   var tool_id = $(this).data('id');
   const reader = new FileReader();
@@ -379,6 +381,7 @@ function uploadPhoto(dataFile, tool_id) {
     dataType: 'json',
     success: function (data) {
       if (data.success == true) {
+        $(".photo-layer").css("display", "none");
         load_session_data()
       } else {
         errorAlert(data.msg)
@@ -388,6 +391,17 @@ function uploadPhoto(dataFile, tool_id) {
 }
 
 
+function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+      $('#imagePreview').hide();
+      $('#imagePreview').fadeIn(650);
+    }
+    reader.readAsDataURL(input.files[0]);
+  }
+}
 
 
 

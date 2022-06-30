@@ -35,7 +35,7 @@ $converted_tool = 0;
 							<dl id="'.$savedTool->tool_id.'" class=" '.$signature.' '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">		
 									<div class="text-wrapper">
 									<button type="button" class="btn-close removeItem"  data-id="'.$savedTool->tool_id.'" style="right:0"></button>
-										<input aria-invalid="false" type="text" placeholder="TextField"  class="textareaTool '.$visible.'" value="'.$text_value.'" data-id="'.$savedTool->tool_id.'">
+										<input aria-invalid="false" type="text" placeholder="Input text here"  class="textareaTool '.$visible.'" value="'.$text_value.'" data-id="'.$savedTool->tool_id.'">
 									</div>
 									
 						    </dl>
@@ -45,23 +45,27 @@ $converted_tool = 0;
 					$photo = url_for('document-edit/upload/noimage.jpg');
 				}else{
 					$photo = $savedTool->file;
-					$resize = $savedTool->resizable == 0 ? "null" : "resize";
 				}
-				
+			
 				$output .= '
-							<dl id="'.$savedTool->tool_id.'" class=" resize title '.$signature.' '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
-								
-									<button type="button" class="btn-close removePhoto"  data-id="'.$savedTool->tool_id.'" style="right:0"></button>
-									
-									<div class="element  p-0" style="width: 200px;">
-										<div class="photo-layer">
-											<span>Processing...</span>
-										</div>
-										<input type="file" id="imgupload" style="display:none" accept="image/*" data-id="'.$savedTool->tool_id.'" data-user="'.$savedTool->toolUser.'" / > 
-										<img src="'.$photo.'" class="img-fluid " alt="" id="OpenImgUpload">
-									</div>
-								
-							</dl>
+							<div 
+								class="image-area '.$savedTool->tool_class.'" 
+								id="'.$savedTool->tool_id.'" 
+								data-user="'.$savedTool->toolUser.'" 
+								data-name="'.$savedTool->tool_name.'" 
+								data-id="'.$savedTool->tool_id.'" 
+								style="
+									width: '.$savedTool->tool_width.'px; 
+									height: '.$savedTool->tool_height.'px;
+									top: '.$savedTool->tool_pos_top.'; 
+									left:'.$savedTool->tool_pos_left.'">
+								<div class="photo-layer">
+									<span>Processing...</span>
+								</div>
+								<input type="file" id="imgupload" style="display:none" accept="image/*" data-id="'.$savedTool->tool_id.'" data-user="'.$savedTool->toolUser.'" / > 
+								<img src="'.$photo.'" class="img-fluid" id="imagePreview"  alt="Preview">
+								<a class="remove-image removePhoto" href="#" style="display: inline;" data-id="'.$savedTool->tool_id.'">&#215;</a>
+							</div>
 						';
 		}else{
 		$output .= '
@@ -79,11 +83,19 @@ $converted_tool = 0;
 		$added_tool = $added_tool + 1;
 		}else{
 			$output .= '
-			<div class=" '.$savedTool->tool_class.' title" style="width: '.$savedTool->tool_width.'px; height: '.$savedTool->tool_height.'px; top: '.$savedTool->tool_pos_top.'; 
-							left: '.$savedTool->tool_pos_left.';" data-id="'.$savedTool->tool_id.'" data-user="'.$savedTool->toolUser.'"
+			<div 
+				class="title '.$savedTool->tool_class.'" 
+				style="
+					width: '.$savedTool->tool_width.'px; 
+					height: '.$savedTool->tool_height.'px; 
+					top: '.$savedTool->tool_pos_top.'; 
+					left: '.$savedTool->tool_pos_left.';" 
+				data-id="'.$savedTool->tool_id.'" 
+				data-user="'.$savedTool->toolUser.'"
 				data-name="'.$savedTool->tool_name.'">
-				<button type="button" class="btn-close removeItem" data-id="'.$savedTool->tool_id.'"></button>
+				
 				<img src="'.$savedTool->file.'" class="img-fluid" />
+				<button type="button" class="btn-close removeItem" data-id="'.$savedTool->tool_id.'"></button>
 			</div>
 			';
 			$converted_tool = $converted_tool + 1;

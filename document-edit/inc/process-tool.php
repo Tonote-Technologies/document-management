@@ -62,7 +62,7 @@ if(isset($_POST['uploadPhoto'])){
     $tool_id = $_POST['tool_id'];
     $find = DocumentResource::find_by_tool_id($tool_id);
     $args = [
-        // 'tool_type' => 2,
+        'tool_class' => "main-element photo-style resize",
         'resizable' => 1,
         'file' => $_POST['file'],
         'updated_at' => date('Y-m-d H:i:s'),
