@@ -355,30 +355,34 @@ $(document).on("click", "#imagePreview", function () {
   $(".photo-layer").css("display", "flex");
   $('#imgupload').trigger('click');
 })
+
+
 $(document).on("change", "#imgupload", function () {
-  readURL(this);
 
-  var file = $(this)[0].files[0];
-  var tool_id = $(this).data('id');
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  reader.onload = function () {
-    var dataFile = reader.result;
-    uploadPhoto(dataFile, tool_id)
-  };
+  let tool_id = $(this).data('id');
+  let file_data = $(this).prop('files')[0];
 
-})
+  // var reader = new FileReader();
+  // reader.readAsDataURL(file_data);
+  // reader.onloadend = function () {
+  //   $("#imagePreview").attr("src", reader.result)
+  //   $("#imagePreview").parent('.image-area').addClass("resize")
+  // }
 
-function uploadPhoto(dataFile, tool_id) {
+  let form_data = new FormData();
+  form_data.append('file', file_data);
+  form_data.append('uploadPhoto', '1');
+  form_data.append('tool_id', tool_id);
+
+
   $.ajax({
-    url: 'inc/process-tool.php',
+    url: 'inc/process-tool.php', // point to server-side PHP script
+    dataType: 'json',  // what to expect back from the PHP script, if anything
+    cache: false,
+    contentType: false,
+    processData: false,
+    data: form_data,
     type: 'post',
-    data: {
-      uploadPhoto: 1,
-      file: dataFile,
-      tool_id: tool_id,
-    },
-    dataType: 'json',
     success: function (data) {
       if (data.success == true) {
         $(".photo-layer").css("display", "none");
@@ -388,20 +392,53 @@ function uploadPhoto(dataFile, tool_id) {
       }
     }
   });
-}
+
+})
+// function readURL(file_data) {
+  
+// }
+// $('#upload').on('click', function () {
+//   var file_data = $('#sortpicture').prop('files')[0];
+//   var form_data = new FormData();
+//   form_data.append('file', file_data);
+//   alert(form_data);
+//   $.ajax({
+//     url: 'upload.php', // point to server-side PHP script 
+//     dataType: 'text',  // what to expect back from the PHP script, if anything
+//     cache: false,
+//     contentType: false,
+//     processData: false,
+//     data: form_data,
+//     type: 'post',
+//     success: function (php_script_response) {
+//       alert(php_script_response); // display response from the PHP script, if any
+//     }
+//   });
+// });
+
+// function uploadPhoto(dataFile, tool_id) {
+//   $.ajax({
+//     url: 'inc/process-tool.php',
+//     type: 'post',
+//     data: {
+//       uploadPhoto: 1,
+//       file: dataFile,
+//       tool_id: tool_id,
+//     },
+//     dataType: 'json',
+//     success: function (data) {
+//       if (data.success == true) {
+//         $(".photo-layer").css("display", "none");
+//         load_session_data()
+//       } else {
+//         errorAlert(data.msg)
+//       }
+//     }
+//   });
+// }
 
 
-function readURL(input) {
-  if (input.files && input.files[0]) {
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
-      $('#imagePreview').hide();
-      $('#imagePreview').fadeIn(650);
-    }
-    reader.readAsDataURL(input.files[0]);
-  }
-}
+
 
 
 

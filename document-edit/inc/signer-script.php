@@ -202,11 +202,27 @@ if($user_id == 0){
 ?>
 
 <?php if(isset($_POST['all_signers'])){ ?>
+
 <?php foreach(Signers::find_by_document_id($_POST['document_id']) as $value){ ?>
-<tr>
-    <td><?php echo $value->full_name() ?></td>
-    <td><?php echo $value->email ?></td>
+
+<tr class="mtable1">
+    <!-- <td><span id="sr_no">1</span></td> -->
+    <td><input type="text" name="full_name[]" id="full_name1" data-srno="1" placeholder="Full name"
+            class="form-control form-control-sm number_only full_name" required
+            value="<?php echo $value->full_name() ?>">
+    </td>
+    <td><input type="email" name="email[]" id="email1" data-srno="1" placeholder="Email"
+            class="form-control form-control-sm number_only email" required value="<?php echo $value->email ?>">
+    </td>
+    <td><input type="text" name="phone[]" id="phone1" data-srno="1" placeholder="Phone Number"
+            class="form-control form-control-sm number_only phone" value="<?php echo $value->phone ?>">
+    </td>
+
+    <td><button type="button" name="add_row" id="add_receiver_row"
+            class="btn btn-outline-success btn-sm add_row">+</button>
+    </td>
 </tr>
+
 <?php } ?>
 <?php }?>
 

@@ -429,7 +429,7 @@ if(!empty($mydocument)){
                                                         class="form-control form-control-sm number_only phone"></td>
 
                                                 <td><button type="button" name="add_row" id="add_row"
-                                                        class="btn btn-outline-success btn-sm">+</button></td>
+                                                        class="btn btn-outline-success btn-sm ">+</button></td>
                                             </tr>
 
                                             <table class="">
@@ -530,7 +530,7 @@ if(!empty($mydocument)){
     </div>
 
     <div class="modal fade show" id="finishModal" style="">
-        <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenterTitle">Notice</h5>
@@ -539,21 +539,49 @@ if(!empty($mydocument)){
 
                 <div class="modal-body">
                     <div class="text-center">
-                        <p>The following people will be invited to sign this document</p>
-                        <div class="table-responsive text-center p-1">
-                            <table class="table table-bordered table-sm" style="font-size: 12px;">
-                                <thead>
-                                    <tr class="bg-secondary text-white">
-                                        <td>Name</td>
-                                        <td>Email</td>
+                        <p>This document will sent to the list below</p>
+                        <!-- <form action="">
+                            <div class="table-responsive text-center p-1">
+                                <table class="table table-bordered table-sm" style="font-size: 12px;">
+                                    <thead>
+                                        <tr class="bg-secondary text-white">
+                                            <td>Full name</td>
+                                            <td>Email</td>
+                                            <td>Phone</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="all_signers"></tbody>
+                                </table>
+                            </div>
+                            <div>
+                                <button class="btn btn-outline-primary" id="sendNow">Send now</button>
+                            </div>
+                        </form> -->
+                        <form action="">
+                            <table class="">
+                                <tbody>
+
+                                    <tr class="mtable">
+                                        <td colspan="2">
+                                            <table class="table table-bordered" id="add_receiver">
+                                                <th>Full Name <sup style="color:red">*<sup></th>
+                                                <th>Email <sup style="color:red">*<sup></th>
+                                                <th>Phone</th>
+                                                <th rowspan="1"></th>
+                                                <tbody id="all_signers">
+
+                                                </tbody>
+                                            </table>
+
+                                        </td>
+
                                     </tr>
-                                </thead>
-                                <tbody id="all_signers"></tbody>
+
+                                </tbody>
                             </table>
-                        </div>
-                        <div>
-                            <button class="btn btn-outline-primary" id="sendNow">Send now</button>
-                        </div>
+                        </form>
+
+
                     </div>
                 </div>
 
@@ -608,11 +636,25 @@ if(!empty($mydocument)){
     $(document).on('click', '#add_row', function() {
         count = count + 1;
         $('#total_item').val(count);
+        var data = addRow(count, sn = true);
+        $('#expense-item-table').append(data);
 
+    });
+
+    $(document).on('click', '#add_receiver_row', function() {
+        count = count + 1;
+        // $('#total_item').val(count);
+        var data = addRow(count, sn = false);
+        $('#add_receiver').append(data);
+
+    });
+
+    function addRow(count, sn) {
         var html_code = '';
-
         html_code += '<tr id="row_id_' + count + '">';
-        html_code += '<td><span id="sr_no">' + count + '</span></td>';
+        if (sn == true) {
+            html_code += '<td><span id="sr_no">' + count + '</span></td>';
+        }
         html_code += '<td><input type="text" name="full_name[]" id="full_name' +
             count +
             '" data-srno="' + count +
@@ -631,9 +673,8 @@ if(!empty($mydocument)){
         html_code += '<td><button type="button" name="remove_row" id="' + count +
             '" class="btn btn-outline-danger btn-sm remove_row">X</button></td></tr>';
 
-        $('#expense-item-table').append(html_code);
-
-    });
+        return html_code
+    }
 
     $(document).on('click', '.remove_row', function() {
         var row_id = $(this).attr("id");

@@ -62,11 +62,13 @@ $converted_tool = 0;
 								<div class="photo-layer">
 									<span>Processing...</span>
 								</div>
-								<input type="file" id="imgupload" style="display:none" accept="image/*" data-id="'.$savedTool->tool_id.'" data-user="'.$savedTool->toolUser.'" / > 
-								<img src="'.$photo.'" class="img-fluid" id="imagePreview"  alt="Preview">
-								<a class="remove-image removePhoto" href="#" style="display: inline;" data-id="'.$savedTool->tool_id.'">&#215;</a>
+								
+									<input type="file" id="imgupload" style="display:none" accept="image/*" data-id="'.$savedTool->tool_id.'" data-user="'.$savedTool->toolUser.'" / > 
+									<img src="'.$photo.'" class="img-fluid" id="imagePreview"  alt="Preview">
+								<button type="button" class="btn-close removePhoto" data-id="'.$savedTool->tool_id.'"></button>
 							</div>
 						';
+			    
 		}else{
 		$output .= '
 			<dl class=" '.$signature .' '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'"
@@ -86,15 +88,15 @@ $converted_tool = 0;
 			<div 
 				class="title '.$savedTool->tool_class.'" 
 				style="
-					width: '.$savedTool->tool_width.'px; 
-					height: '.$savedTool->tool_height.'px; 
 					top: '.$savedTool->tool_pos_top.'; 
 					left: '.$savedTool->tool_pos_left.';" 
 				data-id="'.$savedTool->tool_id.'" 
 				data-user="'.$savedTool->toolUser.'"
 				data-name="'.$savedTool->tool_name.'">
 				
-				<img src="'.$savedTool->file.'" class="img-fluid" />
+				<img style="
+					width: '.$savedTool->tool_width.'px; 
+					height: '.$savedTool->tool_height.'px; " src="'.$savedTool->file.'" class="img-fluid" />
 				<button type="button" class="btn-close removeItem" data-id="'.$savedTool->tool_id.'"></button>
 			</div>
 			';
@@ -103,15 +105,15 @@ $converted_tool = 0;
 }
 
 foreach ($documents as $key => $value) {
-$pageNum = $key + 1;
-$output .= '
-<div class="border">
-    <img src="upload/document_file/'.$value->filename.'" class="img-fluid">
-</div>
-<div class="clearfix">
-    <h6 class="float-end">Page '.$pageNum.' of '.$totalPage.'</h6>
-</div>
-</div>';
+		$pageNum = $key + 1;
+		$output .= '
+		<div class="border">
+			<img src="upload/document_file/'.$value->filename.'" class="img-fluid">
+		</div>
+		<div class="clearfix">
+			<h6 class="float-end">Page '.$pageNum.' of '.$totalPage.'</h6>
+		</div>
+		</div>';
 }
 
 $data = array(

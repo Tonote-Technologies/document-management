@@ -9,12 +9,12 @@
 
 
 if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '192.168.64.2') {
-    define("DB_SERVER", "localhost");
+    define("DB_SERVER", "127.0.0.1");
     define("DB_USER", "root");
     define("DB_PASS", "");
     define("DB_NAME", "tonotedb");
 }else{
-    define("DB_SERVER", "localhost");
+    define("DB_SERVER", "127.0.0.1");
     define("DB_USER", "tonote_user");
     define("DB_PASS", "@G3t2n0t3#");
     define("DB_NAME", "document_management");
