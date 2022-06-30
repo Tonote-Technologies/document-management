@@ -22,7 +22,7 @@
   if ($_SERVER['SERVER_NAME'] == 'localhost' || $_SERVER['SERVER_NAME'] == '192.168.64.2') {
        define("WWW_ROOT", '/document-management');
   }else{
-       define("WWW_ROOT", '/');
+       define("WWW_ROOT", '/doc_edit');
   }
 
   // define("WWW_ROOT", '');
