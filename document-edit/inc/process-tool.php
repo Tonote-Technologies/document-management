@@ -47,11 +47,17 @@ if(isset($_POST['action'])){
 
 if(isset($_POST['editTool'])){
     $args = $_POST['editTool'];
+
     $tool_id = $_POST['editTool']['tool_id'];
     $find = DocumentResource::find_by_tool_id($tool_id);
     $args['tool_type'] = 2;
-    $args['tool_width'] = '200';
-    $args['tool_height'] = '150';
+    if(in_array($args['sign_type'], [2,3])){
+        $args['tool_width'] = '150';
+        $args['tool_height'] = '100';
+    }else{
+        $args['tool_width'] = '150';
+        $args['tool_height'] = '20';
+    }
     $args['updated_at'] = date('Y-m-d H:i:s');
     $args['tool_class'] = 'tool-box main-element';
     $find->merge_attributes($args);

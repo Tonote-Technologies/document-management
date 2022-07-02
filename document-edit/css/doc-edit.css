@@ -56,7 +56,8 @@
 }
 .textarea2, .textareaTool{
   resize:  both;
-  border:none
+  border:none;
+  background: rgb(255 255 255 / 4%);
 }
 .Textarea{
     position: absolute;

@@ -8,14 +8,14 @@
            data-bs-backdrop="false" aria-modal="true" role="dialog">
            <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
                <div class="modal-content">
-                   <div class="modal-header d-flex justify-content-center alert-primary">
+                   <div class="modal-header d-flex justify-content-center btn-primary">
                        <div class="text-center ">
                            <div class="d-flex justify-content-center">
                                <div class="">
                                    <!-- <img src="img/fav.png" height="80"> -->
                                </div>
                            </div>
-                           <h4 class="modal-title w-100 msgTitle text-center">Awesome!</h4>
+                           <h4 class="modal-title w-100 msgTitle text-center text-light">Awesome!</h4>
 
                        </div>
                    </div>
@@ -56,7 +56,12 @@
                    <strong class="me-auto toastTitle pl-2">Alert</strong>
                    <button type="button" class="ms-1 btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                </div>
-               <div class="toast-body">Please provide your message</div>
+
+               <div class="toast-body">
+
+                   <span class="toast-body-text">Please provide your message</span>
+               </div>
+
            </div>
        </div>
 
@@ -111,12 +116,12 @@ function successToast(title = "Alert", msg = "Please enter message") {
         // Creates an array of toasts (it only initializes them)
         return new bootstrap.Toast(toastEl) // No need for options; use the default options
     });
-    // $(".toast").css("background-color", "royalblue")
-    $(".toast").addClass("bg-success text-white")
-    $(".toast-header").addClass("bg-success text-white")
-    // $(".icon").html("<i data-feather='check-circle'></i>")
+    // $(".toast").addClass("bg-success text-white")
+    $(".toast-header").attr("class", "toast-header btn-primary text-white");
     $('.toastTitle').html(title)
-    $('.toast-body').html("<i data-feather='check-circle' class='text-success'></i> " + msg)
+    $('.toast-body-text').html(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> ' +
+        msg)
 
     toastList.forEach(toast => toast.show()); // This show them
     console.log(toastList); // Testing to see if it works
@@ -128,12 +133,11 @@ function errorToast(title, msg) {
         // Creates an array of toasts (it only initializes them)
         return new bootstrap.Toast(toastEl) // No need for options; use the default options
     });
-    // $(".toast").css("background-color", "royalblue")
-    $(".toast").addClass("bg-danger text-white")
-    $(".toast-header").addClass("bg-danger text-white")
-    // $(".icon").html("<i data-feather='alert-triangle'></i>")
+    $(".toast-header").attr("class", "toast-header bg-danger text-white");
     $('.toastTitle').html(title)
-    $('.toast-body').html("<i data-feather='alert-triangle' class='text-success'></i> " + msg)
+    $('.toast-body-text').html(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-triangle"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg> ' +
+        msg)
 
     toastList.forEach(toast => toast.show()); // This show them
     console.log(toastList); // Testing to see if it works

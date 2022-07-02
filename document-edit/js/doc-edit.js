@@ -10,7 +10,7 @@ $(document).on("click", ".tool li", function (e) {
 
   if (toolUser == 0) {
     // errorAlert("Please select a signer");
-    errorToast("Alert", data.msg);
+    errorToast("Alert", "Please select a signer");
   } else {
     var current_click = $("#currentId").val();
     if (current_click != "") {

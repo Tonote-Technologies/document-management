@@ -486,6 +486,7 @@ if(!empty($mydocument)){
                         <input type="hidden" id="pos_top" name="editTool[tool_pos_top]">
                         <input type="hidden" id="pos_left" name="editTool[tool_pos_left]">
                         <input type="hidden" id="filename" name="editTool[filename]" placeholder="filename">
+                        <input type="hidden" id="sign_type" name="editTool[sign_type]" placeholder="sign_type">
                         <input type="hidden" id="file" name="editTool[file]" placeholder="filename">
 
 
@@ -732,8 +733,10 @@ if(!empty($mydocument)){
 
     $(document).on("change", '.tool_name', function() {
         let tool_n = $(this).data("filename")
+        let sign_type = $(this).data("id")
         $("#filename").val(tool_n);
         $("#file").val($(this).data("file"));
+        $("#sign_type").val(sign_type)
     })
     list_yourself();
 

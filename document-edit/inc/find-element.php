@@ -48,12 +48,12 @@
                             $path = 'upload/signature_files/';
                             $output = '<table class="table table-bordered">';
                             $output .= '<tbody>';
-                            
+                            $sn = 1;
                             foreach($tools as $tool):
                                 $output .= '<tr>';
                                 $output .= '<td>
                                     <input type="radio" name="saveTool[tool_name]" 
-                                    class="form-check-input tool_name" id="tool_name'.$tool->id.'" 
+                                    class="form-check-input tool_name" data-id="'.$sn++.'" id="tool_name'.$tool->id.'" 
                                     data-filename="'.$tool->filename.'"
                                     data-file="'.$tool->file.'" value="'.$name.'">
                                     
