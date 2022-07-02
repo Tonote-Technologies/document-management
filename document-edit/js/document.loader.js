@@ -57,11 +57,12 @@ function renderPDF(url, canvasContainer, options) {
     let document_id = $("#document_id").val()
     let status = 2;
     let title = $(".title").val();
-    createDocument(title, document_id, status, imgType)
+    let doc_type = $("#doc_type").val();
+    createDocument(title, document_id, status, imgType, doc_type)
 
   })
 
-  function createDocument(title, document_id, status, imgType) {
+  function createDocument(title, document_id, status, imgType, doc_type) {
     // 
     $.ajax({
       url: "inc/save-document-file.php",
@@ -73,19 +74,20 @@ function renderPDF(url, canvasContainer, options) {
         document_id: document_id,
         status: status,
         imgType: imgType,
+        doc_type: doc_type,
       },
       success: function (data) {
         if (data.success == true) {
           $(".htmlImg").each(function () {
             var myID = $(this)[0];
-            createDocumentFiles(document_id, myID, imgType)
+            createDocumentFiles(document_id, myID, imgType, doc_type)
           });
         }
       },
     });
   }
 
-  function createDocumentFiles(document_id, myID, imgType) {
+  function createDocumentFiles(document_id, myID, imgType, doc_type) {
     /* here set the image extension and now image data is in var img that will send 
     by our ajax call to our api or server site page */
     let url_dir = $("#url_dir").val()
@@ -99,6 +101,7 @@ function renderPDF(url, canvasContainer, options) {
         document_id: document_id,
         img: img,
         imgType: imgType,
+        doc_type: doc_type,
       },
       success: function (data) {
         window.location.href = url_dir + document_id

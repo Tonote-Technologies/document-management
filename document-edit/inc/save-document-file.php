@@ -6,6 +6,7 @@
         $title = $_POST['title'];
         $document_id = $_POST['document_id'];
         $find = Document::find_by_document_id($document_id);
+        $doc_type = $_POST['doc_type'];
         // pre_r($find);
         
         $args['created_by'] = $loggedInAdmin->id ?? 0;
@@ -13,8 +14,10 @@
         $result = $document->save();
         // $result = true;
         if($result == true){
-            if(unlink($path.$find->filename)){
-                Document::removeDocument($document_id);
+            if($doc_type == 1){
+                if(unlink($path.$find->filename)){
+                    Document::removeDocument($document_id);
+                }
             }
             exit(json_encode(['success' => true]));
         }
