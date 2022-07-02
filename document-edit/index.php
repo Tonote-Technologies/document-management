@@ -120,9 +120,9 @@ include(SHARED_PATH . '/header.php');
             <div class="card-body">
 
                 <div class="form-group mb-2">
-                    <label>Document a title</label>
+                    <label>Please enter a document title</label>
                     <input type="text" name="title" class="form-control border-dark" required id="title"
-                        placeholder="Enter document title">
+                        placeholder="Document title">
                 </div>
                 <div id="drop_file_zone" class="upload-area d-flex align-items-center " ondrop="upload_file(event)"
                     ondragover="return false">

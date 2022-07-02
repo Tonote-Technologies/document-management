@@ -33,8 +33,7 @@ include(SHARED_PATH . '/header.php');
                                 New Request
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton2" style="">
-                                <a class="dropdown-item"
-                                    href="<?php echo url_for('document-edit/index.php?req_type=1') ?>">Get an
+                                <a class="dropdown-item" href="<?php echo url_for('templates/') ?>">Get an
                                     Affidavit</a>
                                 <a class="dropdown-item"
                                     href="<?php echo url_for('document-edit/index.php?req_type=2') ?>">Request

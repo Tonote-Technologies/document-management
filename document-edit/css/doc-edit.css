@@ -141,7 +141,7 @@
   top: -15;
   right: -15;
 }
- .removeItem {
+ /* .removeItem {
   display: none;
   border-radius: 50%;
   padding: 0.5em;
@@ -157,7 +157,7 @@
   border: 2px solid #ea5455;
   background-color: #fff;
   color: #ffffff;
-}
+} */
 
 .deleteItem {
   border-radius: 50%;
@@ -509,7 +509,7 @@ box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 2px 4px rgba(0,0,0,0.3);
   background-color: #fff;
   color: #fff !important;
   position: absolute; 
-  top: -15;
+  top: -25;
   right: -15 !important;
 }
 .sign .removeItem:hover {

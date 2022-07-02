@@ -592,6 +592,7 @@ if(!empty($mydocument)){
     <script type="text/javascript" src="js/scrolltoolbar.js"></script>
 
     <script type="text/javascript">
+    document.addEventListener('contextmenu', event => event.preventDefault());
     var document_id = $("#document_id").val();
     $(document).on('click', '#addSignerBtn', function() {
         $("#addSignerModal").modal("show");

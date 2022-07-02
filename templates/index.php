@@ -65,6 +65,7 @@ include(SHARED_PATH . '/header.php');
 </style>
 
 <section class="container-fluid">
+
     <div class="card d-none">
         <div class="card-body">
             <h3>Is your document ready?</h3>
@@ -73,30 +74,9 @@ include(SHARED_PATH . '/header.php');
         </div>
     </div>
     <div class="card ">
-        <?php if($req_type == 1): ?>
-        <div class=" card-body">
-            <ul class="nav nav-pills bg-nav-pills nav-justified border-bottom">
-                <li class="nav-item">
-                    <a href="<?php echo url_for('document-edit/index.php?req_type=1') ?>"
-                        class="nav-link rounded-0  py-2">
-                        <i class="mdi mdi-home-variant d-md-none d-block"></i>
-                        <span class="d-none d-md-block">Upload your document</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#profile1" data-bs-toggle="tab" aria-expanded="true"
-                        class="nav-link rounded-0 active py-2">
-                        <i class="mdi mdi-account-circle d-md-none d-block"></i>
-                        <span class="d-none d-md-block">Select a template</span>
-                    </a>
-                </li>
-
-            </ul>
-        </div>
-        <?php endif; ?>
-
 
         <div class=" card-body">
+            <div class="p-1 mb-1 border-bottom">Please select a template or search below</div>
             <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for a template..">
 
             <ul id="myUL">
