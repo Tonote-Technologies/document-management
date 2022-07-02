@@ -5,7 +5,10 @@ $page_title = 'Request Notary';
 include(SHARED_PATH . '/header.php');
 ?>
 
-<div class="card-body">
+
+<button class="btn btn-outline-primary toast-basic-toggler mt-2 waves-effect" id="toastbtn">Toast</button>
+
+<div class="card-body d-none">
     <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="first-tab" data-bs-toggle="tab" aria-controls="first" href="#first"
@@ -184,3 +187,9 @@ include(SHARED_PATH . '/header.php');
     </div>
 </div>
 <?php include(SHARED_PATH . '/footer.php');?>
+
+<script>
+document.getElementById("toastbtn").onclick = function() {
+    successToast("Notice", "Please create your signature");
+};
+</script>

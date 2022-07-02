@@ -9,23 +9,27 @@ function signatureCapture() {
 	canvas.width = 474;
 	canvas.height = 314;
 
-	context.fillStyle = "#fff";
+
+	context.fillStyle = "rgba(255, 255, 255, 0.1)";
 	context.strokeStyle = "#000";
 	context.lineWidth = 2;
 	context.lineCap = "round";
 
-	context.fillRect(0, 0, canvas.width, canvas.height);
+	context.fillRect(10, 10, canvas.width, canvas.height);
+	// context.fillRect(0, 0, 20, 20);
 
-	context.fillStyle = "#3a87ad";
-	context.strokeStyle = "#003bb3"; // ToNote Blue
-	context.lineWidth = 2;
+
 	context.moveTo(20, 220);
 	context.lineTo(454, 220);
 	// context.stroke();
 
-	context.fillStyle = "#fff";
-	context.strokeStyle = "#000";
 
+	// Scaled rectangle
+	// context.scale(9, 3);
+	// context.fillRect(10, 10, 8, 20);
+
+	// Reset current transformation matrix to the identity matrix
+	// context.setTransform(1, 0, 0, 1, 0, 0);
 
 	var disableSave = true;
 	var pixels = [];

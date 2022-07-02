@@ -50,7 +50,10 @@ if(isset($_POST['editTool'])){
     $tool_id = $_POST['editTool']['tool_id'];
     $find = DocumentResource::find_by_tool_id($tool_id);
     $args['tool_type'] = 2;
+    $args['tool_width'] = '200';
+    $args['tool_height'] = '150';
     $args['updated_at'] = date('Y-m-d H:i:s');
+    $args['tool_class'] = 'tool-box main-element';
     $find->merge_attributes($args);
     $result = $find->save();
     if($result == true){
@@ -93,62 +96,74 @@ if(isset($_POST['uploadPhoto'])){
         $newName = uniqid().$_FILES["file"]["name"];
         
         $fileName = basename($newName); 
-        // pre_r($fileName);
-        $imageUploadPath = $uploadPath . $fileName; 
-        $fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION); 
+        $fizeSize = $_FILES["file"]["size"];
         
-        // Allow certain file formats 
-        $allowTypes = array('jpg','png','jpeg'); 
-        if(in_array($fileType, $allowTypes)){ 
-            // Image temp source 
-            $imageTemp = $_FILES["file"]["tmp_name"]; 
-           
-            
-            // Compress size and upload image 
-            $compressedImage = DocumentResource::compressImage($imageTemp, $imageUploadPath, 40); 
-            // pre_r($compressedImage);
-            if($compressedImage){ 
-                $status = 'success'; 
-                $statusMsg = "Image compressed successfully.";
 
-                $path = $compressedImage;
-                $type = pathinfo($path, PATHINFO_EXTENSION);
-                $data = file_get_contents($path);
-                $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
-                // pre_r($path);
-               
-               
-                $tool_id = $_POST['tool_id'];
-                $find = DocumentResource::find_by_tool_id($tool_id);
-                $args = [
-                    'tool_class' => "main-element photo-style resize",
-                    'resizable' => 1,
-                    'file' => $base64,
-                    'updated_at' => date('Y-m-d H:i:s'),
-                ];
-                $find->merge_attributes($args);
-                $result = $find->save();
-                if($result == true){
-                     unlink($path);
-                    exit(json_encode(['success' => true]));
-                    // unlink($compressedImage);
-                }else{
-                    exit(json_encode(['success' => false]));
-                }
+        if(filesize($_FILES['file']['tmp_name']) > 2097152){
+            $statusMsg = "File size is more than 2 MB";
+        }else{
+            $allowedSize = true;
+        }
+
+        if($allowedSize  == true){
+            $imageUploadPath = $uploadPath . $fileName; 
+            $fileType = pathinfo($imageUploadPath, PATHINFO_EXTENSION); 
+            
+            // Allow certain file formats 
+            $allowTypes = array('jpg','png','jpeg'); 
+            if(in_array($fileType, $allowTypes)){ 
+                // Image temp source 
+                $imageTemp = $_FILES["file"]["tmp_name"]; 
+            
                 
+                // Compress size and upload image 
+                $compressedImage = DocumentResource::compressImage($imageTemp, $imageUploadPath, 40); 
+                // pre_r($compressedImage);
+                if($compressedImage){ 
+                    $status = 'success'; 
+                    $statusMsg = "Image compressed successfully.";
+
+                    $path = $compressedImage;
+                    $type = pathinfo($path, PATHINFO_EXTENSION);
+                    $data = file_get_contents($path);
+                    $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+                    // pre_r($path);
+                
+                
+                    $tool_id = $_POST['tool_id'];
+                    $find = DocumentResource::find_by_tool_id($tool_id);
+                    $args = [
+                        'tool_class' => "main-element photo-style resize",
+                        'resizable' => 1,
+                        'file' => $base64,
+                        'updated_at' => date('Y-m-d H:i:s'),
+                    ];
+                    $find->merge_attributes($args);
+                    $result = $find->save();
+                    if($result == true){
+                        unlink($path);
+                        exit(json_encode(['success' => true]));
+                        // unlink($compressedImage);
+                    }else{
+                        exit(json_encode(['success' => false]));
+                    }
+                    
+                }else{ 
+                    $statusMsg = "Image compress failed!"; 
+                } 
             }else{ 
-                $statusMsg = "Image compress failed!"; 
+                $statusMsg = 'Sorry, only JPG, JPEG, PNG, files are allowed to upload.'; 
             } 
-        }else{ 
-            $statusMsg = 'Sorry, only JPG, JPEG, PNG, files are allowed to upload.'; 
-        } 
+        }
     }else{ 
         $statusMsg = 'Please select an image file to upload.'; 
     } 
   
     
     // Display status message 
-    echo $statusMsg; 
+    // echo $statusMsg; 
+    exit(json_encode(['success' => true, 'msg' => $statusMsg]));
+    
 
     
 

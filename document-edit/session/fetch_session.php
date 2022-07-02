@@ -32,14 +32,22 @@ $converted_tool = 0;
 					$visible = '';
 				}
 				$output .= '
-							<dl id="'.$savedTool->tool_id.'" class=" '.$signature.' '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">		
-									<div class="text-wrapper">
-									<button type="button" class="btn-close removeItem"  data-id="'.$savedTool->tool_id.'" style="right:0"></button>
-										<input aria-invalid="false" type="text" placeholder="Input text here"  class="textareaTool '.$visible.'" value="'.$text_value.'" data-id="'.$savedTool->tool_id.'">
-									</div>
-									
-						    </dl>
-							';
+					<dl id="'.$savedTool->tool_id.'" class=" '.$signature.' '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'" data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'" style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">		
+							<div class="text-wrapper">
+							<button type="button" class="btn-close removeItem"  data-id="'.$savedTool->tool_id.'" style="right:0"></button>
+								
+								<textarea class="textareaTool resize  '.$visible.'"  
+								placeholder="Input text here" 
+								style="
+									width: '.$savedTool->tool_width.'px; 
+									height: '.$savedTool->tool_height.'px;"
+								data-id="'.$savedTool->tool_id.'">'.$text_value.'</textarea>
+								
+							</div>
+							
+					</dl>
+					';
+				
 			}else if($savedTool->tool_name == "Photo"){
 				if($savedTool->file == ""){
 					$photo = url_for('document-edit/upload/noimage.jpg');
@@ -84,22 +92,28 @@ $converted_tool = 0;
 		}
 		$added_tool = $added_tool + 1;
 		}else{
+			
 			$output .= '
-			<div 
-				class="title '.$savedTool->tool_class.'" 
+				<div  
+				class="sign '.$savedTool->tool_class.'" 
+				data-user="'.$savedTool->toolUser.'"
+				data-name="'.$savedTool->tool_name.'" 
+
 				style="
+					display:inline-block; 
 					top: '.$savedTool->tool_pos_top.'; 
 					left: '.$savedTool->tool_pos_left.';" 
-				data-id="'.$savedTool->tool_id.'" 
-				data-user="'.$savedTool->toolUser.'"
-				data-name="'.$savedTool->tool_name.'">
 				
-				<img style="
+				data-id="'.$savedTool->tool_id.'" >
+					<button type="button" class="btn-close removeItem" data-id="'.$savedTool->tool_id.'"></button>
+					<img class="resize"  
+					style="
 					width: '.$savedTool->tool_width.'px; 
-					height: '.$savedTool->tool_height.'px; " src="'.$savedTool->file.'" class="img-fluid" />
-				<button type="button" class="btn-close removeItem" data-id="'.$savedTool->tool_id.'"></button>
-			</div>
+					height: '.$savedTool->tool_height.'px; "
+					data-id="'.$savedTool->tool_id.'"  src="'.$savedTool->file.'" />
+				</div>
 			';
+			
 			$converted_tool = $converted_tool + 1;
 		}
 }

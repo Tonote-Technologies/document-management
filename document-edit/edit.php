@@ -23,10 +23,16 @@ if(!empty($mydocument)){
 
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 <!-- Fonts -->
+<!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+<!-- <link
+    href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Arizonia&family=Great+Vibes&family=Inter:wght@200;500&family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;1,100;1,200;1,300;1,400&family=Oleo+Script+Swash+Caps&family=The+Nautigal&display=swap"
+    rel="stylesheet"> -->
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link
-    href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Arizonia&family=Great+Vibes&family=Inter:wght@200;500&family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;1,100;1,200;1,300;1,400&family=Oleo+Script+Swash+Caps&family=The+Nautigal&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cedarville+Cursive&family=Great+Vibes&family=Inter:wght@200;500&family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;1,100;1,200;1,300;1,400&family=Oleo+Script+Swash+Caps&family=Poppins:wght@100;200&family=The+Nautigal&display=swap"
     rel="stylesheet">
 <!-- Font End -->
 <link rel="stylesheet" type="text/css" href="css/doc-edit.css">
@@ -156,7 +162,7 @@ if(!empty($mydocument)){
         <div class="modal-dialog modal-lg ">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel17"><span id="actionWord">Create</span> Your Signature
+                    <h4 class="modal-title" id="myModalLabel17"><span id="actionWord">Create</span> a signature
                     </h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -226,7 +232,7 @@ if(!empty($mydocument)){
                                                 <?php 
                                                 // $sn = 1; 
                                                 // $fontFamily = ['Alex Brush', 'Arizonia', 'Great Vibes', 'Creattion Demo', 'Scriptina Regular','Montserrat', 'Oleo Script Swash Caps', 'The Nautigal', 'Poppins', 'Roboto'];
-                                                $fontFamily = ['Arizonia', 'Montserrat',];
+                                                $fontFamily = ['Great Vibes', 'Montserrat',];
                                                 foreach ($fontFamily as $key => $value)  { 
                                                 $key = $key + 1;
 
@@ -481,7 +487,7 @@ if(!empty($mydocument)){
                         <input type="hidden" id="pos_left" name="editTool[tool_pos_left]">
                         <input type="hidden" id="filename" name="editTool[filename]" placeholder="filename">
                         <input type="hidden" id="file" name="editTool[file]" placeholder="filename">
-                        <input type="hidden" name="editTool[tool_class]" value="resize tool-box main-element">
+
 
 
                         <div id="showElement"></div>
@@ -540,24 +546,8 @@ if(!empty($mydocument)){
                 <div class="modal-body">
                     <div class="text-center">
                         <p>This document will sent to the list below</p>
-                        <!-- <form action="">
-                            <div class="table-responsive text-center p-1">
-                                <table class="table table-bordered table-sm" style="font-size: 12px;">
-                                    <thead>
-                                        <tr class="bg-secondary text-white">
-                                            <td>Full name</td>
-                                            <td>Email</td>
-                                            <td>Phone</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="all_signers"></tbody>
-                                </table>
-                            </div>
-                            <div>
-                                <button class="btn btn-outline-primary" id="sendNow">Send now</button>
-                            </div>
-                        </form> -->
-                        <form action="">
+
+                        <form action="" id="shareDocumentForm">
                             <table class="">
                                 <tbody>
 
@@ -588,6 +578,7 @@ if(!empty($mydocument)){
             </div>
         </div>
     </div>
+
 
     <?php   include(SHARED_PATH . '/footer.php'); ?>
 
@@ -729,7 +720,7 @@ if(!empty($mydocument)){
                     if (data.msg == 'Create Signature') {
                         $("#createSignatureModal").modal("show");
                     } else {
-                        errorAlert(data.msg);
+                        errorToast('Alert', data.msg);
                     }
 
                 }
@@ -838,7 +829,7 @@ if(!empty($mydocument)){
             success: function(data) {
                 if (data.success == true) {
                     $("#addSignerModal").modal('hide');
-                    successAlert(data.msg);
+                    successToast('Alert', data.msg);
                     signer_dropdown(document_id)
                     fetch_signer_list(document_id)
                     $('#addSignerForm').trigger("reset");
@@ -869,7 +860,7 @@ if(!empty($mydocument)){
             success: function(data) {
                 if (data.success == true) {
                     $("#editSignerModal").modal('hide');
-                    successAlert(data.msg);
+                    successToast('Alert', data.msg);
                     signer_dropdown(document_id)
                 } else {
                     $("#editSignerErrorMsg").html(data.msg)
@@ -988,14 +979,14 @@ if(!empty($mydocument)){
             },
             success: function(data) {
                 if (data.success == true) {
-                    successAlert(data.msg);
+                    successToast('Alert', data.msg);
                     signer_dropdown(document_id)
                     load_session_data()
                     fetch_signers_tool(user_id, email);
                     fetch_signer_list(document_id)
                     list_yourself()
                 } else {
-                    errorAlert(data.msg);
+                    errorToast('Alert', data.msg);
                 }
             },
         });
@@ -1018,7 +1009,7 @@ if(!empty($mydocument)){
     })
     $(document).on('click', "#sendNow", function() {
         $("#finishModal").modal("hide");
-        successAlert("Email Sent Successfully");
+        successToast('Alert', "Email Sent Successfully");
         setTimeout(function() {
             window.location.href = '../dashboard/';
         }, 2000);

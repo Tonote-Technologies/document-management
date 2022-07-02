@@ -7,7 +7,9 @@ canvas {
     /*margin-top: 20px;*/
     box-shadow: 0 0 35px 0 rgb(154 161 171 / 15%);
     margin-bottom: 24px;
-    background: #FFF;
+    background-color: transparent;
+    /* border: 1px solid #CCC; */
+    /* cursor:; */
 }
 .pageNum{
     text-align: right;

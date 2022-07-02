@@ -48,6 +48,18 @@
                <!-- <span class="float-md-end d-none d-md-block">Hand-crafted & Made with<i data-feather="heart"></i></span> -->
            </p>
        </footer>
+       <div class="toast-container">
+           <div class="toast basic-toast position-fixed top-0 end-0 m-2 fade hide" style="z-index: 1200;" role="alert"
+               aria-live="assertive" aria-atomic="true">
+               <div class="toast-header" style="font-size: 16px;">
+                   <!-- <span style="padding-right:2px; font-size: 16px" class="icon"></span> -->
+                   <strong class="me-auto toastTitle pl-2">Alert</strong>
+                   <button type="button" class="ms-1 btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+               </div>
+               <div class="toast-body">Please provide your message</div>
+           </div>
+       </div>
+
        <button class="btn btn-primary btn-icon scroll-top" type="button"><i data-feather="arrow-up"></i></button>
        <!-- END: Footer-->
 
@@ -92,6 +104,40 @@ $(window).on('load', function() {
         });
     }
 })
+
+function successToast(title = "Alert", msg = "Please enter message") {
+    var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+    var toastList = toastElList.map(function(toastEl) {
+        // Creates an array of toasts (it only initializes them)
+        return new bootstrap.Toast(toastEl) // No need for options; use the default options
+    });
+    // $(".toast").css("background-color", "royalblue")
+    $(".toast").addClass("bg-success text-white")
+    $(".toast-header").addClass("bg-success text-white")
+    // $(".icon").html("<i data-feather='check-circle'></i>")
+    $('.toastTitle').html(title)
+    $('.toast-body').html("<i data-feather='check-circle' class='text-success'></i> " + msg)
+
+    toastList.forEach(toast => toast.show()); // This show them
+    console.log(toastList); // Testing to see if it works
+}
+
+function errorToast(title, msg) {
+    var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+    var toastList = toastElList.map(function(toastEl) {
+        // Creates an array of toasts (it only initializes them)
+        return new bootstrap.Toast(toastEl) // No need for options; use the default options
+    });
+    // $(".toast").css("background-color", "royalblue")
+    $(".toast").addClass("bg-danger text-white")
+    $(".toast-header").addClass("bg-danger text-white")
+    // $(".icon").html("<i data-feather='alert-triangle'></i>")
+    $('.toastTitle').html(title)
+    $('.toast-body').html("<i data-feather='alert-triangle' class='text-success'></i> " + msg)
+
+    toastList.forEach(toast => toast.show()); // This show them
+    console.log(toastList); // Testing to see if it works
+}
 
 function confirmAlert(title, msg, subMsg, actionCall, id) {
     $("#action_id").val(id)

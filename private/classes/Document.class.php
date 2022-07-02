@@ -80,4 +80,14 @@ class Document extends DatabaseObject
         return false;
         }
     }
+
+     static public function removeDocument($document_id) {
+        $sql = "DELETE FROM " . static::$table_name . " ";
+        $sql .= "WHERE document_id='" . self::$database->escape_string($document_id) . "' ";
+        $sql .= "LIMIT 1";
+        $result = self::$database->query($sql);
+        return $result;
+    }
+
+    
 }

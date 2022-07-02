@@ -2,17 +2,27 @@
 
     if (isset($_POST['document'])) {
         $args = $_POST;
+        $path = '../upload/raw_files/';
+        $title = $_POST['title'];
+        $document_id = $_POST['document_id'];
+        $find = Document::find_by_document_id($document_id);
+        // pre_r($find);
+        
         $args['created_by'] = $loggedInAdmin->id ?? 0;
         $document = new DocumentImage($args);
         $result = $document->save();
         // $result = true;
         if($result == true){
+            if(unlink($path.$find->filename)){
+                Document::removeDocument($document_id);
+            }
             exit(json_encode(['success' => true]));
         }
     }
     
     if (isset($_POST['documentFiles'])) {
         $img = $_POST['img'];//getting post img data
+        
         $img = substr(explode(";",$img)[1], 7);//converting the data 
         $filename = uniqid().'img.png';//making file name
         $document_id = $_POST['document_id'];

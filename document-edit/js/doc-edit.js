@@ -9,7 +9,8 @@ $(document).on("click", ".tool li", function (e) {
   $("#UserEmail").val(UserEmail);
 
   if (toolUser == 0) {
-    errorAlert("Please select a signer");
+    // errorAlert("Please select a signer");
+    errorToast("Alert", data.msg);
   } else {
     var current_click = $("#currentId").val();
     if (current_click != "") {
@@ -68,7 +69,7 @@ $(document).on("click", "#mainWrapper", function (e) {
       checkSignatureOwnership()
       var tool_class = "tool-box tool-style main-element";
     } else if (toolName == "Textarea") {
-      var tool_class = "tool-box main-element";
+      var tool_class = "main-element";
     } else if (toolName == "Photo") {
       var tool_class = "main-element photo-style";
     } else {
@@ -116,7 +117,8 @@ function hasSignature(signer_id) {
         // successAlert(data.msg);
       } else {
         $("#createSignatureModal").modal("show");
-        errorAlert(data.msg);
+        // errorAlert(data.msg);
+        errorToast("Notice", data.msg);
       }
     },
   });
@@ -285,7 +287,8 @@ function resizeElement() {
     var tool_id = $(this).data("id");
     $elem.resizable({
       option: true,
-      handles: "se, sw, nw",
+      // handles: "se, sw, nw",
+      handles: "se",
       stop: function (e, ui) {
         let tool_width = ui.size.width;
         let tool_height = ui.size.height;
@@ -298,7 +301,7 @@ function resizeElement() {
 
 }
 
-$(document).on('input', '.textareaTool', function () {
+$(document).on('keyup', '.textareaTool', function () {
   let text_value = $(this).val();
   let tool_id = $(this).data('id');
   $.ajax({
@@ -354,6 +357,9 @@ function updateSize(tool_id, tool_width, tool_height) {
 $(document).on("click", "#imagePreview", function () {
   $(".photo-layer").css("display", "flex");
   $('#imgupload').trigger('click');
+  setTimeout(function () {
+    $(".photo-layer").css("display", "none");
+  }, 5000);
 })
 
 
@@ -374,7 +380,7 @@ $(document).on("change", "#imgupload", function () {
   form_data.append('uploadPhoto', '1');
   form_data.append('tool_id', tool_id);
 
-
+  
   $.ajax({
     url: 'inc/process-tool.php', // point to server-side PHP script
     dataType: 'json',  // what to expect back from the PHP script, if anything
@@ -385,15 +391,47 @@ $(document).on("change", "#imgupload", function () {
     type: 'post',
     success: function (data) {
       if (data.success == true) {
-        $(".photo-layer").css("display", "none");
+        
         load_session_data()
       } else {
-        errorAlert(data.msg)
+        // errorAlert(data.msg)
+        errorToast("Notice", data.msg);
       }
     }
   });
 
 })
+
+// $('#draggableHelper').draggable();
+// $('#image').resizable();
+
+
+
+  //  changes mouse cursor when highlighting loawer right of box
+  // $(document).on('mousemove', '.textareaTool', function (e) {
+  //   var a = $(this).offset().top + $(this).outerHeight() - 16,	//	top border of bottom-right-corner-box area
+  //     b = $(this).offset().left + $(this).outerWidth() - 16;	//	left border of bottom-right-corner-box area
+  //   $(this).css({
+  //     cursor: e.pageY > a && e.pageX > b ? 'nw-resize' : ''
+  //   });
+
+    
+  //   let tool_id = $(this).data("id");
+  //   let tool_width = $(this).outerWidth();
+  //   let tool_height = $(this).outerHeight();
+  //   // updateSize(tool_id, tool_width, tool_height);
+    
+  // })
+  //   //  the following simple make the textbox "Auto-Expand" as it is typed in
+  //   .on('keyup', '.textareaTool', function (e) {
+  //     //  the following will help the text expand as typing takes place
+  //     while ($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) + parseFloat($(this).css("borderBottomWidth"))) {
+  //       $(this).height($(this).height() + 1);
+  //     };
+  //   });
+
+
+
 // function readURL(file_data) {
   
 // }

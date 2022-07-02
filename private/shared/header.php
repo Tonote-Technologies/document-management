@@ -17,7 +17,13 @@ if(empty($loggedInAdmin)){
     <title><?php echo $page_title ?></title>
     <link rel="apple-touch-icon" href="apple-icon-120.html">
     <link rel="shortcut icon" type="image/x-icon" href="ico/favicon.ico">
-    <link href="css/css219a5.css?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600"
+    <!-- <link href="css/css219a5.css?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600"
+        rel="stylesheet"> -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Arizonia&family=Great+Vibes&family=Inter:wght@200;500&family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;1,100;1,200;1,300;1,400&family=Oleo+Script+Swash+Caps&family=Poppins:wght@100;200&family=The+Nautigal&display=swap"
         rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->

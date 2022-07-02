@@ -207,7 +207,28 @@ function get_array_from_obj($object = [], $attr=''){
   return $array;
 }
 
+function calc_file_size($bytes) {
+        if ($bytes >= 1073741824) {
+            $bytes = ceil($bytes / 1073741824) . ' GB';
 
+        } else if ($bytes >= 1048576) {
+            $bytes = ceil($bytes / 1048576) . ' MB';
+
+        } else if ($bytes >= 1024) {
+            $bytes = ceil($bytes / 1024) . ' KB';
+
+        } else if ($bytes > 1) {
+            $bytes = $bytes . ' bytes';
+
+        } else if ($bytes == 1) {
+            $bytes = $bytes . ' byte';
+
+        } else {
+            $bytes = '0 byte';
+        }
+
+        return $bytes;
+}
 
 
   function split_date_for_manifest_no($manifestNo){
@@ -224,6 +245,8 @@ function get_array_from_obj($object = [], $attr=''){
     echo '</pre>';
     return $printer; 
   }
+
+  
 
 
 

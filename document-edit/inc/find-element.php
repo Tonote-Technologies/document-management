@@ -19,7 +19,7 @@
             if(!empty($tools)){
                 exit(json_encode(['success' => true, 'msg' => 'You have a signature, click on the tool to append']));
             }else{
-                exit(json_encode(['success' => false, 'msg' => 'No signature'])); 
+                exit(json_encode(['success' => false, 'msg' => 'Please create a signature'])); 
             }
        }
 

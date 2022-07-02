@@ -50,7 +50,7 @@ include(SHARED_PATH . '/header.php');
 <div id="holder" style="width: 1000px; margin: 0 auto;"></div>
 <canvas id="pdf-canvas" width="1000" height="842" style="display: none;"></canvas>
 
-<input type="hidden" id="document_id" value="<?php echo uniqid() ?>">
+<input type="hidden" id="document_id" value="<?php echo $_GET['document_id']; //echo uniqid() ?>">
 <input type="hidden" id="url_dir" value="<?php echo url_for('document-edit/edit.php?document_id=') ?>">
 <?php foreach ($documents as $doc) : ?>
 <input type="hidden" class="url" value="<?php echo url_for($path.$doc->filename); ?>">
