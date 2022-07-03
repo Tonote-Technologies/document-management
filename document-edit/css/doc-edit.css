@@ -57,7 +57,7 @@
 .textarea2, .textareaTool{
   resize:  both;
   border:none;
-  background: rgb(255 255 255 / 4%);
+  background: rgb(255 255 255 / 65%);
 }
 .Textarea{
     position: absolute;
@@ -91,7 +91,7 @@
 }
 
 .text-wrapper:hover{
-  background: rgba(33, 145, 243, 0.359);
+  background: rgb(7 9 11 / 11%);
 }
 .text-wrapper:hover .removeItem {
    display:block  
@@ -141,7 +141,7 @@
   top: -15;
   right: -15;
 }
- /* .removeItem {
+ .removeItem {
   display: none;
   border-radius: 50%;
   padding: 0.5em;
@@ -157,7 +157,7 @@
   border: 2px solid #ea5455;
   background-color: #fff;
   color: #ffffff;
-} */
+}
 
 .deleteItem {
   border-radius: 50%;

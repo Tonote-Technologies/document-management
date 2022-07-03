@@ -144,8 +144,7 @@ if(empty($loggedInAdmin)){
 
     <!-- BEGIN: Content-->
     <div class="app-content content <?php echo $page == 'Dashboard' ? 'email-application' : '' ?>">
-        <div class="content-overlay"></div>
-        <div class="header-navbar shadow-lg"></div>
+
         <div class="content-wrapper container-xxl p-0">
 
             <div class="content-body">

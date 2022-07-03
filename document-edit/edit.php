@@ -22,18 +22,7 @@ if(!empty($mydocument)){
 ?>
 
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-<!-- Fonts -->
-<!-- <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
-<!-- <link
-    href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Arizonia&family=Great+Vibes&family=Inter:wght@200;500&family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;1,100;1,200;1,300;1,400&family=Oleo+Script+Swash+Caps&family=The+Nautigal&display=swap"
-    rel="stylesheet"> -->
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-    href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cedarville+Cursive&family=Great+Vibes&family=Inter:wght@200;500&family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;1,100;1,200;1,300;1,400&family=Oleo+Script+Swash+Caps&family=Poppins:wght@100;200&family=The+Nautigal&display=swap"
-    rel="stylesheet">
 <!-- Font End -->
 <link rel="stylesheet" type="text/css" href="css/doc-edit.css">
 <link rel="stylesheet" type="text/css" href="css/signature-design.css">
@@ -55,20 +44,18 @@ if(!empty($mydocument)){
 <input type="hidden" class="url" value="upload/EmployeeHandbook.pdf">
 
 <div class="container-fluid">
-    <div class="container">
-        <div class="row my-2 ">
-            <div class="col-lg-12">
-                <div class=" float-end">
-                    <a href="<?php echo url_for('request-notary/') ?>" class="btn btn-outline-primary">Request a
-                        Notary</a>
-                    <button class="btn btn-primary" id="finish">Share document</button>
-                </div>
+    <div class="row mb-2 ">
+        <div class="col-12 px-2">
+            <div class=" float-end">
+                <a href="<?php echo url_for('request-notary/') ?>" class="btn btn-sm btn-outline-primary">Request a
+                    Notary</a>
+                <button class="btn btn-sm btn-primary" id="finish">Share document</button>
             </div>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-lg-2 d-sm-none d-lg-block">
+        <div class="col-lg-2 d-none d-lg-block">
             <div class="d-flex justify-content-center">
                 <div class="sidebar-nav card px-2 pt-2" style="width: 200px;">
                     <div style="height: 100vh">
@@ -583,16 +570,18 @@ if(!empty($mydocument)){
 
     <?php   include(SHARED_PATH . '/footer.php'); ?>
 
-    <script src=" js/draw-signature.js"></script>
+    <script src="js/draw-signature.js"></script>
     <script type="text/javascript" src="js/html2canvas.js">
     </script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <!-- <script src="http://code.jquery.com/ui/1.8.17/jquery-ui.min.js"></script> -->
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
     <script src="js/doc-edit.js"></script>
     <script src="js/create-signature.js"></script>
     <script type="text/javascript" src="js/scrolltoolbar.js"></script>
 
     <script type="text/javascript">
-    document.addEventListener('contextmenu', event => event.preventDefault());
+    //document.addEventListener('contextmenu', event => event.preventDefault());
     var document_id = $("#document_id").val();
     $(document).on('click', '#addSignerBtn', function() {
         $("#addSignerModal").modal("show");
