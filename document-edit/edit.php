@@ -47,6 +47,7 @@ if(!empty($mydocument)){
     <div class="row mb-2 ">
         <div class="col-12 px-2">
             <div class=" float-end">
+                <button class="btn btn-sm btn-outline-primary" onclick="Convert_HTML_To_PDF();">Download</button>
                 <a href="<?php echo url_for('request-notary/') ?>" class="btn btn-sm btn-outline-primary">Request a
                     Notary</a>
                 <button class="btn btn-sm btn-primary" id="finish">Share document</button>
@@ -571,8 +572,8 @@ if(!empty($mydocument)){
     <?php   include(SHARED_PATH . '/footer.php'); ?>
 
     <script src="js/draw-signature.js"></script>
-    <script type="text/javascript" src="js/html2canvas.js">
-    </script>
+    <script type="text/javascript" src="js/html2canvas.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <!-- <script src="http://code.jquery.com/ui/1.8.17/jquery-ui.min.js"></script> -->
     <script src="js/jquery.ui.touch-punch.min.js"></script>
@@ -1007,5 +1008,51 @@ if(!empty($mydocument)){
             window.location.href = '../dashboard/';
         }, 2000);
 
-    })
+    });
+
+    function Convert_HTML_To_PDF() {
+        var elementHTML = document.getElementById('mainWrapper');
+
+        html2canvas(elementHTML, {
+            useCORS: true,
+            onrendered: function(canvas) {
+                var pdf = new jsPDF("p", "pt", "a4");
+
+                var pageHeight = 1500;
+                var pageWidth = 900;
+                for (var i = 0; i <= elementHTML.clientHeight / pageHeight; i++) {
+                    var srcImg = canvas;
+                    var sX = 0;
+                    var sY = pageHeight * i; // start 1 pageHeight down for every new page
+                    var sWidth = pageWidth;
+                    var sHeight = pageHeight;
+                    var dX = 0;
+                    var dY = 0;
+                    var dWidth = pageWidth;
+                    var dHeight = pageHeight;
+
+                    window.onePageCanvas = document.createElement("canvas");
+                    onePageCanvas.setAttribute('width', pageWidth);
+                    onePageCanvas.setAttribute('height', pageHeight);
+                    var ctx = onePageCanvas.getContext('2d');
+                    ctx.drawImage(srcImg, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight);
+
+                    var canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
+                    var width = onePageCanvas.width;
+                    var height = onePageCanvas.clientHeight;
+
+                    if (i > 0) // if we're on anything other than the first page, add another page
+                        pdf.addPage(612, 864); // 8.5" x 12" in pts (inches*72)
+
+                    pdf.setPage(i + 1); // now we declare that we're working on that page
+                    pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .62), (height *
+                        .62)); // add content to the page
+                }
+
+                // Save the PDF
+                pdf.save('document.pdf'); <
+                !--console.log(pdf) -- >
+            }
+        });
+    }
     </script>

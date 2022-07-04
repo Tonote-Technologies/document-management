@@ -57,7 +57,7 @@
 .textarea2, .textareaTool{
   resize:  both;
   border:none;
-  background: rgb(255 255 255 / 65%);
+  background: transparent;
 }
 .Textarea{
     position: absolute;
@@ -86,13 +86,37 @@
 
 .text-wrapper{
   padding: 10px;
-  background: transparent;
   min-width: 150px;
 }
 
 .text-wrapper:hover{
-  background: rgb(7 9 11 / 11%);
+  /* background: rgb(7 9 11 / 11%); */
+  cursor:move;
 }
+.text-wrapper:hover .textareaTool{
+  border: 1px solid #000
+}
+
+.text-wrapper .ui-resizable-helper {
+    border: 1px solid #003bb3 !important;
+}
+
+.text-wrapper .ui-resizable-handle {
+    display: none !important;
+    background-color: rgba(0, 0, 0, .75);
+    width: 15px;
+    height: 15px;
+    margin-top: -15;
+    
+}
+
+.text-wrapper .ui-resizable-se {
+    /* background-color: rgba(0, 0, 0, .75); */
+    bottom: -5px;
+    right: -5px;
+} 
+
+
 .text-wrapper:hover .removeItem {
    display:block  
 }
@@ -106,10 +130,12 @@
 }
 
 .title:hover .removeItem, .title:hover .ui-icon, 
-.title:hover .ui-resizable-handle {
+.title:hover .ui-resizable-handle, .text-wrapper:hover .ui-resizable-handle  {
    display:block !important;
    
 }
+
+
 .title .ui-icon{
   display: none !important;
 }
