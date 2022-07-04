@@ -558,6 +558,9 @@ if(!empty($mydocument)){
 
                                 </tbody>
                             </table>
+                            <div class="clearfix">
+                                <button class="btn btn-primary float-end" id="sendNow">Send now</button>
+                            </div>
                         </form>
 
 
@@ -1004,6 +1007,7 @@ if(!empty($mydocument)){
     $(document).on('click', "#sendNow", function() {
         $("#finishModal").modal("hide");
         successToast('Alert', "Email Sent Successfully");
+        // successAlert("Email Sent Successfully");
         setTimeout(function() {
             window.location.href = '../dashboard/';
         }, 2000);
@@ -1050,8 +1054,7 @@ if(!empty($mydocument)){
                 }
 
                 // Save the PDF
-                pdf.save('document.pdf'); <
-                !--console.log(pdf) -- >
+                pdf.save('document.pdf');
             }
         });
     }
