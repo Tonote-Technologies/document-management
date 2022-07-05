@@ -73,12 +73,6 @@
        <script src="<?php echo url_for('assets/js/vendors.min.js') ?>"></script>
        <!-- BEGIN Vendor JS-->
 
-       <!-- BEGIN: Page Vendor JS-->
-       <script src="<?php //echo url_for('assets/js/jquery.sticky.js') ?>"></script>
-       <script src="<?php //echo url_for('assets/js/apexcharts.min.js') ?>"></script>
-       <script src="<?php //echo url_for('assets/js/toastr.min.js') ?>"></script>
-       <!-- END: Page Vendor JS-->
-
        <!-- BEGIN: Theme JS-->
        <script src="<?php echo url_for('assets/js/app-menu.min.js') ?>"></script>
        <script src="<?php echo url_for('assets/js/app.min.js') ?>"></script>

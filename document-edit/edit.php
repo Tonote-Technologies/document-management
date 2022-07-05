@@ -534,7 +534,7 @@ if(!empty($mydocument)){
 
                 <div class="modal-body">
                     <div class="text-center">
-                        <p>This document will sent to the list below</p>
+                        <p>This document will be sent to the list below</p>
 
                         <form action="" id="shareDocumentForm">
                             <table class="">
