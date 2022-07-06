@@ -4,22 +4,36 @@ $page = 'Prepare';
 $page_title = 'Document Preparation';
 // $previous_page = $_SERVER['HTTP_REFERER'];
 
-if($_GET['type'] == 1){
-    $record = Document::find_by_document_id($_GET['document_id']);
-    $record->created_by != $loggedInAdmin->id ? redirect_to('../logout.php') : ''; 
-    
-    $documents = Document::find_by_document_ids($_GET['document_id']);
-    $path = "document-edit/upload/raw_files/";
-    $title = $documents[0]->title;
+if($_GET['type'] == 1){ // Get Affidavit
 
-    
-}else{
     $record = Template::find_by_document_id($_GET['document_id']);
     $record->created_by != $loggedInAdmin->id ? redirect_to('../logout.php') : ''; 
     
     $documents = Template::find_by_document_ids($_GET['document_id']);
     $path = "templates/affidavit_template/";
     $title = $documents[0]->title;
+    $previousPage = url_for('templates/');
+
+    
+}
+// else if($_GET['type'] == 2 ){ // Request a Notary
+
+//     $record = Document::find_by_document_id($_GET['document_id']);
+//     $record->created_by != $loggedInAdmin->id ? redirect_to('../logout.php') : ''; 
+//     $documents = Document::find_by_document_ids($_GET['document_id']);
+//     $path = "document-edit/upload/raw_files/";
+//     $title = $documents[0]->title;
+//     $previousPage = url_for('document-edit/');
+    
+// }
+else{ // Request a Notary or Sign a document
+    $record = Document::find_by_document_id($_GET['document_id']);
+    $record->created_by != $loggedInAdmin->id ? redirect_to('../logout.php') : ''; 
+    
+    $documents = Document::find_by_document_ids($_GET['document_id']);
+    $path = "document-edit/upload/raw_files/";
+    $title = $documents[0]->title;
+    $previousPage = url_for('document-edit/');
 }
 
 
@@ -29,11 +43,15 @@ include(SHARED_PATH . '/header.php');
 .wrap {
     width: 100%;
     height: 100%;
-    background-color: rgb(0, 0, 0, 0.6);
     position: fixed;
     top: 0;
     left: 0;
     z-index: 1000;
+}
+
+
+.backdrop {
+    background-color: rgb(0, 0, 0, 0.6);
 }
 
 .inner-wrapper {
@@ -63,8 +81,8 @@ include(SHARED_PATH . '/header.php');
 
 
 
-<div class="wrap">
-    <div class="bg-white inner-wrapper d-flex justify-content-center align-items-center" style="height: 118px;">
+<div class="wrap backdrop">
+    <div class="bg-white inner-wrapper card d-flex justify-content-center align-items-center" style="height: 118px;">
 
         <div class="messages" style="font-size: 20px; font-weight:bolder"></div>
         <div class="offcanvas-body d-none text-center">
@@ -72,7 +90,7 @@ include(SHARED_PATH . '/header.php');
             <p>
                 Please review this document and click on proceed
             </p>
-            <a href="<?php echo url_for('document-edit/'); ?> " class="btn btn-outline-secondary waves-effect">Go
+            <a href="<?php echo $previousPage; ?> " class="btn btn-outline-secondary waves-effect">Go
                 Back</a>
             <a href="<?php echo url_for('document-edit/edit.php?document_id='.$_GET['document_id']) ?>"
                 class="btn btn-primary me-1 waves-effect waves-float waves-light" id="proceed_toEdit">Proceed</a>
@@ -104,7 +122,8 @@ function encrypt(msg) {
 function done() {
     setTimeout(function() {
         $(".messages").addClass("d-none")
-        $(".offcanvas-body").removeClass("d-none")
+        $(".offcanvas-body").removeClass("d-none");
+        $(".wrap").attr("class", "wrap");
     }, 3000);
 }
 </script>

@@ -48,7 +48,8 @@ if(!empty($mydocument)){
         <div class="col-12 px-2">
             <div class=" float-end">
                 <button class="btn btn-sm btn-outline-primary" onclick="Convert_HTML_To_PDF();">Download</button>
-                <a href="<?php echo url_for('request-notary/') ?>" class="btn btn-sm btn-outline-primary">Request a
+                <a href="<?php echo url_for('request-notary/index.php?document_id='.$_GET['document_id']) ?>"
+                    class="btn btn-sm btn-outline-primary">Request a
                     Notary</a>
                 <button class="btn btn-sm btn-primary" id="finish">Share document</button>
             </div>

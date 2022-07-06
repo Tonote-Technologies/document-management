@@ -65,7 +65,23 @@ include(SHARED_PATH . '/header.php');
 </style>
 
 <section class="container-fluid">
-
+    <h3>
+        <div class="email-header-left d-flex align-items-center">
+            <a href="<?php echo url_for('dashboard/') ?>" class=""
+                style="display:inline-block; width: 100px; border-right:2px solid #CCC; margin-right:6px">
+                <span class="go-back me-1 float-start">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                        class="feather feather-chevron-left font-medium-4">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </span>
+                <h4 class="email-subject mb-0 float-start">Back</h4>
+            </a>
+            <span><?php echo  Document::REQUEST_TYPE[$req_type] ?></php></span>
+        </div>
+        <!-- <span> <a href="">Back</a></span> | -->
+    </h3>
     <div class="card d-none">
         <div class="card-body">
             <h3>Is your document ready?</h3>
@@ -75,25 +91,59 @@ include(SHARED_PATH . '/header.php');
     </div>
     <div class="card ">
 
-        <div class=" card-body">
-            <div class="p-1 mb-1 border-bottom">Please select a template or search below</div>
-            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for a template..">
-
-            <ul id="myUL">
-                <?php $sn = 1; foreach($affidavit as $value) {
-                 ?>
-                <li class="list"><a
-                        href="<?php echo url_for('document-edit/prepare.php?document_id='.$value->document_id.'&type=2') ?>"><?php echo $sn++ .". ". $value->title ?></a>
+        <div class="card-body">
+            <ul class="nav nav-pills bg-nav-pills nav-justified border-bottom" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="first-tab" data-bs-toggle="tab" href="#first" aria-controls="first"
+                        role="tab" aria-selected="true">Select a Template</a>
                 </li>
-                <?php } ?>
+                <li class="nav-item">
+                    <a class="nav-link" id="second-tab" data-bs-toggle="tab" href="#second" aria-controls="second"
+                        role="tab" aria-selected="false">Get a custom template</a>
+                </li>
             </ul>
-            <div class="ctrl-nav d-flex justify-content-start pt-2">
-                <div class="btn-group">
-                    <a href="#" class="btn btn-sm btn-outline-primary" id="prev">Previous</a>
-                    <a href="#" class="btn btn-sm btn-primary" id="next">Next</a>
+            <div class="tab-content">
+                <div class="tab-pane active" id="first" aria-labelledby="first-tab" role="tabpanel">
+                    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for a template..">
+                    <!-- First -->
+                    <ul id="myUL">
+                        <?php $sn = 1; foreach($affidavit as $value) {
+                             ?>
+                        <li class="list"><a
+                                href="<?php echo url_for('document-edit/prepare.php?document_id='.$value->document_id.'&type='. $req_type) ?>">
+                                <?php echo $sn++ .". ". $value->title ?>
+                            </a>
+                        </li>
+                        <?php } ?>
+                    </ul>
+                    <div class="ctrl-nav d-flex justify-content-start pt-2">
+                        <div class="btn-group">
+                            <a href="#" class="btn btn-sm btn-outline-primary" id="prev">Previous</a>
+                            <a href="#" class="btn btn-sm btn-primary" id="next">Next</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="second" aria-labelledby="second-tab" role="tabpanel">
+                    <!-- second -->
+                    <form action="" method="post">
+                        <div class="row">
+                            <div class="col-md-12 my-2">
+                                <label for="trans_type">Document type <sup class="text-danger">*</sup></label>
+                                <input type="text" id="trans_type" class="form-control" required="" name="trans_type">
+
+                            </div>
+                            <div class="col-md-12 my-2 ">
+                                <label for="trans_type">Describe your document <sup class="text-danger">*</sup></label>
+                                <textarea class="form-control" placeholder="Description"
+                                    style="min-height:200px"></textarea>
+                            </div>
+
+                            <div class="col-md-12 my-2 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                    </form>
                 </div>
             </div>
-        </div>
 
 
 
@@ -113,14 +163,14 @@ include(SHARED_PATH . '/header.php');
 
 
 
-        <div class=" card mb-2 p-2">
+            <!-- <div class=" card mb-2 p-2">
             <div class="clearfix ">
                 <div class="btn btn-primary btn-sm float-end mr-2 disabled" style="cursor: pointer;" id="proceedbtn">
                     <a href="" class="text-white" id="proceed">Proceed</a>
                 </div>
             </div>
         </div>
-        <div class="d-none" id="preview"></div>
+        <div class="d-none" id="preview"></div> -->
 </section>
 
 

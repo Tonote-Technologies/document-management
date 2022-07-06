@@ -78,17 +78,17 @@ $converted_tool = 0;
 						';
 			    
 		}else{
-		$output .= '
-			<dl class=" '.$signature .' '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'"
-				data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'"
-				style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
-				<div>
-					<button type="button" class="btn-close deleteItem" data-id="'.$savedTool->tool_id.'"></button>
-					<div class="element">'.$savedTool->tool_name.'</div>
-				</div>
-				<div class="name-style">'.$signerName.'</div>
-			</dl>
-			';
+				$output .= '
+					<dl class=" '.$signature .' '.$savedTool->tool_class.' '.$savedTool->tool_name.'" data-user="'.$savedTool->toolUser.'"
+						data-name="'.$savedTool->tool_name.'" data-id="'.$savedTool->tool_id.'"
+						style="top: '.$savedTool->tool_pos_top.'; left:'.$savedTool->tool_pos_left.'">
+						<div>
+							<button type="button" class="btn-close deleteItem" data-id="'.$savedTool->tool_id.'"></button>
+							<div class="element">'.$savedTool->tool_name.'</div>
+						</div>
+						<div class="name-style">'.$signerName.'</div>
+					</dl>
+					';
 		}
 		$added_tool = $added_tool + 1;
 		}else{

@@ -32,6 +32,78 @@ include(SHARED_PATH . '/header.php');
 .request-title:active {
     background-color: transparent;
 }
+
+.btn-wrap {
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    display: inline-block;
+    outline: none;
+    width: 100px;
+    background-color: #f1f3f4;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 10px 10px 0px;
+
+}
+
+.btn-wrap label {
+    display: block;
+    height: 36px;
+    position: relative;
+    vertical-align: top;
+    cursor: default;
+}
+
+.subchild {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    position: relative;
+    top: 6px;
+}
+
+.child {
+
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-flex: 1;
+    box-flex: 1;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    -webkit-flex-shrink: 1;
+    flex-shrink: 1;
+    min-width: 0%;
+    position: relative;
+
+}
+
+.date-input {
+    -webkit-box-flex: 1;
+    box-flex: 1;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    -webkit-flex-shrink: 1;
+    flex-shrink: 1;
+    background-color: rgba(255, 255, 255, 0);
+    color: #3c4043;
+    border: none;
+    display: block;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 400;
+    height: 24px;
+    line-height: 24px;
+    margin: 0;
+    min-width: 0%;
+    outline: none;
+    padding: 0;
+    z-index: 0;
+}
 </style>
 <div class="content-body">
     <h3>Requesting a Notary</h3>
@@ -41,29 +113,98 @@ include(SHARED_PATH . '/header.php');
         <li>We will send you a confirmation email with the meeting link and session time.</li>
         <li>You can track the status of your requests in “My Requests”</li>
     </p>
-    <section class="invoice-edit-wrapper">
-        <div class="row invoice-edit">
-            <!-- Invoice Edit Left starts -->
-            <div class="col-xl-9 col-md-8 col-12">
-                <div class="mb-2">
-                    <label for="">Request Title</label>
-                    <input type="text" class="form-control request-title" placeholder="Add Title"
-                        value="<?php echo $title  ?>" readonly>
 
+    <hr>
+    <section class="invoice-edit-wrapper">
+
+        <div class="row invoice-edit">
+            <!-- Invoice Edit Right starts -->
+            <div class="col-xl-8 col-md-6 col-12">
+                <div class="">
+                    <h3 for="">Request title</h3>
+                    <div class="card">
+
+                        <input type="text" class="form-control request-title" placeholder="Add Title"
+                            value="<?php echo $title  ?>">
+
+                    </div>
                 </div>
-                <div class="card invoice-preview-card">
+                <div class="card">
+                    <!-- <div class="card-header border-bottom">
+                        <h4 class="">Session Details</h4>
+                    </div> -->
+
+                    <div class="card-body pt-0">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home"
+                                    aria-controls="home" role="tab" aria-selected="true">Pick a slot</a>
+                            </li>
+
+                        </ul>
+
+
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="home" aria-labelledby="home-tab" role="tabpanel">
+                                <div class="row mb-2 ">
+                                    <div class="row col-lg-8 col-12">
+                                        <div class="col-8">
+                                            <label for="">Date</label>
+                                            <div class="form-group mb-1">
+                                                <input type="date" class="form-control" name="" id="">
+                                            </div>
+
+                                        </div>
+                                        <div class="col-4">
+                                            <label for="">Time</label>
+                                            <div class="form-group mb-1">
+                                                <input type="time" class="form-control" name="" id="">
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <hr class="invoice-spacing mt-0">
+
+                    <div class="card-body invoice-padding py-0">
+                        <!-- Invoice Note starts -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-2">
+                                    <label for="note" class="form-label fw-bold">Add Description:</label>
+                                    <textarea class="form-control" rows="2" id="note"
+                                        placeholder="Hi I'm inviting you to co-sign a document online on the ToNote Platform"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Invoice Note ends -->
+                    </div>
+                </div>
+            </div>
+            <!-- Invoice Edit Right ends -->
+            <!-- Invoice Edit Left starts -->
+            <div class="col-xl-4 col-md-6 col-12">
+
+                <div class=" invoice-preview-card">
                     <!-- Header starts -->
                     <div class="card-body invoice-padding invoice-product-details">
 
                         <div data-repeater-list="group-a">
                             <div class="repeater-wrapper" data-repeater-item="">
-                                <div class="d-flex justify-content-between">
+                                <div class="border-bottom d-flex justify-content-between pb-1">
                                     <div>
-                                        <h5>All Participants</h5>
+                                        <h5>Participants</h5>
                                     </div>
                                     <div>
 
-                                        <button class="btn btn-outline-primary" id="btn-add">+ Add </button>
+                                        <button class="btn btn-outline-primary btn-sm" id="btn-add">+ Add </button>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
@@ -74,20 +215,34 @@ include(SHARED_PATH . '/header.php');
                                             <tr>
                                                 <th>SN</th>
                                                 <th>Full Name</th>
-                                                <th>Email</th>
-                                                <th>Phone</th>
                                                 <th>Role</th>
                                             </tr>
                                             <!-- </thead> -->
 
                                             <tbody>
+                                                <?php for ($i=1; $i <= 4 ; $i++) { ?>
                                                 <tr class="mtable">
-                                                    <td><span id="sr_no">1</span></td>
-                                                    <td>Dele Ashade</td>
-                                                    <td>ashade@gmail.com</td>
-                                                    <td>08092364789</td>
+                                                    <td><span id="sr_no"><?php echo $i ?></span>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d-flex justify-content-left align-items-center">
+                                                            <div class="avatar-wrapper">
+                                                                <div class="avatar bg-light-primary me-50">
+                                                                    <div class="avatar-content">JK</div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-flex flex-column">
+                                                                <h6 class="user-name text-truncate mb-0">Jamal Kerrod
+                                                                </h6><small
+                                                                    class="text-truncate text-muted">jamalkerrod@email.com</small>
+                                                                </h6><small
+                                                                    class="text-truncate text-muted">08092364789</small>
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                     <td>Signer</td>
                                                 </tr>
+                                                <?php }?>
                                             </tbody>
 
                                             <table class="">
@@ -111,100 +266,11 @@ include(SHARED_PATH . '/header.php');
                     </div>
                     <!-- Product Details ends -->
 
-
-
-                    <hr class="invoice-spacing mt-0">
-
-                    <div class="card-body invoice-padding py-0">
-                        <!-- Invoice Note starts -->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="mb-2">
-                                    <label for="note" class="form-label fw-bold">Add Description:</label>
-                                    <textarea class="form-control" rows="2" id="note"
-                                        placeholder="Hi I'm inviting you to co-sign a document online on the ToNote Platform"></textarea>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Invoice Note ends -->
-                    </div>
                 </div>
             </div>
             <!-- Invoice Edit Left ends -->
 
-            <!-- Invoice Edit Right starts -->
-            <div class="col-xl-3 col-md-4 col-12">
 
-                <div class=""
-                    style="background: transparent; margin-bottom: 2rem; border-radius: 0.428rem;     word-wrap: break-word;">
-                    <div class="card-header border-bottom">
-                        <h4 class="">Session Details</h4>
-                    </div>
-                    <div class="card-body pt-0">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home"
-                                    aria-controls="home" role="tab" aria-selected="true">Pick a slot</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile"
-                                    aria-controls="profile" role="tab" aria-selected="false">Schedule a Date</a>
-                            </li>
-                        </ul>
-
-
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="home" aria-labelledby="home-tab" role="tabpanel">
-                                <div class="row mb-2">
-                                    <div class="col-12">
-                                        <label for="">Today</label>
-                                    </div>
-                                    <div class="p-1">
-                                        <button type="button" class="form-control btn-outline-primary">
-                                            9:00 - 9:30</button>
-                                    </div>
-                                    <div class="p-1">
-                                        <button type="button" class="form-control btn-outline-primary">
-                                            9:30 - 10:00</button>
-                                    </div>
-                                    <div class="p-1">
-                                        <button type="button" class="form-control btn-outline-primary">
-                                            10:30 - 11:00</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="tab-pane" id="profile" aria-labelledby="profile-tab" role="tabpanel">
-                                <div class="row mb-2">
-
-                                    <div class="col-12">
-                                        <label for="">Date</label>
-                                        <div class="form-group mb-1">
-                                            <input type="date" class="form-control" name="" id="">
-                                        </div>
-
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="">Time Slot</label>
-                                        <div class="form-group mb-1">
-                                            <button type="button" class="form-control btn-outline-primary">
-                                                9:00 - 9:30</button>
-                                        </div>
-                                        <div class="form-group mb-1">
-                                            <button type="button" class="form-control btn-outline-primary">
-                                                9:30 - 10:00</button>
-                                        </div>
-                                        <div class="form-group mb-1">
-                                            <button type="button" class="form-control btn-outline-primary">
-                                                10:30 - 11:00</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Invoice Edit Right ends -->
         </div>
 
 
@@ -329,7 +395,8 @@ $(document).on('click', '#add_row', function() {
 });
 
 function addRow(count, sn) {
-    var html_code = '<div class="border-bottom mb-1" id="row_id_' + count + '">';
+    var html_code = '<div class="border-bottom mb-1" id="row_id_' +
+        count + '">';
 
     html_code += '<div class="row d-flex align-items-end" >';
     html_code +=

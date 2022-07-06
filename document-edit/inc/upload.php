@@ -32,32 +32,33 @@ if (!empty($_FILES['file']['name'])) {
 ?>
 
 
-<div class="image-area">
-    <img src="<?php echo $src ?>" alt="Preview">
+<!-- <div class="image-area">
+    <img src="<?php //echo $src ?>" alt="Preview">
     <a class="remove-image  ds-remove filed" href="#" style="display: inline;"
-        data-id="<?php echo $document->document_id ?>" data-name="<?php echo $filename ?>">&#215;</a>
-    <div class="text-truncate"><?php echo $filename ?></div>
-</div>
+        data-id="<?php //echo $document->document_id ?>" data-name="<?php //echo $filename ?>">&#215;</a>
+    <div class="text-truncate"><?php //echo $filename ?></div>
+</div> -->
 <!-- <div class="d-none" id="preview"></div> -->
 
-<!-- <div class="card mb-1 mb-0 shadow-none border">
+<div class="card mb-1 mb-0 shadow-none border">
     <div class="p-2">
         <div class="row align-items-center">
 
-            <div class="col-auto" id="uploadfile"><img data-dz-thumbnail src="<?php //echo $src ?>"
+            <div class="col-auto" id="uploadfile"><img data-dz-thumbnail src="<?php echo $src ?>"
                     class="avatar-sm rounded bg-light" alt=""> </div>
 
             <div class="col ps-0"> <a href="javascript:void(0);" class="text-muted fw-bold" data-dz-name></a>
-                <p class="mb-0" data-dz-size><?php //echo $filename ?></p>
+                <p class="mb-0" data-dz-size><?php echo $filename ?></p>
             </div>
 
-            <div class="col-auto"> <a href="" class="btn btn-sm btn-outline-primary ds-remove filed"
-                    data-id="<?php //echo $document->document_id ?>" data-name="<?php //echo $filename ?>"> X </a>
+            <div class="col-auto" data-id="<?php echo $document->document_id ?>"> <a href=""
+                    class="btn btn-sm btn-outline-primary ds-remove filed"
+                    data-id="<?php echo $document->document_id ?>" data-name="<?php echo $filename ?>"> X </a>
             </div>
 
         </div>
     </div>
-</div> -->
+</div>
 <?php } ?>
 <?php } ?>
 
