@@ -73,7 +73,7 @@ $(document).on("click", "#mainWrapper", function (e) {
     } else if (toolName == "Photo") {
       var tool_class = "main-element photo-style";
     } else {
-      var tool_class = "tool-box main-element";
+      var tool_class = "tool-box tool-style main-element";
     }
 
 

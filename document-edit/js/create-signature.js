@@ -107,6 +107,7 @@ $(document).on("click", "#updateSignature", function () {
     $("#actionWord").text("Update")
 
     $("#createSignatureModal").modal('show')
+    $("#viewSignatureModal").modal('hide')
 })
 
 

@@ -25,7 +25,7 @@ if(empty($loggedInAdmin)){
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Arizonia&family=Great+Vibes&family=Inter:wght@200;500&family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;1,100;1,200;1,300;1,400&family=Oleo+Script+Swash+Caps&family=Poppins:wght@100;200&family=The+Nautigal&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cedarville+Cursive&family=Great+Vibes&family=Inter:wght@200;500&family=Montserrat:ital,wght@0,200;0,300;0,400;0,500;1,100;1,200;1,300;1,400&family=Oleo+Script+Swash+Caps&family=Poppins:wght@100;200;300;400;500&family=The+Nautigal&display=swap"
         rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
@@ -106,7 +106,7 @@ if(empty($loggedInAdmin)){
                         data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="user-nav d-sm-flex d-none">
                             <span$ class="user-name fw-bolder"><?php echo $loggedInAdmin->full_name(); ?></span$>
-                            <span class="user-status">active</span>
+                            <span class="user-status">Business Plan</span>
                         </div>
                         <span class="avatar">
                             <!-- <img class="round" src="jpg/avatar-s-11.jpg" alt="avatar" height="40" width="40"> -->
