@@ -21,7 +21,29 @@ if(!empty($mydocument)){
 ?>
 
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<style>
+#canvas1 {
+    border: 2px dotted #3b4253;
+    border-radius: 50%;
+    letter-spacing: 20px;
+}
 
+#coy_number {
+    position: absolute;
+    top: 130;
+    font-weight: normal;
+    font-size: 30px;
+    font-family: 'Courier New', ;
+    color: #3b4253;
+    width: 300px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.input {
+    text-transform: uppercase;
+}
+</style>
 <!-- Font End -->
 <link rel="stylesheet" type="text/css" href="css/doc-edit.css">
 <link rel="stylesheet" type="text/css" href="css/signature-design.css">
@@ -67,7 +89,8 @@ if(!empty($mydocument)){
                         <a class="dropdown-item" href="#" id="viewSignature">My Signature</a>
                         <div class="dropdown-divider"></div>
 
-                        <a class="dropdown-item" href="#" id="viewSeal">My Seal & Stamp</a>
+                        <a class="dropdown-item" href="#" id="viewSeal">My Seal</a>
+                        <a class="dropdown-item" href="#" id="viewStamp">My Stamp</a>
                     </div>
                 </div>
             </div>
@@ -492,7 +515,7 @@ if(!empty($mydocument)){
                             data-feather='edit'></i>
                         Update</button>
 
-                    <div id="showSignature">Hello</div>
+                    <div id="showSignature">Loading...</div>
                 </div>
             </div>
         </div>
@@ -636,7 +659,7 @@ if(!empty($mydocument)){
                 <div class="text-center">
                     <p>This document will be sent to the list below</p>
 
-                    <form action="" id="shareDocumentForm">
+                    <form id="shareDocumentForm">
                         <table class="">
                             <tbody>
 
@@ -659,7 +682,7 @@ if(!empty($mydocument)){
                             </tbody>
                         </table>
                         <div class="clearfix">
-                            <button class="btn btn-primary float-end" id="sendNow">Send now</button>
+                            <button type="button" class="btn btn-primary float-end" id="sendNow">Send now</button>
                         </div>
                     </form>
 
@@ -671,7 +694,7 @@ if(!empty($mydocument)){
     </div>
 </div>
 
-
+<input type="text" id="baseURL" value="<?php echo url_for('dashboard/')?> ">
 <?php   include(SHARED_PATH . '/footer.php'); ?>
 
 <script src="js/draw-signature.js"></script>
@@ -1129,19 +1152,67 @@ $(document).on('click', '#finish', function() {
         },
     });
 });
-$(document).on('click', "#sendNow", function() {
+$(document).on('click', "#sendNow", function(e) {
+    e.preventDefault();
     $("#finishModal").modal("hide");
+    let url = $("#baseURL").val();
     successToast('Alert', "Email Sent Successfully");
     setTimeout(function() {
-        window.location.href = '../dashboard/';
+        window.location.href = url;
     }, 2000);
 
 });
 
+function Convert_HTML_To_PDF() {
+    let elementHTML = document.getElementById('mainWrapper');
 
+    html2canvas(elementHTML, {
+        useCORS: true,
+        onrendered: function(canvas) {
+            let pdf = new jsPDF("p", "pt", "a4");
+
+            let pageHeight = 1500;
+            let pageWidth = 900;
+            for (let i = 0; i <= elementHTML.clientHeight / pageHeight; i++) {
+                let srcImg = canvas;
+                let sX = 0;
+                let sY = pageHeight * i; // start 1 pageHeight down for every new page
+                let sWidth = pageWidth;
+                let sHeight = pageHeight;
+                let dX = 0;
+                let dY = 0;
+                let dWidth = pageWidth;
+                let dHeight = pageHeight;
+
+                window.onePageCanvas = document.createElement("canvas");
+                onePageCanvas.setAttribute('width', pageWidth);
+                onePageCanvas.setAttribute('height', pageHeight);
+                let ctx = onePageCanvas.getContext('2d');
+                ctx.drawImage(srcImg, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight);
+
+                let canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
+                let width = onePageCanvas.width;
+                let height = onePageCanvas.clientHeight;
+
+                if (i > 0) // if we're on anything other than the first page, add another page
+                    pdf.addPage(612, 864); // 8.5" x 12" in pts (inches*72)
+
+                pdf.setPage(i + 1); // now we declare that we're working on that page
+                pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .62), (height *
+                    .62)); // add content to the page
+            }
+
+            // Save the PDF
+            pdf.save('document.pdf');
+        }
+    });
+}
+var r = 99;
+var space = Math.PI / 12;
 $(document).on('click', ".sealList", function() {
     let item = $(this).data("id");
     fetchSeal(item);
+
 });
 
 
@@ -1161,48 +1232,77 @@ function fetchSeal(item) {
     });
 }
 
-function Convert_HTML_To_PDF() {
-    var elementHTML = document.getElementById('mainWrapper');
 
-    html2canvas(elementHTML, {
-        useCORS: true,
-        onrendered: function(canvas) {
-            var pdf = new jsPDF("p", "pt", "a4");
 
-            var pageHeight = 1500;
-            var pageWidth = 900;
-            for (var i = 0; i <= elementHTML.clientHeight / pageHeight; i++) {
-                var srcImg = canvas;
-                var sX = 0;
-                var sY = pageHeight * i; // start 1 pageHeight down for every new page
-                var sWidth = pageWidth;
-                var sHeight = pageHeight;
-                var dX = 0;
-                var dY = 0;
-                var dWidth = pageWidth;
-                var dHeight = pageHeight;
+function textCircle(text, x, y, radius, space, top) {
+    let inp = document.querySelectorAll('input'),
+        canvas = document.getElementById('canvas1'),
+        ctx = canvas.getContext('2d');
+    canvas.width = canvas.offsetWidth;
+    ctx.font = "normal 30px Courier New";
+    ctx.beginPath();
+    ctx.arc(150, 150, r, 0, Math.PI * 2, false);
+    ctx.closePath();
 
-                window.onePageCanvas = document.createElement("canvas");
-                onePageCanvas.setAttribute('width', pageWidth);
-                onePageCanvas.setAttribute('height', pageHeight);
-                var ctx = onePageCanvas.getContext('2d');
-                ctx.drawImage(srcImg, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight);
+    ctx.clearRect(0, (top ? 0 : y), 600, y);
 
-                var canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
-                var width = onePageCanvas.width;
-                var height = onePageCanvas.clientHeight;
+    space = space || 0;
+    let numRadsPerLetter = (Math.PI - space * 2) / text.length;
+    ctx.save();
+    ctx.translate(x, y);
+    // canvas.style.letterSpacing = '3px';
+    let k = (top) ? 1 : -1;
+    ctx.rotate(-k * ((Math.PI - numRadsPerLetter) / 2 - space));
+    for (let i = 0; i < text.length; i++) {
+        ctx.save();
+        ctx.rotate(k * i * (numRadsPerLetter));
+        ctx.textAlign = "left";
+        ctx.textBaseline = (!top) ? "top" : "bottom";
 
-                if (i > 0) // if we're on anything other than the first page, add another page
-                    pdf.addPage(612, 864); // 8.5" x 12" in pts (inches*72)
+        ctx.fillText(text[i].toUpperCase(), 0, -k * (radius));
+        ctx.fillStyle = "#3b4253";
+        ctx.setLineDash([1, 5]);
 
-                pdf.setPage(i + 1); // now we declare that we're working on that page
-                pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .62), (height *
-                    .62)); // add content to the page
-            }
-
-            // Save the PDF
-            pdf.save('document.pdf');
-        }
-    });
+        ctx.stroke();
+        ctx.restore();
+    }
+    ctx.restore();
 }
+
+
+$(document).on('keyup', "#text_cnv", function() {
+    textCircle(this.value, 150, 145, r, space, 1);
+})
+$(document).on('keyup', "#text_cnv2", function() {
+    textCircle(this.value, 150, 160, r, space);
+})
+
+$(document).on('keyup', "#text_horizontal", function() {
+    let coy_number = document.getElementById("coy_number");
+    coy_number.innerText = this.value
+})
+
+
+
+// document.getElementById('text_horizontal').onkeyup = function() {
+//     var coy_number = document.getElementById("coy_number");
+//     coy_number.innerText = this.value
+// }
+
+
+// document.getElementById('text_cnv').onkeyup = function() {
+//     textCircle(this.value, 150, 145, r, space, 1);
+// }
+// document.getElementById('text_cnv2').onkeyup = function() {
+//     textCircle(this.value, 150, 160, r, space);
+// }
+
+
+
+// let top_text = document.getElementById('text_cnv')
+// textCircle(top_text.value, 150, 145, r, space, 1);
+
+
+// let bottom_text = document.getElementById('text_cnv2')
+// textCircle2(bottom_text.value, 150, 160, r, space, 1);
 </script>

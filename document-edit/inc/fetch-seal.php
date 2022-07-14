@@ -1,5 +1,6 @@
 <?php  require_once('../../private/initialize.php');?>
-<?php if(isset($_POST['fetchSeal'])){
+<?php if(isset($_POST['fetchNoatrySeal'])){
+    $path = "document-edit/";
     $seal = ["seal_gray.png", "seal_green.png", "seal_orange.png"];
     if($_POST['item'] == 1){
         $image  = 'seal_gray.png';
@@ -22,7 +23,7 @@
         <div style="position: relative; text-align: center">
             <div class="head-text">
                 <div class="head-image">
-                    <img src="<?php echo $image ?>" alt="Freedom Blog" class="img-fluid" />
+                    <img src="<?php echo url_for($path.$image) ?>" alt="Freedom Blog" class="img-fluid" />
                 </div>
                 <div class='text-on-image'>
 
@@ -37,4 +38,34 @@
         </div>
     </div>
 </div>
+<?php } ?>
+
+<?php if(isset($_POST['fetchSeal'])){ ?>
+
+<div class="row mb-2 ">
+    <div class="form-group col-4">
+        <label for="text_cnv">Company Name:</label>
+        <input type="text" class="input form-control" placeholder="Company Name" id="text_cnv" size="40" maxlength=""
+            value="" />
+    </div>
+    <div class="form-group col-4">
+        <label for="text_cnv">Address:</label>
+        <input type="text" class="input form-control" placeholder="Your place, State" id="text_cnv2" size="40"
+            maxlength="" value="" />
+    </div>
+    <div class="col-4">
+        <label style="padding-right: 32px;">RC Number:</label>
+        <input type="text" id="text_horizontal" class="input form-control" placeholder="RC:12345" value="" />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6 " style="position:relative">
+        <div id="coy_number"></div>
+        <canvas id="canvas1" width="300" height="300"></canvas>
+
+    </div>
+
+</div>
+
 <?php } ?>

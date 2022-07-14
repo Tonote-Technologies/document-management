@@ -290,7 +290,7 @@ function ajax_file_upload(files_obj) {
                 let dataAttId = filed.getAttribute('data-id')
                 if (req_type == 3) {
                     $("#proceed").attr('href', baseURL + 'prepare.php?document_id=' + dataAttId +
-                        '&type=1')
+                        '&type=' + 3)
                 } else {
                     $("#proceed").attr('href', requestURL + 'index.php?document_id=' + dataAttId +
                         '&type=' + req_type)
