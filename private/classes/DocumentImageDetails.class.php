@@ -1,12 +1,13 @@
 <?php class DocumentImageDetails extends DatabaseObject
 {
     protected static $table_name = "documentImageDetails";
-    protected static $db_columns = ['id', 'document_id', 'title', 'filename', 'status', 'created_at', 'updated_at', 'created_by', 'deleted'];
+    protected static $db_columns = ['id', 'document_id', 'title', 'filename', 'file', 'status', 'created_at', 'updated_at', 'created_by', 'deleted'];
 
     public $id;
     public $document_id;
     public $title;
     public $filename;
+    public $file;
     public $status;
     public $created_at;
     public $updated_at;
@@ -28,6 +29,7 @@
         $this->document_id = $args['document_id'] ?? '';
         $this->title = $args['title'] ?? '';
         $this->filename    = $args['filename'] ?? '';
+        $this->file        = $args['file'] ?? '';
         $this->status      = $args['status'] ?? 2;
         $this->created_by  = $args['created_by'] ?? '';
         $this->updated_at  = $args['updated_at'] ?? '';
