@@ -106,7 +106,7 @@
     background-color: rgba(0, 0, 0, .75);
     width: 15px;
     height: 15px;
-    margin-top: -15;
+    margin-top: -15px;
     
 }
 
@@ -164,8 +164,8 @@
   background-color: #fff;
   color: #fff !important;
   position: absolute; 
-  top: -15;
-  right: -15;
+  top: -15px;
+  right: -15px;
 }
  .removeItem {
   display: none;
@@ -175,8 +175,8 @@
   background-color: #fff;
   color: #fff !important;
   position: absolute; 
-  top: -15;
-  right: -15 !important;
+  top: -15px;
+  right: -15px !important;
 }
 .removeItem:hover {
   cursor: pointer;
@@ -192,8 +192,8 @@
   background-color: #fff;
   color: #fff !important;
   position: absolute;
-  top: -15;
-  right: -6;
+  top: -15px;
+  right: -6px;
 }
 .deleteItem:hover {
   cursor: pointer;
@@ -242,7 +242,7 @@
   position: absolute;
   font-size: 12px;
   padding-left: 10px;
-  margin-top: -16;
+  margin-top: -16px;
   color: #000 !important;
 }
 .tool li{
@@ -315,7 +315,7 @@
 
 .sidebar-nav.sticky {
     position: fixed;
-    top: 100;
+    top: 100px;
     bottom: 0;
 }
 
@@ -483,8 +483,8 @@ box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 2px 4px rgba(0,0,0,0.3);
   background-color: #fff;
   color: #fff !important;
   position: absolute; 
-  top: -15;
-  right: -15;
+  top: -15px;
+  right: -15px;
 }
 .photo-style:hover{
   border: 3px dashed #003bb3 !important;
@@ -536,8 +536,8 @@ box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset 0 2px 4px rgba(0,0,0,0.3);
   background-color: #fff;
   color: #fff !important;
   position: absolute; 
-  top: -25;
-  right: -15 !important;
+  top: -25px;
+  right: -15px !important;
 }
 .sign .removeItem:hover {
   cursor: pointer;

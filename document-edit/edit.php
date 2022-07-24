@@ -693,8 +693,8 @@ if(!empty($mydocument)){
         </div>
     </div>
 </div>
-
-<input type="text" id="baseURL" value="<?php echo url_for('dashboard/')?> ">
+<!-- <img src="" id="pdfImg" alt="" srcset=""> -->
+<input type="hidden" id="baseURL" value="<?php echo url_for('dashboard/')?> ">
 <?php   include(SHARED_PATH . '/footer.php'); ?>
 
 <script src="js/draw-signature.js"></script>
@@ -1190,7 +1190,7 @@ function Convert_HTML_To_PDF() {
                 let ctx = onePageCanvas.getContext('2d');
                 ctx.drawImage(srcImg, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight);
 
-                let canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
+                var canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
                 let width = onePageCanvas.width;
                 let height = onePageCanvas.clientHeight;
 
@@ -1198,12 +1198,17 @@ function Convert_HTML_To_PDF() {
                     pdf.addPage(612, 864); // 8.5" x 12" in pts (inches*72)
 
                 pdf.setPage(i + 1); // now we declare that we're working on that page
-                pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .62), (height *
+                var data = pdf.addImage(canvasDataURL, 'PNG', 20, 40, (width * .62), (height *
                     .62)); // add content to the page
+
+
             }
 
             // Save the PDF
             pdf.save('document.pdf');
+            // $("#pdfImg").attr('src', canvasDataURL)
+            // window.open(canvasDataURL, '_blank');
+
         }
     });
 }

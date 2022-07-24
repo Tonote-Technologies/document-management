@@ -122,9 +122,10 @@ $converted_tool = 0;
 foreach ($documents as $key => $value) {
 		$pageNum = $key + 1;
 		$output .= '
-		<div class="border">
-			<img src="upload/document_file/'.$value->filename.'" class="img-fluid">
-		</div>
+		<div class="border">';
+		$output .='	<img src="upload/document_file/'.$value->filename.'" class="img-fluid">';
+		// $output .='<img src="https://staging-tonote-storage.s3.eu-west-1.amazonaws.com/test-uploads/document/3c6c2442-63e4-4089-8525-cbf960299ebf/162dcf1e57ea64.png" class="img-fluid" />';
+		$output .= '</div>
 		<div class="clearfix">
 			<h6 class="float-end">Page '.$pageNum.' of '.$totalPage.'</h6>
 		</div>
